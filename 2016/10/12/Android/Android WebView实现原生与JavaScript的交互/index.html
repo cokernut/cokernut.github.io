@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Android WebView实现原生与JavaScript的交互 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Android WebView实现原生与JavaScript的交互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android WebView实现原生与JavaScript的交互">
+<meta property="og:url" content="http://cokernut.top/2016/10/12/Android/Android WebView实现原生与JavaScript的交互/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="Android WebView实现原生与JavaScript的交互">
+<meta property="og:image" content="http://cokernut.top/images/Android/Webview_native_javascript_interaction/1.png">
+<meta property="og:updated_time" content="2016-11-28T09:34:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android WebView实现原生与JavaScript的交互">
+<meta name="twitter:description" content="Android WebView实现原生与JavaScript的交互">
+<meta name="twitter:image" content="http://cokernut.top/images/Android/Webview_native_javascript_interaction/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Cokernut" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">目录</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Android/Android WebView实现原生与JavaScript的交互" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/12/Android/Android WebView实现原生与JavaScript的交互/" class="article-date">
+  <time datetime="2016-10-11T16:00:00.000Z" itemprop="datePublished">2016-10-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android WebView实现原生与JavaScript的交互
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Android WebView实现原生与JavaScript的交互<br><a id="more"></a></p>
+<p>在现在的Android开发中，为了追求开发的效率以及移植的便利性，越来越多的开发者会在App中使用WebView<br>作为部分业务内容展示与交互的主要载体。那么在这种Hybrid App中，难免就会遇到网页与Java<br>原生的交互问题，比如说调用Java方法去做那部分网页不能完成的功能或者是通过Java原生代码<br>来调用网页当中实现的一些功能，其中一种解决方案就是利用Java与网页中的JavaScript进行交互。 </p>
+<p>实现思路是:  </p>
+<ul>
+<li>通过WebView注入带有Java方法的JavaScript对象，然后网页当中利用JavaScript对注入的方法进行调用这样就实现了网页调用原生功能</li>
+<li>通过WebView注入JavaScript的方式来实现原生调用网页中的功能</li>
+</ul>
+<h2 id="实现步骤："><a href="#实现步骤：" class="headerlink" title="实现步骤："></a>实现步骤：</h2><p>1、 自定义WebView  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyWebView</span> <span class="keyword">extends</span> <span class="title">WebView</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> WebViewInterface mWebViewInterface;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyWebView</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(context);</div><div class="line">        init();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWebViewInterface</span><span class="params">(WebViewInterface baseWebViewInterface)</span> </span>&#123;</div><div class="line">        mWebViewInterface = baseWebViewInterface;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//回调方法接口</span></div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">WebViewInterface</span> </span>&#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">showToast</span><span class="params">(String msg)</span></span>;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">getTitle</span><span class="params">(String title)</span></span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">        WebSettings ws = getSettings();</div><div class="line">        setLayoutParams(<span class="keyword">new</span> ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));</div><div class="line">        setHorizontalScrollBarEnabled(<span class="keyword">false</span>);</div><div class="line">        setVerticalScrollBarEnabled(<span class="keyword">false</span>);</div><div class="line">        ws.setJavaScriptEnabled(<span class="keyword">true</span>);</div><div class="line">        ws.setDomStorageEnabled(<span class="keyword">true</span>);</div><div class="line">        ws.setSupportZoom(<span class="keyword">true</span>);</div><div class="line">        ws.setBuiltInZoomControls(<span class="keyword">true</span>);</div><div class="line">        ws.setBuiltInZoomControls(<span class="keyword">false</span>);</div><div class="line">        ws.setJavaScriptCanOpenWindowsAutomatically(<span class="keyword">true</span>);</div><div class="line">        <span class="comment">//注入带有Java方法的JS对象，名字可以自定义（js_obj）</span></div><div class="line">        addJavascriptInterface(<span class="keyword">new</span> InJavaScriptObj(), <span class="string">"js_obj"</span>);</div><div class="line">        setWebViewClient(<span class="keyword">new</span> MyWebViewClient());</div><div class="line">        setWebChromeClient(<span class="keyword">new</span> MyWebChromeClient());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">InJavaScriptObj</span> </span>&#123;</div><div class="line">        <span class="comment">//android 4.2 之后版本提供给js调用的函数必须带有注释语句@JavascriptInterface</span></div><div class="line">        <span class="meta">@JavascriptInterface</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showToast</span><span class="params">(String msg)</span> </span>&#123;</div><div class="line">            mWebViewInterface.showToast(msg);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyWebViewClient</span> <span class="keyword">extends</span> <span class="title">WebViewClient</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldOverrideUrlLoading</span><span class="params">(WebView view, String url)</span> </span>&#123;</div><div class="line">            <span class="comment">//加载网页url，此处可以根据url进行相应的处理</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.shouldOverrideUrlLoading(view, url);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageFinished</span><span class="params">(WebView view, String url)</span> </span>&#123;</div><div class="line">            <span class="comment">//实现自己的逻辑</span></div><div class="line">            <span class="keyword">super</span>.onPageFinished(view, url);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPageStarted</span><span class="params">(WebView view, String url, Bitmap favicon)</span> </span>&#123;</div><div class="line">            <span class="keyword">super</span>.onPageStarted(view, url, favicon);</div><div class="line">            <span class="comment">//实现自己的逻辑</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedError</span><span class="params">(WebView view, WebResourceRequest request, WebResourceError error)</span> </span>&#123;</div><div class="line">            <span class="comment">//错误处理</span></div><div class="line">            <span class="keyword">super</span>.onReceivedError(view, request, error);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedHttpError</span><span class="params">(WebView view, WebResourceRequest request, WebResourceResponse errorResponse)</span> </span>&#123;</div><div class="line">            <span class="comment">//http错误处理</span></div><div class="line">            <span class="keyword">super</span>.onReceivedHttpError(view, request, errorResponse);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyWebChromeClient</span> <span class="keyword">extends</span> <span class="title">WebChromeClient</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedTitle</span><span class="params">(WebView view, String title)</span> </span>&#123;</div><div class="line">            <span class="keyword">super</span>.onReceivedTitle(view, title);</div><div class="line">            <span class="comment">//这个方法是收到网页的title的时候会调用的，这里我们可以拿到网页的title显示处理</span></div><div class="line">            mWebViewInterface.getTitle(title);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onJsAlert</span><span class="params">(WebView view, String url, String message, <span class="keyword">final</span> JsResult result)</span> </span>&#123;</div><div class="line">            <span class="comment">// 在这里你可以拦截网页的Alert来实现自己的逻辑，return true停止事件的继续传播，也可以使用默认实现</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.onJsAlert(view, url, message, result);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onJsConfirm</span><span class="params">(WebView view, String url, String message, JsResult result)</span> </span>&#123;</div><div class="line">            <span class="comment">// 在这里你可以实现拦截网页的Confirm来实现自己的逻辑，return true停止事件的继续传播，也可以使用默认实现</span></div><div class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.onJsConfirm(view, url, message, result);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onProgressChanged</span><span class="params">(WebView view, <span class="keyword">int</span> newProgress)</span> </span>&#123;</div><div class="line">            <span class="keyword">super</span>.onProgressChanged(view, newProgress);</div><div class="line">            <span class="comment">//在这里你可以进度的变化实现自己的逻辑</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onJsPrompt</span><span class="params">(WebView view, String url, String message, String defaultValue, JsPromptResult result)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.onJsPrompt(view, url, message, defaultValue, result);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2、使用自定义WebView来实现功能</p>
+<blockquote>
+<p>布局文件：  </p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;  </div><div class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>  </span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span>  </div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>  </div><div class="line">    <span class="attr">android:orientation</span>=<span class="string">"vertical"</span>&gt;  </div><div class="line">  </div><div class="line">    <span class="tag">&lt;<span class="name">RelativeLayout</span>  </span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/rl_top"</span>  </div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span>  </div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>  </div><div class="line">        <span class="attr">android:padding</span>=<span class="string">"10dp"</span>  </div><div class="line">        <span class="attr">android:background</span>=<span class="string">"#7DD13F"</span>  </div><div class="line">        <span class="attr">android:minHeight</span>=<span class="string">"?attr/actionBarSize"</span>&gt;  </div><div class="line">  </div><div class="line">        <span class="tag">&lt;<span class="name">ImageView</span>  </span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/iv_back"</span>  </div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span>  </div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>  </div><div class="line">            <span class="attr">android:layout_centerVertical</span>=<span class="string">"true"</span>  </div><div class="line">            <span class="attr">android:gravity</span>=<span class="string">"center"</span>  </div><div class="line">            <span class="attr">android:paddingBottom</span>=<span class="string">"12dp"</span>  </div><div class="line">            <span class="attr">android:paddingRight</span>=<span class="string">"12dp"</span>  </div><div class="line">            <span class="attr">android:paddingTop</span>=<span class="string">"12dp"</span>  </div><div class="line">            <span class="attr">android:src</span>=<span class="string">"@mipmap/icon_back"</span> /&gt;  </div><div class="line">  </div><div class="line">        <span class="tag">&lt;<span class="name">TextView</span>  </span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/tv_title"</span>  </div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span>  </div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>  </div><div class="line">            <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span>  </div><div class="line">            <span class="attr">android:ellipsize</span>=<span class="string">"end"</span>  </div><div class="line">            <span class="attr">android:gravity</span>=<span class="string">"center"</span>  </div><div class="line">            <span class="attr">android:maxEms</span>=<span class="string">"8"</span>  </div><div class="line">            <span class="attr">android:textColor</span>=<span class="string">"#AF0000"</span>  </div><div class="line">            <span class="attr">android:singleLine</span>=<span class="string">"true"</span>  </div><div class="line">            <span class="attr">android:textSize</span>=<span class="string">"20sp"</span> /&gt;  </div><div class="line">  </div><div class="line">        <span class="tag">&lt;<span class="name">TextView</span>  </span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/tv_menu"</span>  </div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span>  </div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>  </div><div class="line">            <span class="attr">android:layout_alignParentRight</span>=<span class="string">"true"</span>  </div><div class="line">            <span class="attr">android:layout_centerVertical</span>=<span class="string">"true"</span>  </div><div class="line">            <span class="attr">android:gravity</span>=<span class="string">"center_vertical|right"</span>  </div><div class="line">            <span class="attr">android:text</span>=<span class="string">"网页弹窗"</span>  </div><div class="line">            <span class="attr">android:textSize</span>=<span class="string">"20sp"</span>/&gt;  </div><div class="line">    <span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span>  </div><div class="line">  </div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span>  </span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/ll_webview"</span>  </div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span>  </div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>  </div><div class="line">        <span class="attr">android:layout_below</span>=<span class="string">"@+id/rl_top"</span>  </div><div class="line">        <span class="attr">android:orientation</span>=<span class="string">"vertical"</span>&gt;  </div><div class="line">  </div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span>  </div><div class="line">  </div><div class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span>  </div><div class="line">```  </div><div class="line"></div><div class="line">&gt; WebViewActivity:  </div><div class="line"></div><div class="line">```java</div><div class="line">public class WebViewActivity extends AppCompatActivity implements MyWebView.WebViewInterface, View.OnClickListener &#123;</div><div class="line"></div><div class="line">    private LinearLayout    mWebViewLl;</div><div class="line">    private MyWebView       mWebView;</div><div class="line">    private ImageView       mBackIv;</div><div class="line">    private TextView        mTitleTv;</div><div class="line">    private TextView        mMenuTv;</div><div class="line"></div><div class="line">    private String          url;</div><div class="line"></div><div class="line">    private static final int SET_TITLE = 0x101;</div><div class="line"></div><div class="line">    private Handler mHandler = new Handler() &#123;</div><div class="line">        @Override</div><div class="line">        public void handleMessage(Message msg) &#123;</div><div class="line">            if (msg.what == SET_TITLE) &#123;</div><div class="line">                setMyTitle((String) msg.obj);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_webview);</div><div class="line">        initView();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void initView() &#123;</div><div class="line">        url = getIntent().getStringExtra("url");</div><div class="line">        mMenuTv     = (TextView) findViewById(R.id.tv_menu);</div><div class="line">        mBackIv     = (ImageView) findViewById(R.id.iv_back);</div><div class="line">        mWebViewLl  = (LinearLayout) findViewById(R.id.ll_webview);</div><div class="line">        mTitleTv    = (TextView) findViewById(R.id.tv_title);</div><div class="line">        mMenuTv.setOnClickListener(this);</div><div class="line">        mBackIv.setOnClickListener(this);</div><div class="line">        mWebView    = new MyWebView(this);</div><div class="line">        mWebViewLl.addView(mWebView);</div><div class="line">        mWebView.setWebViewInterface(this);</div><div class="line">        mWebView.loadUrl(url);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    //回调方法的实现</div><div class="line">    @Override</div><div class="line">    public void showToast(String msg) &#123;</div><div class="line">        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //回调方法的实现</div><div class="line">    @Override</div><div class="line">    public void getTitle(String title) &#123;</div><div class="line">        Message message = new Message();</div><div class="line">        message.what = SET_TITLE;</div><div class="line">        message.obj = title;</div><div class="line">        mHandler.sendMessage(message);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void setMyTitle(String title) &#123;</div><div class="line">        mTitleTv.setText(title);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onBackPressed() &#123;</div><div class="line">        back();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void back() &#123;</div><div class="line">        if (mWebView.canGoBack()) &#123;</div><div class="line">            mWebView.goBack();</div><div class="line">        &#125; else &#123;</div><div class="line">            this.finish();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onClick(View v) &#123;</div><div class="line">        switch (v.getId()) &#123;</div><div class="line">            case R.id.iv_back:</div><div class="line">                back();</div><div class="line">                break;</div><div class="line">            case R.id.tv_menu:</div><div class="line">                //注入JS代码,Java调用JS</div><div class="line">                mWebView.loadUrl("javascript:alert('网页弹窗alert');");</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>网页代码：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">        a&#123;</div><div class="line">            color:green;</div><div class="line">            font-weight:900;</div><div class="line">            font-size:80px;</div><div class="line">            height:400;</div><div class="line">            width:500;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        button&#123;</div><div class="line">            color:green;</div><div class="line">            font-size:50px;</div><div class="line">            height:300;</div><div class="line">            width:400;</div><div class="line">        &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line">        //JS调用Java方法，js_obj为网页中带有Java方法的对象，可以自定义但是要和注入的名字一样</div><div class="line">        function myFunction() &#123;</div><div class="line">            js_obj.showToast("显示Toast");</div><div class="line">        &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file:///android_asset/test_1.html"</span>&gt;</span> 链 接 <span class="tag">&lt;/<span class="name">a</span>&gt;</span> <span class="tag">&lt;/<span class="name">br</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">"myFunction()"</span> &gt;</span>显示Toast<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>效果图:<br><img src="/images/Android/Webview_native_javascript_interaction/1.png" alt="效果图" title="效果图">  </p>
+<font size="5"><a href="https://github.com/cokernut/CustomWebView" target="_blank" rel="external">源代码</a></font>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/10/12/Android/Android WebView实现原生与JavaScript的交互/" data-id="ciw1vpdxs0000wkul9y8mg2vt" class="article-share-link" data-share="baidu" data-title="Android WebView实现原生与JavaScript的交互">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/10/12/Android/Android WebView实现原生与JavaScript的交互/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebView/">WebView</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/25/Android/RecyclerView基本用法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          RecyclerView的介绍与基本用法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/04/Python/Python3学习笔记--基础知识/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Python3学习笔记--基础知识</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/10/12/Android/Android WebView实现原生与JavaScript的交互/" data-title="Android WebView实现原生与JavaScript的交互" data-url="http://cokernut.top/2016/10/12/Android/Android WebView实现原生与JavaScript的交互/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python3/">Python3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 15px;">GitHub</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Python3/" style="font-size: 10px;">Python3</a> <a href="/tags/React-Native/" style="font-size: 15px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/25/Android/React Native嵌入Android原生项目中/">React Native嵌入Android原生项目中</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/23/Android/React Native for Android Windows环境搭建/">React Native for Android Windows环境搭建</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/17/Android/Android辅助功能AccessibilityService的使用/">Android辅助功能AccessibilityService的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/Android/RecyclerView基本用法/">RecyclerView的介绍与基本用法</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/12/Android/Android WebView实现原生与JavaScript的交互/">Android WebView实现原生与JavaScript的交互</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040?viewmode=contents/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Cokernut<br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut-hexo"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
