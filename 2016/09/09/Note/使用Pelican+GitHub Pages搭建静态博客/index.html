@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用Pelican+GitHub Pages搭建静态博客 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用Pelican+GitHub Pages搭建静态博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Pelican+GitHub Pages搭建静态博客">
+<meta property="og:url" content="http://cokernut.top/2016/09/09/Note/使用Pelican+GitHub Pages搭建静态博客/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="使用Pelican+GitHub Pages搭建静态博客">
+<meta property="og:updated_time" content="2016-11-28T09:59:34.363Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Pelican+GitHub Pages搭建静态博客">
+<meta name="twitter:description" content="使用Pelican+GitHub Pages搭建静态博客">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">目录</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Note/使用Pelican+GitHub Pages搭建静态博客" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/09/Note/使用Pelican+GitHub Pages搭建静态博客/" class="article-date">
+  <time datetime="2016-09-08T16:00:00.000Z" itemprop="datePublished">2016-09-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/GitHub/">GitHub</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用Pelican+GitHub Pages搭建静态博客
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用Pelican+GitHub Pages搭建静态博客<br><a id="more"></a></p>
+<h2 id="Pelican介绍"><a href="#Pelican介绍" class="headerlink" title="Pelican介绍"></a>Pelican介绍</h2><p>什么是Pelican</p>
+<p>Perlican 是用Python实现的一个静态网站生成器，支持 reStructuredText 或 Markdown 。它支持以下功能：</p>
+<ul>
+<li>博客文章和静态网页</li>
+<li>支持评论。评论是通过第三方服务 Disqus 支持的。即评论数据保存在第三方服务器上</li>
+<li>主题支持</li>
+<li>把博客文章生成PDF格式文档</li>
+<li>多语言博客支持，如可以用英文和中文写同一篇博客。不同语言访问者访问相应语言的博文</li>
+<li>支持Atom/RSS订阅</li>
+<li>博文中代码高亮支持</li>
+<li>博客搬家支持(WordPress, Dotclear, 或RSS feeds)</li>
+<li>支持插件，如Twiter, Google Analytics等</li>
+</ul>
+<h2 id="为什么选择Pelican"><a href="#为什么选择Pelican" class="headerlink" title="为什么选择Pelican"></a>为什么选择Pelican</h2><p>首先排除掉WordPress之类的CMS系统。因为我不想要数据库，我只需要一个轻量级的静态网站生成器。我的博客使用Markdown编写，且保存在GitHub上。我想要的，只是用Markdown写完博客之后，git commit + git push即可直接发布到博客网站上。</p>
+<p>选择Pelican是基于如下原因：<br>使用Python实现。由于最近在学习Python，我可以阅读源码并按照我的需求来改造Pelican使之完全符合我的需求。下次学习Ruby，用 jekyll 再折腾一遍。因为Jekyll是用Ruby实现的。且GitHub Pages的后台就是用Jekyll，到时可直接用GitHub Pages实现个人博客。<br>足够轻量级。总的代码量才1MB多。安装也方便。<br>有一堆现成的主题可以使用。这对我这种非专业前端的开发者来说，省了不少事。<br>文档齐全。<br>开发活动活跃。GitHub上代码提交活跃。上面文章里介绍的很多博客系统基本上都2+年前就停止更新了。<br>最后两点对使用任何开源工具来说都是很重要的，只有开发活跃，社区资源多，文档齐全，遇到问题的时候才能较快地得到解决。</p>
+<h2 id="Pelican安装与配置"><a href="#Pelican安装与配置" class="headerlink" title="Pelican安装与配置"></a>Pelican安装与配置</h2><p>安装Pelican并创建项目</p>
+<p>详细的信息可以参阅 Pelican官方文档 。假设电脑上已经安装Python和pip。首先，通过pip安装pelican和markdown：</p>
+<p>pip install pelican markdown<br>然后创建你的博客项目：</p>
+<p>mkdir ~/blogs<br>cd ~/blogs<br>pelican-quickstart<br>在运行pelican-quickstart时，系统会问一系列问题，比如你的博客网址啊，作者名字啊之类的，根据真实情况填写即可，这些问题只是用来生成配置文件的，我们后面都可以通过修改配置文件来手动修改这些设置。我填写的内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">Cokernut@Cokernut-laptop:~/lab/blogs$ pelican-quickstart</div><div class="line">Welcome to pelican-quickstart v3.4.0.</div><div class="line"></div><div class="line">This script will help you create a new Pelican-based website.</div><div class="line"></div><div class="line">Please answer the following questions so this script can generate the files</div><div class="line">needed by Pelican.</div><div class="line"></div><div class="line">&gt; Where do you want to create your new web site? [.]</div><div class="line">&gt; What will be the title of this web site? Cokernut</div><div class="line">&gt; Who will be the author of this web site? Cokernut</div><div class="line">&gt; What will be the default language of this web site? [en]</div><div class="line">&gt; Do you want to specify a URL prefix? e.g., http://example.com   (Y/n)</div><div class="line">&gt; What is your URL prefix? (see above example; no trailing slash) http://cokernut.top</div><div class="line">&gt; Do you want to enable article pagination? (Y/n) Y</div><div class="line">&gt; How many articles per page do you want? [10]</div><div class="line">&gt; Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) Y</div><div class="line">&gt; Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n)</div><div class="line">&gt; Do you want to upload your website using FTP? (y/N) N</div><div class="line">&gt; Do you want to upload your website using SSH? (y/N) y</div><div class="line">&gt; What is the hostname of your SSH server? [localhost]/cokernut.top</div><div class="line">&gt; What is the port of your SSH server? [22]</div><div class="line">&gt; What is your username on that server? [root] file</div><div class="line">&gt; Where do you want to put your web site on that server? [/var/www] /home/file/blogs</div><div class="line">&gt; Do you want to upload your website using Dropbox? (y/N) N</div><div class="line">&gt; Do you want to upload your website using S3? (y/N) N</div><div class="line">&gt; Do you want to upload your website using Rackspace Cloud Files? (y/N) N</div><div class="line">&gt; Do you want to upload your website using GitHub Pages? (y/N) N</div><div class="line">Done. Your new project is available at /home/Cokernut/blogs</div></pre></td></tr></table></figure></p>
+<p>其中第14行的 <a href="http://cokernut.top">http://cokernut.top</a> 以及第21行的cokernut.top 是我的域名，如果你只是在本机试验，可以填localhost。创建完项目后，目录下看起来象这样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Cokernut@Cokernut-laptop:~/lab/blogs$ tree</div><div class="line">.</div><div class="line">├── content     # 这个就是放博客内容目录，这个目录及子目录下的所有md和rst文件将会被转成html文件</div><div class="line">├── develop_server.sh   #这个是用来在本地运行一个服务器来实时查看生成的html文档的脚本</div><div class="line">├── fabfile.py  # 这个是使用Python的fabric来实现文件上传的工具，即Deploy工具</div><div class="line">├── Makefile    # 这个是使用是用来生成网站内容并上传的工具。后文详细解释</div><div class="line">├── output      # 这个是从content目录生成的html目标文件的存放目录</div><div class="line">├── pelicanconf.py      # 这个是本地开发时的配置文件</div><div class="line">└── publishconf.py      # 这个是发布时的配置文件</div></pre></td></tr></table></figure></p>
+<p>2 directories, 5 files<br>配置pelicanconf.py和publishconf.py</p>
+<p>Pelican的配置文件是直接用Python写的，我本地开发配置文件 pelicanconf.py 内容如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*- #</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</div><div class="line">AUTHOR = <span class="string">u'Cokernut'</span></div><div class="line">SITENAME = <span class="string">u"cokernut.top"</span></div><div class="line">SITEURL = <span class="string">'http://localhost'</span></div><div class="line">DISQUS_SITENAME = <span class="string">'Cokernut'</span></div><div class="line">PATH = <span class="string">'content'</span></div><div class="line">TIMEZONE = <span class="string">'Asia/Shanghai'</span></div><div class="line">DEFAULT_LANG = <span class="string">u'zh_CN'</span></div><div class="line">DEFAULT_DATE_FORMAT = (<span class="string">'%Y-%m-%d(%A) %H:%M'</span>)</div><div class="line">USE_FOLDER_AS_CATEGORY = <span class="keyword">True</span></div><div class="line">DEFAULT_CATEGORY = <span class="string">'hide'</span></div><div class="line"><span class="comment"># Feed generation is usually not desired when developing</span></div><div class="line">FEED_ATOM = <span class="string">'feeds/atom.xml'</span></div><div class="line">FEED_RSS = <span class="string">'feeds/rss.xml'</span></div><div class="line">FEED_ALL_ATOM = <span class="keyword">None</span></div><div class="line">FEED_ALL_RSS = <span class="keyword">None</span></div><div class="line">CATEGORY_FEED_ATOM = <span class="keyword">None</span></div><div class="line">TRANSLATION_FEED_ATOM = <span class="keyword">None</span></div><div class="line"><span class="comment"># menu items</span></div><div class="line">MENUITEMS = [(<span class="string">'Home'</span>, SITEURL),</div><div class="line">      (<span class="string">'About'</span>, <span class="string">'about.html'</span>),]</div><div class="line">DEFAULT_PAGINATION = <span class="number">10</span></div><div class="line">MD_EXTENSIONS = [</div><div class="line">  <span class="string">"extra"</span>,</div><div class="line">  <span class="string">"toc"</span>,</div><div class="line">  <span class="string">"headerid"</span>,</div><div class="line">  <span class="string">"meta"</span>,</div><div class="line">  <span class="string">"sane_lists"</span>,</div><div class="line">  <span class="string">"smarty"</span>,</div><div class="line">  <span class="string">"wikilinks"</span>,</div><div class="line">  <span class="string">"admonition"</span>,</div><div class="line">  <span class="string">"codehilite(guess_lang=False,pygments_style=emacs,noclasses=True)"</span>]</div><div class="line">CNZZ_ANALYTICS = <span class="keyword">True</span></div><div class="line">MONTH_ARCHIVE_SAVE_AS = <span class="string">'posts/&#123;date:%Y&#125;/&#123;date:%m&#125;/index.html'</span></div><div class="line">THEME = <span class="string">"themes/foundation-default-colours"</span></div></pre></td></tr></table></figure></p>
+<p>第6行的SITENAME是博客网站的名称，可以是任何字符；第7行是博客网站的网址，这个字段在本地开发和发布版本是不一样的，本地直接填localhost即可，发布版本里需要填博客网址。<br>第8行：我使用了Disqus作为我的评论系统，Disqus也是 YC 毕业生。启用Disqus评论系统非常简单，在官网上注册一个Disqus帐户，然后把帐户名填在 DISQUS_SITENAME 值里即可启用。我的Disqus帐号刚好也是 Cokernut 。<br>第33－42行：这里是配置Markdown扩展，用来支持代码高亮。并且使用Emacs风格的代码高亮。<br>第44行：由于GFW的存在，我把Google Analize换成了国内的CNZZ统计。<br>第46行：我的博客使用了 foundation-default-colours 这套主题。关于主题，后文详解。<br>开发环境和发布环境的配置差不多，除SITEURL不一样外，还多了两个配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SITEURL = &apos;http://cokernut.top&apos;</div><div class="line"># usful setting for publish</div><div class="line">RELATIVE_URLS = False   # 禁用相对路径引用</div><div class="line">DELETE_OUTPUT_DIRECTORY = True      # 编译之前删除output目录，这样保证output下生成的内容是干净的</div><div class="line">其它的配置项，可以参阅 Pelican设置文档 。</div></pre></td></tr></table></figure></p>
+<h3 id="配置Makefile"><a href="#配置Makefile" class="headerlink" title="配置Makefile"></a>配置Makefile</h3><p>撰写完博客，并在本地预览后，需要发布到服务器上。我使用Makefile的形式来生成文档并发布。我的Makefile核心代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#!/makefile</div><div class="line">SSH_HOST/cokernut.top</div><div class="line">SSH_PORT=22</div><div class="line">SSH_USER=ubuntu</div><div class="line">SSH_TARGET_DIR=/home/ubuntu/blogs/</div><div class="line">SSH_KEY=/home/Cokernut/work/aws/Cokernut-key-tokyo.pem</div><div class="line"></div><div class="line">rsync_upload: publish</div><div class="line">    rsync -e &quot;ssh -p $(SSH_PORT) -i $(SSH_KEY)&quot; -P -rvzc --delete $(OUTPUTDIR)/ $(SSH_USER)@$(SSH_HOST):$(SSH_TARGET_DIR) --cvs-exclude</div></pre></td></tr></table></figure></p>
+<p>第2－4行：指定了要上传内容的目的服务器的地址，端口以及用户名<br>第5行：指定了远程服务器上保存博客内容的目录<br>第6行：我添加的SSH Identity文件路径。这是因为Amazon EC2登录时我是用SSH Identity文件登录的，而不是使用用户名和密码<br>第8-9行：我使用rsync来进行上传操作。rsync可以在本地和远程服务器之间同步文件。同步过程中只同步那些改变了的文件，且传输过程中会压缩数据，它比scp要所需要的带宽要小。这里要注意的是，我在默认生成的Makefile上增加了 -i $(SSH_KEY) ，这个就是指定SSH Identity文件登录远程SSH的方法。</p>
+<h3 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h3><p>Pelican支持大量的开源主题，GitHub上的 pelican-themes 项目有几十套主题，大部分都带了效果预览图。可以从里面挑一个你喜欢的主题样式来使用。还有一个更方便的挑选主题的方式，直接打开 www.pelicanthemes.com 挑选吧。一个网页里就列出了几乎所有的主题。我的博客是使用 foundation-default-colours 主题，并在这套主题的基础上进行了一些定制。选定好喜欢的主题后，从GitHub上下载下来所有的主题：</p>
+<p>mkdir ~/pelican<br>cd ~/pelican<br>git clone <a href="https://github.com/getpelican/pelican-themes.git" target="_blank" rel="external">https://github.com/getpelican/pelican-themes.git</a><br>从里面拷贝一份你选中的主题到项目根目录的 themes 目录下，在本文的例子中是 ~/lab/blogs/themes 。然后在 pelicanconf.py 和 publishconf.py 里通过下面代码指定博客主题：</p>
+<p>THEME = “themes/foundation-default-colours”<br>通常的做法是，选中一个自己喜欢的主题后，会进行一些定制。Pelican使用 Jinja2 来配置主题。一个主题的典型结构如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">├── static</div><div class="line">│   ├── css</div><div class="line">│   └── images</div><div class="line">└── templates</div><div class="line">  ├── analytics_cnzz.html // 这个是我添加的使用cnzz的统计服务的代码</div><div class="line">  ├── analytics.html    // 这是Google Analytics的代码</div><div class="line">  ├── archives.html      // 这个是博客归档页面的模板</div><div class="line">  ├── article.html        // 这个是博客正文的显示模板</div><div class="line">  ├── base.html          // 这个是所有页面的父类模板，即所有页面都引用这个页面。比如网页导航栏啊之类的，都定义在这里</div><div class="line">  ├── categories.html  // 所有博客文章的分类列表</div><div class="line">  ├── category.html      // 某个博客分类的文章列表模板</div><div class="line">  ├── index.html        // 主页</div><div class="line">  ├── page.html          // 分页显示的模板</div><div class="line">  ├── tag.html            // 某类标签下的文章列表</div><div class="line">  └── tags.html          // 所有的标签列表页面模板</div></pre></td></tr></table></figure></p>
+<p>稍微有点Jinja的知识加上一些HTML和CSS的知识，就可以自己定义主题了。</p>
+<p>为什么博客主页打开半天都不显示出来</p>
+<p>因为GFW封锁了几乎所有和Google相关的网站，这些主题里又用了Google的字体，所以下载这些字体时会导致无法下载成功而半天不显示网页。解决方案很简单，直接修改css文件，不去下载Google字体即可。比如针对 foundation-default-colours 主题，打开主题根目录下的 static/css/foundation.css 和 static/css/foundation.min.css 文件，删除掉 @import url(“//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700”); 内容即可。当然，如果你和你的读者都是翻墙高手，那就不会遇到这个问题了。</p>
+<p>下载风格包pelican-themes与插件包pelican-plugins</p>
+<blockquote>
+<p>git clone git://github.com/getpelican/pelican-themes.git</p>
+<p>git clone git://github.com/getpelican/pelican-plugins.git</p>
+</blockquote>
+<ol>
+<li><p>配置pelicanconf.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*- #</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</div><div class="line"></div><div class="line"><span class="comment"># Site settings</span></div><div class="line">AUTHOR = <span class="string">u'Cokernut'</span></div><div class="line">AUTHOR_EMAIL = <span class="string">u'Cokernut@foxmail.com'</span></div><div class="line">SITENAME = <span class="string">u'Cokernut'</span></div><div class="line">TAGLINE = <span class="string">'Whatever is worth doing is worth doing well.'</span></div><div class="line">SITEURL = <span class="string">'http://Cokernut.github.io'</span></div><div class="line">DEFAULT_DATE_FORMAT = (<span class="string">'%Y-%m-%d'</span>)</div><div class="line"></div><div class="line">TIMEZONE = <span class="string">'Asia/Shanghai'</span></div><div class="line"></div><div class="line">DEFAULT_LANG = <span class="string">u'zh'</span></div><div class="line">DEFAULT_METADATA = (</div><div class="line">)</div><div class="line"></div><div class="line">DELETE_OUTPUT_DIRECTORY = <span class="keyword">False</span></div><div class="line"></div><div class="line"><span class="comment"># Blogroll</span></div><div class="line">LINKS = (</div><div class="line">  (<span class="string">'HeyLinux'</span>, <span class="string">'http://heylinux.com'</span>),</div><div class="line">)</div><div class="line"></div><div class="line"><span class="comment"># Social widget</span></div><div class="line">SOCIAL = (</div><div class="line">  (<span class="string">'Github'</span>, <span class="string">'http://github.com/Cokernut/...'</span>),</div><div class="line">  (<span class="string">'Twitter'</span>, <span class="string">'http://twitter.com/...'</span>),</div><div class="line">)</div><div class="line"></div><div class="line">MENUITEMS = (</div><div class="line">)</div><div class="line"></div><div class="line"><span class="comment"># Disqus</span></div><div class="line">DISQUS_SITENAME = <span class="string">u"Cokernut"</span></div><div class="line"></div><div class="line"><span class="comment"># Content path</span></div><div class="line">PATH = <span class="string">'content'</span></div><div class="line">PAGE_PATHS = [<span class="string">'pages'</span>]</div><div class="line">ARTICLE_PATHS = [<span class="string">'articles'</span>]</div><div class="line">STATIC_PATHS = [<span class="string">'images'</span>, <span class="string">'files'</span>]</div><div class="line">EXTRA_PATH_METADATA = &#123;</div><div class="line">  <span class="string">'files/robots.txt'</span>: &#123;<span class="string">'path'</span>: <span class="string">'robots.txt'</span>&#125;,</div><div class="line">  <span class="string">'images/favicon.ico'</span>: &#123;<span class="string">'path'</span>: <span class="string">'favicon.ico'</span>&#125;,</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># URL settings</span></div><div class="line">PAGINATION_PATTERNS = (</div><div class="line">  (<span class="number">1</span>, <span class="string">'&#123;base_name&#125;/'</span>, <span class="string">'&#123;base_name&#125;/index.html'</span>),</div><div class="line">  (<span class="number">2</span>, <span class="string">'&#123;base_name&#125;/page/'</span>, <span class="string">'&#123;base_name&#125;/page/&#123;number&#125;.html'</span>),</div><div class="line">)</div><div class="line">ARTICLE_URL = (<span class="string">'articles/&#123;slug&#125;.html'</span>)</div><div class="line">ARTICLE_SAVE_AS = (<span class="string">'articles/&#123;slug&#125;.html'</span>)</div><div class="line">PAGE_LANG_SAVE_AS = <span class="keyword">False</span></div><div class="line"></div><div class="line"><span class="comment"># Feed</span></div><div class="line">FEED_DOMAIN = SITEURL</div><div class="line">FEED_ALL_ATOM = <span class="string">'feeds/all.atom.xml'</span></div><div class="line">CATEGORY_FEED_ATOM = <span class="string">'feeds/%s.atom.xml'</span></div><div class="line">TRANSLATION_FEED_ATOM = <span class="keyword">None</span></div><div class="line"></div><div class="line"><span class="comment"># Theme</span></div><div class="line">THEME = <span class="string">'pelican-themes/zurb-F5-basic'</span></div><div class="line">COVER_BG_COLOR = <span class="string">'#375152'</span></div><div class="line">DEFAULT_PAGINATION = <span class="number">10</span></div><div class="line"></div><div class="line"><span class="comment"># Plugin</span></div><div class="line">PLUGIN_PATHS = [<span class="string">'pelican-plugins'</span>]</div><div class="line">PLUGINS = [ <span class="string">'sitemap'</span>, <span class="string">'gravatar'</span> ]</div><div class="line"></div><div class="line"><span class="comment"># Sitemap</span></div><div class="line">SITEMAP = &#123;</div><div class="line">  <span class="string">'format'</span>: <span class="string">'xml'</span>,</div><div class="line">  <span class="string">'priorities'</span>: &#123;</div><div class="line">    <span class="string">'articles'</span>: <span class="number">1</span>,</div><div class="line">    <span class="string">'pages'</span>: <span class="number">0.9</span>,</div><div class="line">    <span class="string">'indexes'</span>: <span class="number">0.8</span>,</div><div class="line">  &#125;,</div><div class="line">  <span class="string">'changefreqs'</span>: &#123;</div><div class="line">    <span class="string">'indexes'</span>: <span class="string">'daily'</span>,</div><div class="line">    <span class="string">'articles'</span>: <span class="string">'daily'</span>,</div><div class="line">    <span class="string">'pages'</span>: <span class="string">'weekly'</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># Can be useful in development, but set to False when you're ready to publish</span></div><div class="line">RELATIVE_URLS = <span class="keyword">False</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>配置 publishconf.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*- #</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</div><div class="line"></div><div class="line"><span class="comment"># This file is only used if you use `make publish` or</span></div><div class="line"><span class="comment"># explicitly specify it as your config file.</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> sys</div><div class="line">sys.path.append(os.curdir)</div><div class="line"><span class="keyword">from</span> pelicanconf <span class="keyword">import</span> *</div><div class="line"></div><div class="line">SITEURL = <span class="string">'http://Cokernut.github.io'</span></div><div class="line">RELATIVE_URLS = <span class="keyword">False</span></div><div class="line"></div><div class="line">FEED_ALL_ATOM = <span class="string">'feeds/all.atom.xml'</span></div><div class="line">CATEGORY_FEED_ATOM = <span class="string">'feeds/%s.atom.xml'</span></div><div class="line"></div><div class="line">DELETE_OUTPUT_DIRECTORY = <span class="keyword">True</span></div><div class="line"></div><div class="line"><span class="comment"># Following items are often useful when publishing</span></div><div class="line"></div><div class="line">DISQUS_SITENAME = <span class="string">u"Cokernut"</span></div><div class="line"><span class="comment">#GOOGLE_ANALYTICS = ""</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>撰写第一篇文章</p>
+</li>
+</ol>
+<blockquote>
+<p>cd content</p>
+<p>mkdir articles files images pages</p>
+<p>vim articles/hello.md<br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Title: Hello</div><div class="line">Date: 2014-09-24 02:06</div><div class="line">Category: Uncategorized</div><div class="line">Tags: Pelican, Markdown</div><div class="line">Slug: hello</div><div class="line">Author: Cokernut</div><div class="line">Summary: Hello Pelican, Markdown and GitHub Pages.</div><div class="line">Status: draft</div><div class="line"></div><div class="line"><span class="section">## 说明</span></div><div class="line">第5行：Slug是文档的唯一标识，生成html时，会直接使用这个值当html的文件名。</div><div class="line">所以，不同博客文章这个值需要保证唯一性，否则生成html时会报错。</div><div class="line">第8行：这个表示本文是草稿。比如我们一篇博客经常不是一次性写完的，</div><div class="line">写了一半暂不想让读者看到，或者写完想让别人帮忙审查一下，就可以加这一行标识。</div><div class="line">这样Pelican在处理时，这篇文章也会生成html，但不会放在博客的主页及分类索引里，</div><div class="line">这样普通的读者一般看不到这个文章。有这个标识的文章生成时放在 output/drafts 目录下，</div><div class="line">你就可以通过分享url的方式让你的co-worker帮你review你的文章。</div><div class="line">我们可以在 content 目录下任意建子目录来组织管理博客文章。</div><div class="line">由于我们在设置文件里指定这个值 USE<span class="emphasis">_FOLDER_</span>AS_CATEGORY = True ，这样这些目录名称就自动变成博文分类的目录了。</div><div class="line"></div><div class="line">Hello Pelican, Markdown and GitHub Pages.</div></pre></td></tr></table></figure></p>
+</blockquote>
+<ol>
+<li>生成robots.txt与favicon.ico vim files/robots.txt</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">User-agent: *</div><div class="line">Sitemap: http://Cokernut.github.io/sitemap.xml</div><div class="line">scp heylinux.com:/webserver/blog/rainbow/favicon.ico .</div></pre></td></tr></table></figure>
+<ol>
+<li>配置Disqus</li>
+</ol>
+<p>在 Disqus 上注册一个用户并生成一个站点Cokernut.disqus.com；</p>
+<p>设置Cokernut.disqus.com站点使其允许域名Cokernut.github.io；</p>
+<p>设置以上配置文件为DISQUS_SITENAME = u”Cokernut”，Cokernut 为站点ID</p>
+<ol>
+<li>创建GitHub Pages</li>
+</ol>
+<p>直接创建一个新的repo，但是其名称必须与ID相同，并加上github.io或github.com后缀。</p>
+<p>就我而言，就必须创建一个repo名为 Cokernut.github.io</p>
+<ol>
+<li><p>创建好GitHub Pages之后，生成Blog静态HTML文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">cd ~</div><div class="line"></div><div class="line">cd pelican</div><div class="line"></div><div class="line">pelican ./content -o ./output -s ./pelicanconf.py 或者 make html </div><div class="line"></div><div class="line">pelican /home/dong/pelican/content -o /home/dong/pelican/output -s /home/dong/pelican/pelicanconf.py</div><div class="line">WARNING: AUTHOR_SAVE_AS is set to False</div><div class="line">Done: Processed 1 article(s), 0 draft(s) and 0 page(s) in 0.23 seconds.</div></pre></td></tr></table></figure>
+</li>
+<li><p>进入output目录，将生成好的静态HTML文件上传到GitHub Pages站点Cokernut.github.io中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">cd output</div><div class="line"></div><div class="line">git init</div><div class="line"></div><div class="line">git remote add origin https://github.com/Cokernut/Cokernut.github.io.git</div><div class="line"></div><div class="line">git add -A</div><div class="line"></div><div class="line">git commit -m &quot;Update Blog&quot;</div><div class="line"></div><div class="line">git push -u origin master</div></pre></td></tr></table></figure>
+</li>
+<li><p>等待15分钟左右，访问 Cokernut.github.io 即可看到生成的网站效果</p>
+</li>
+<li><p>注意</p>
+</li>
+</ol>
+<p>由于我设置了在重新生成HTML时默认不删除output目录，因此每次更新Blog时都需要手动执行’rm -rf output/*’。</p>
+<p>这样做的目的，是为了避免删除output/.git目录，方面在生成之后立刻提交到GitHub Pages。</p>
+<p>当然在实际操作当中我是编写了alias和scripts来完成这一系列动作的。</p>
+<p>预览博客文章</p>
+<p>撰写文章的过程中，可以随时在浏览器里预览博客文章。方法是先在博客项目的根目录下执行下面命令来启动预览服务器：</p>
+<p>make devserver<br>这条命令会自动使用 pelicanconf.py 的配置文件来生成html网页，同时在本地的8000端口上启动一个http服务器，供你预览文章。这样，直接打开浏览器，输入 localhost:8000 即可打开本地服务器上的你的博客主页。比如，撰写本文时，我就直接在gedit里码字，然后在浏览器里输入 <a href="http://localhost:8000/drafts/build-blog-system-by-pelican.html" target="_blank" rel="external">http://localhost:8000/drafts/build-blog-system-by-pelican.html</a> 来实时预览效果。需要注意的是，上述命令会在后台持续监听 content 目录下的内容，如果这个目录下的内容发生变化，会自动重新生成html页面。所以，在gedit里写完一段内容，切换到浏览器，直接刷新一下就可以看到最新的结果了。</p>
+<p>当文章写完后，需要在博客项目根目录上运行 make stopserver 来停止这个预览服务以及数据监控功能。</p>
+<p>文章在主页上没看到？</p>
+<p>撰写完文章，需要发布时，需要把 Status: draft 这行元数据去掉。否则文章不会出现在博客主页。只会在drafts下看得到。</p>
+<ol>
+<li>相关文章、上下文导航</li>
+</ol>
+<blockquote>
+<p>1.打开pelicanconf.py，定义插件目录和启用插件：  </p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#加载plugins</span></div><div class="line">PLUGIN_PATH = <span class="string">"plugins"</span></div><div class="line">PLUGINS = [<span class="string">"sitemap"</span>,<span class="string">"neighbors"</span>,<span class="string">"related_posts"</span>]</div><div class="line"><span class="comment">#sitemap</span></div><div class="line">SITEMAP = &#123;</div><div class="line">    <span class="string">'format'</span>: <span class="string">'xml'</span>,</div><div class="line">    <span class="string">'priorities'</span>: &#123;</div><div class="line">        <span class="string">'articles'</span>: <span class="number">0.7</span>,</div><div class="line">        <span class="string">'indexes'</span>: <span class="number">0.8</span>,</div><div class="line">        <span class="string">'pages'</span>: <span class="number">0.5</span></div><div class="line">    &#125;,</div><div class="line">    <span class="string">'changefreqs'</span>: &#123;</div><div class="line">        <span class="string">'articles'</span>: <span class="string">'monthly'</span>,</div><div class="line">        <span class="string">'indexes'</span>: <span class="string">'daily'</span>,</div><div class="line">        <span class="string">'pages'</span>: <span class="string">'monthly'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">#相关文章</span></div><div class="line">RELATED_POSTS_MAX = <span class="number">10</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>2.邻居导航，在主题模版中调用如下代码，可根据自己的情况修改：  </p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"pagination"</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">   &#123;% if article.prev_article %&#125;</div><div class="line">     <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"prev"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; SITEURL &#125;&#125;/&#123;&#123; article.prev_article.url&#125;&#125;"</span>&gt;</span>← Previous<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">     &#123;% else %&#125;</div><div class="line">     <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"prev"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/"</span>&gt;</span>← Previous<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">     &#123;% endif %&#125;</div><div class="line">     <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/archives.html"</span>&gt;</span>Archive<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">     &#123;% if article.next_article %&#125;</div><div class="line">     <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"next"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; SITEURL &#125;&#125;/&#123;&#123; article.next_article.url&#125;&#125;"</span>&gt;</span>Next →<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">     &#123;% else %&#125;</div><div class="line">     <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"next"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/"</span>&gt;</span>Next →<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">     &#123;% endif %&#125;</div><div class="line">   <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>3.相关文章：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;% if article.related_posts %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">h4</span>&gt;</span>Related Articles<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">    &#123;% for related_post in article.related_posts %&#125;</div><div class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; SITEURL &#125;&#125;/&#123;&#123; related_post.url &#125;&#125;"</span>&gt;</span>&#123;&#123; related_post.title &#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">    &#123;% endfor %&#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/09/09/Note/使用Pelican+GitHub Pages搭建静态博客/" data-id="ciw375n5i000fbsulu3e5kwdf" class="article-share-link" data-share="baidu" data-title="使用Pelican+GitHub Pages搭建静态博客">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/09/09/Note/使用Pelican+GitHub Pages搭建静态博客/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GitHub/">GitHub</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/18/Note/MarkDown语法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          MarkDown基础语法学习与练习
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/09/09/Note/使用Pelican+GitHub Pages搭建静态博客/" data-title="使用Pelican+GitHub Pages搭建静态博客" data-url="http://cokernut.top/2016/09/09/Note/使用Pelican+GitHub Pages搭建静态博客/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040?viewmode=contents/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python3/">Python3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/29/Note/使用Hexo+GitHub Pages搭建静态博客/">使用Hexo+GitHub Pages搭建静态博客</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/25/Android/React Native嵌入Android原生项目中/">React Native嵌入Android原生项目中</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/23/Android/React Native for Android Windows环境搭建/">React Native for Android Windows环境搭建</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/17/Android/Android辅助功能AccessibilityService的使用/">Android辅助功能AccessibilityService的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/25/Android/RecyclerView基本用法/">RecyclerView的介绍与基本用法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 16.67px;">GitHub</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Python3/" style="font-size: 10px;">Python3</a> <a href="/tags/React-Native/" style="font-size: 13.33px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2016 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">网站地图</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">订阅本站</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
