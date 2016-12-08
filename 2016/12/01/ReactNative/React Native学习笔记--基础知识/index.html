@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://cokernut.top/2016/12/01/ReactNative/React Native学习笔记--基础知识/index.html">
 <meta property="og:site_name" content="Cokernut">
 <meta property="og:description" content="React Native 基础知识学习">
-<meta property="og:updated_time" content="2016-12-07T08:28:05.736Z">
+<meta property="og:updated_time" content="2016-12-08T07:32:46.204Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React Native 学习笔记--基础知识">
 <meta name="twitter:description" content="React Native 基础知识学习">
@@ -332,7 +332,7 @@
 </blockquote>
 <p>用来在端到端测试中标记这个视图。</p>
 <h2 id="TextInput"><a href="#TextInput" class="headerlink" title="TextInput"></a>TextInput</h2><p>TextInput是一个允许用户输入文本的基础组件。它有一个名为onChangeText的属性，此属性接受一个函数，而此函数会在文本变化时被调用。<br>另外还有一个名为onSubmitEditing的属性，会在文本被提交后（用户按下软键盘上的提交键）调用。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Root</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">text</span>: <span class="string">''</span>&#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;View style=&#123;&#123;padding: 10&#125;&#125;&gt;</div><div class="line">        &lt;TextInput</div><div class="line">          style=&#123;&#123;height: 40&#125;&#125;</div><div class="line">          placeholder="Type here to translate!"</div><div class="line">          onChangeText=&#123;(text) =&gt; this.setState(&#123;text&#125;)&#125;</div><div class="line">        /&gt;</div><div class="line">        &lt;Text style=&#123;&#123;padding: 10, fontSize: 42&#125;&#125;&gt;</div><div class="line">          &#123;this.state.text.split(' ').map((word) =&gt; word &amp;&amp; '🍕').join(' ')&#125;</div><div class="line">        &lt;/Text&gt;</div><div class="line">      &lt;/View&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Root</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">text</span>: <span class="string">''</span>&#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;View style=&#123;&#123;padding: 10&#125;&#125;&gt;</div><div class="line">        &lt;TextInput</div><div class="line">          style=&#123;&#123;height: 40&#125;&#125;</div><div class="line">          placeholder="Type here to translate!"</div><div class="line">          // 如果key和value的字面一样，那么可以简写成一个，等同于下面的写法：</div><div class="line">          // this.setState(&#123;text: text&#125;);</div><div class="line">          onChangeText=&#123;(text) =&gt; this.setState(&#123;text&#125;)&#125;</div><div class="line">        /&gt;</div><div class="line">        &lt;Text style=&#123;&#123;padding: 10, fontSize: 42&#125;&#125;&gt;</div><div class="line">          &#123;this.state.text.split(' ').map((word) =&gt; word &amp;&amp; '🍕').join(' ')&#125;</div><div class="line">        &lt;/Text&gt;</div><div class="line">      &lt;/View&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="属性-2"><a href="#属性-2" class="headerlink" title="属性"></a>属性</h3><blockquote>
 <p>autoCapitalize enum(‘none’, ‘sentences’, ‘words’, ‘characters’) </p>
 </blockquote>
@@ -667,7 +667,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://cokernut.top/2016/12/01/ReactNative/React Native学习笔记--基础知识/" data-id="ciwbjoyiy0006ioul6lvcy9gg" class="article-share-link" data-share="baidu" data-title="React Native 学习笔记--基础知识">分享到</a>
+        <a data-url="http://cokernut.top/2016/12/01/ReactNative/React Native学习笔记--基础知识/" data-id="ciwfzappg000nckulxk9myb4i" class="article-share-link" data-share="baidu" data-title="React Native 学习笔记--基础知识">分享到</a>
       
 
       
@@ -687,7 +687,7 @@
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">
         
-          React Native 学习笔记--进阶（一）
+          React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件
         
       </div>
     </a>
@@ -715,7 +715,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/React-Native/">React Native</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">5</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/React-Native/">React Native</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -747,7 +747,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python3/">Python3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python3/">Python3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -759,23 +759,23 @@
       <ul>
         
           <li>
-            <a href="/2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/">React Native 学习笔记--进阶（三）</a>
+            <a href="/2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/">React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码</a>
           </li>
         
           <li>
-            <a href="/2016/12/07/ReactNative/React Native学习笔记--进阶（四）--导航器/">React Native 学习笔记--进阶（四）</a>
+            <a href="/2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/">React Native 学习笔记--进阶（四）--导航器</a>
           </li>
         
           <li>
-            <a href="/2016/12/06/ReactNative/React Native学习笔记--进阶（二）--动画/">React Native 学习笔记--进阶（二）</a>
+            <a href="/2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/">React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试</a>
           </li>
         
           <li>
-            <a href="/2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/">React Native 学习笔记--进阶（一）</a>
+            <a href="/2016/12/06/ReactNative/React Native学习笔记--进阶（二）--动画/">React Native 学习笔记--进阶（二）--动画</a>
           </li>
         
           <li>
-            <a href="/2016/12/01/ReactNative/React Native学习笔记--基础知识/">React Native 学习笔记--基础知识</a>
+            <a href="/2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/">React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件</a>
           </li>
         
       </ul>
@@ -796,7 +796,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
