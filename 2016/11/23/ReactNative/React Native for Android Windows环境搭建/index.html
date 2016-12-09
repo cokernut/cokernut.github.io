@@ -12,21 +12,21 @@
 <meta property="og:url" content="http://cokernut.top/2016/11/23/ReactNative/React Native for Android Windows环境搭建/index.html">
 <meta property="og:site_name" content="Cokernut">
 <meta property="og:description" content="React Native for Android Windows环境搭建">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/1.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/2.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/3.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/4.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/5.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/6.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/10.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/7.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/8.png">
-<meta property="og:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/9.png">
-<meta property="og:updated_time" content="2016-12-08T10:05:40.904Z">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/1.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/2.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/3.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/4.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/5.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/6.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/10.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/7.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/8.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/9.png">
+<meta property="og:updated_time" content="2016-12-09T09:37:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React Native for Android Windows环境搭建">
 <meta name="twitter:description" content="React Native for Android Windows环境搭建">
-<meta name="twitter:image" content="http://cokernut.top/images/Android/React_Native_Windows_Environment/1.png">
+<meta name="twitter:image" content="http://cokernut.top/images/ReactNative/React_Native_Windows_Environment/1.png">
   
   
     <link rel="icon" href="/favicon.png">
@@ -167,23 +167,23 @@
 <li>输入你电脑的IP地址和端口号（譬如10.0.1.1:8081）。在Mac上，你可以在系统设置/网络里找查询你的IP地址。在Windows上，打开命令提示符并输入ipconfig来查询你的IP地址。在Linux上你可以在终端中输入ifconfig来查询你的IP地址。</li>
 <li>回到开发者菜单然后选择Reload JS。  </li>
 </ol>
-<h2 id="异常-："><a href="#异常-：" class="headerlink" title="异常 ："></a>异常 ：</h2><p><img src="/images/Android/React_Native_Windows_Environment/1.png" alt="异常" title="异常">  </p>
-<p>异常 ReferenceError:Can’t find variable:_fbBatchedBridge或者Unable to download JS bundle解决方法<br>看到这个，使劲摇晃手机或者直接点击菜单按钮，在出来的菜单里选择“Dev Settings”，然后点击最下面<br>的“Debug server host &amp; port for device“，然后填入你电脑的ip:8081，你的手机和你的电脑<br>必须在同一个局域网内。设置完成以后再重启应用，你就可以看到React Native的欢迎界面了，<br>就是index.android.js页面的内容<br><img src="/images/Android/React_Native_Windows_Environment/2.png" alt="效果" title="效果">  </p>
-<h2 id="遇到的坑："><a href="#遇到的坑：" class="headerlink" title="遇到的坑："></a>遇到的坑：</h2><h3 id="小米MIUI系统可能会遇到下面的问题："><a href="#小米MIUI系统可能会遇到下面的问题：" class="headerlink" title="小米MIUI系统可能会遇到下面的问题："></a>小米MIUI系统可能会遇到下面的问题：</h3><p>react-native run-android的时候出现Failed to establish session问题：<br>解决方案：小米手机设置里——-开发者选项———启用MIUI优化 关闭<br><img src="/images/Android/React_Native_Windows_Environment/3.png" alt="异常" title="异常"><br><img src="/images/Android/React_Native_Windows_Environment/4.png" alt="异常" title="异常">  </p>
-<h3 id="注意：以下是使用Genymotion时的情况，上面的解决方法无法解决"><a href="#注意：以下是使用Genymotion时的情况，上面的解决方法无法解决" class="headerlink" title="注意：以下是使用Genymotion时的情况，上面的解决方法无法解决"></a>注意：以下是使用Genymotion时的情况，上面的解决方法无法解决</h3><p>可以看到genymotion模拟器使用的网络连接方式是Host-Only方式，此情况下<br>Debug server host &amp; port for device中填入的应该是VirtualBox Host-Only Network<br>的IP:8081（192.168.56.1:8081）,之后再重启应用或者是返回一下再点击菜单选择Reload JS,<br>你就可以看到React Native的欢迎界面了<br><img src="/images/Android/React_Native_Windows_Environment/5.png" alt="异常" title="异常"><br><img src="/images/Android/React_Native_Windows_Environment/6.png" alt="异常" title="异常"><br><img src="/images/Android/React_Native_Windows_Environment/10.png" alt="异常" title="异常"> </p>
+<h2 id="异常-："><a href="#异常-：" class="headerlink" title="异常 ："></a>异常 ：</h2><p><img src="/images/ReactNative/React_Native_Windows_Environment/1.png" alt="异常" title="异常">  </p>
+<p>异常 ReferenceError:Can’t find variable:_fbBatchedBridge或者Unable to download JS bundle解决方法<br>看到这个，使劲摇晃手机或者直接点击菜单按钮，在出来的菜单里选择“Dev Settings”，然后点击最下面<br>的“Debug server host &amp; port for device“，然后填入你电脑的ip:8081，你的手机和你的电脑<br>必须在同一个局域网内。设置完成以后再重启应用，你就可以看到React Native的欢迎界面了，<br>就是index.android.js页面的内容<br><img src="/images/ReactNative/React_Native_Windows_Environment/2.png" alt="效果" title="效果">  </p>
+<h2 id="遇到的坑："><a href="#遇到的坑：" class="headerlink" title="遇到的坑："></a>遇到的坑：</h2><h3 id="小米MIUI系统可能会遇到下面的问题："><a href="#小米MIUI系统可能会遇到下面的问题：" class="headerlink" title="小米MIUI系统可能会遇到下面的问题："></a>小米MIUI系统可能会遇到下面的问题：</h3><p>react-native run-android的时候出现Failed to establish session问题：<br>解决方案：小米手机设置里——-开发者选项———启用MIUI优化 关闭<br><img src="/images/ReactNative/React_Native_Windows_Environment/3.png" alt="异常" title="异常"><br><img src="/images/ReactNative/React_Native_Windows_Environment/4.png" alt="异常" title="异常">  </p>
+<h3 id="注意：以下是使用Genymotion时的情况，上面的解决方法无法解决"><a href="#注意：以下是使用Genymotion时的情况，上面的解决方法无法解决" class="headerlink" title="注意：以下是使用Genymotion时的情况，上面的解决方法无法解决"></a>注意：以下是使用Genymotion时的情况，上面的解决方法无法解决</h3><p>可以看到genymotion模拟器使用的网络连接方式是Host-Only方式，此情况下<br>Debug server host &amp; port for device中填入的应该是VirtualBox Host-Only Network<br>的IP:8081（192.168.56.1:8081）,之后再重启应用或者是返回一下再点击菜单选择Reload JS,<br>你就可以看到React Native的欢迎界面了<br><img src="/images/ReactNative/React_Native_Windows_Environment/5.png" alt="异常" title="异常"><br><img src="/images/ReactNative/React_Native_Windows_Environment/6.png" alt="异常" title="异常"><br><img src="/images/ReactNative/React_Native_Windows_Environment/10.png" alt="异常" title="异常"> </p>
 <h3 id="错误Could-not-connect-to-development-server："><a href="#错误Could-not-connect-to-development-server：" class="headerlink" title="错误Could not connect to development server："></a>错误Could not connect to development server：</h3><p>如果确定IP地址设置正确了还提示：Could not connect to development server，那么你要确定你的React Native Server启动了，没启动的话启动React Native Server，在项目目录下运行：</p>
 <blockquote>
 <p>react-native start  </p>
 </blockquote>
-<p><img src="/images/Android/React_Native_Windows_Environment/7.png" alt="异常" title="异常">   </p>
+<p><img src="/images/ReactNative/React_Native_Windows_Environment/7.png" alt="异常" title="异常">   </p>
 <h2 id="安卓调试"><a href="#安卓调试" class="headerlink" title="安卓调试"></a>安卓调试</h2><p>打开Chrome，访问 <a href="http://localhost:8081/debugger-ui" target="_blank" rel="external">http://localhost:8081/debugger-ui</a>  ，应当能看到一个页面。按F12打开开发者菜单选择Sources勾选Pause On Caught Exceptions（如图）</p>
-<p>在模拟器或真机菜单中选择Debug JS，即可开始调试<br><img src="/images/Android/React_Native_Windows_Environment/8.png" alt="效果" title="效果"><br><img src="/images/Android/React_Native_Windows_Environment/9.png" alt="效果" title="效果">  </p>
+<p>在模拟器或真机菜单中选择Debug JS，即可开始调试<br><img src="/images/ReactNative/React_Native_Windows_Environment/8.png" alt="效果" title="效果"><br><img src="/images/ReactNative/React_Native_Windows_Environment/9.png" alt="效果" title="效果">  </p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://cokernut.top/2016/11/23/ReactNative/React Native for Android Windows环境搭建/" data-id="ciwg77xkk000hokulbeg2a2ds" class="article-share-link" data-share="baidu" data-title="React Native for Android Windows环境搭建">分享到</a>
+        <a data-url="http://cokernut.top/2016/11/23/ReactNative/React Native for Android Windows环境搭建/" data-id="ciwh5pf7i00092culxryf2vmf" class="article-share-link" data-share="baidu" data-title="React Native for Android Windows环境搭建">分享到</a>
       
 
       
@@ -231,7 +231,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">8</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">9</span></li></ul>
     </div>
   </div>
 
@@ -263,7 +263,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python3/">Python3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python3/">Python3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -273,6 +273,10 @@
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/12/10/ReactNative/React Native使用Android原生模块/">React Native使用Android原生模块</a>
+          </li>
         
           <li>
             <a href="/2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/">React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码</a>
@@ -288,10 +292,6 @@
         
           <li>
             <a href="/2016/12/06/ReactNative/React Native学习笔记--进阶（二）--动画/">React Native 学习笔记--进阶（二）--动画</a>
-          </li>
-        
-          <li>
-            <a href="/2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/">React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件</a>
           </li>
         
       </ul>
@@ -312,7 +312,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">3</span></li></ul>
     </div>
   </div>
 
