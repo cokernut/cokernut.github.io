@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>函数式编程 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="函数式编程–转自：阮一峰《ECMAScript 6 入门》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="函数式编程">
+<meta property="og:url" content="http://cokernut.top/2016/12/10/JavaScript/fp/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="函数式编程–转自：阮一峰《ECMAScript 6 入门》">
+<meta property="og:updated_time" content="2016-12-14T07:26:19.404Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="函数式编程">
+<meta name="twitter:description" content="函数式编程–转自：阮一峰《ECMAScript 6 入门》">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-JavaScript/fp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/10/JavaScript/fp/" class="article-date">
+  <time datetime="2016-12-10T02:58:00.000Z" itemprop="datePublished">2016-12-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      函数式编程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>函数式编程–转自：阮一峰《ECMAScript 6 入门》<br><a id="more"></a></p>
+<p>JavaScript语言从一诞生，就具有函数式编程的烙印。它将函数作为一种独立的数据类型，与其他数据类型处于完全平等的地位。在JavaScript语言中，你可以采用面向对象编程，也可以采用函数式编程。有人甚至说，JavaScript是有史以来第一种被大规模采用的函数式编程语言。</p>
+<p>ES6的种种新增功能，使得函数式编程变得更方便、更强大。本章介绍ES6如何进行函数式编程。</p>
+<h2 id="柯里化"><a href="#柯里化" class="headerlink" title="柯里化"></a>柯里化</h2><p>柯里化（currying）指的是将一个多参数的函数拆分成一系列函数，每个拆分后的函数都只接受一个参数（unary）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span> (<span class="params">a, b</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> a + b;</div><div class="line">&#125;</div><div class="line"></div><div class="line">add(<span class="number">1</span>, <span class="number">1</span>) <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>上面代码中，函数<code>add</code>接受两个参数<code>a</code>和<code>b</code>。</p>
+<p>柯里化就是将上面的函数拆分成两个函数，每个函数都只接受一个参数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span> (<span class="params">a</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">b</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> a + b;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 或者采用箭头函数写法</span></div><div class="line"><span class="keyword">const</span> add = <span class="function"><span class="params">x</span> =&gt;</span> y =&gt; x + y;</div><div class="line"></div><div class="line"><span class="keyword">const</span> f = add(<span class="number">1</span>);</div><div class="line">f(<span class="number">1</span>) <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<p>上面代码中，函数<code>add</code>只接受一个参数<code>a</code>，返回一个函数<code>f</code>。函数<code>f</code>也只接受一个参数<code>b</code>。</p>
+<h2 id="函数合成"><a href="#函数合成" class="headerlink" title="函数合成"></a>函数合成</h2><p>函数合成（function composition）指的是，将多个函数合成一个函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> compose = <span class="function"><span class="params">f</span> =&gt;</span> g =&gt; <span class="function"><span class="params">x</span> =&gt;</span> f(g(x));</div><div class="line"></div><div class="line"><span class="keyword">const</span> f = compose (<span class="function"><span class="params">x</span> =&gt;</span> x * <span class="number">4</span>) (<span class="function"><span class="params">x</span> =&gt;</span> x + <span class="number">3</span>);</div><div class="line">f(<span class="number">2</span>) <span class="comment">// 20</span></div></pre></td></tr></table></figure>
+<p>上面代码中，<code>compose</code>就是一个函数合成器，用于将两个函数合成一个函数。</p>
+<p>可以发现，柯里化与函数合成有着密切的联系。前者用于将一个函数拆成多个函数，后者用于将多个函数合并成一个函数。</p>
+<h2 id="参数倒置"><a href="#参数倒置" class="headerlink" title="参数倒置"></a>参数倒置</h2><p>参数倒置（flip）指的是改变函数前两个参数的顺序。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> divide = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a / b;</div><div class="line"><span class="keyword">var</span> flip = f.flip(divide);</div><div class="line"></div><div class="line">flip(<span class="number">10</span>, <span class="number">5</span>) <span class="comment">// 0.5</span></div><div class="line">flip(<span class="number">1</span>, <span class="number">10</span>) <span class="comment">// 10</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> three = <span class="function">(<span class="params">a, b, c</span>) =&gt;</span> [a, b, c];</div><div class="line"><span class="keyword">var</span> flip = f.flip(three);</div><div class="line">flip(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>); <span class="comment">// =&gt; [2, 1, 3]</span></div></pre></td></tr></table></figure>
+<p>上面代码中，如果按照正常的参数顺序，10除以5等于2。但是，参数倒置以后得到的新函数，结果就是5除以10，结果得到0.5。如果原函数有3个参数，则只颠倒前两个参数的位置。</p>
+<p>参数倒置的代码非常简单。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> f = &#123;&#125;;</div><div class="line">f.flip =</div><div class="line">  <span class="function"><span class="params">fn</span> =&gt;</span></div><div class="line">    (a, b, ...args) =&gt; fn(b, a, ...args.reverse());</div></pre></td></tr></table></figure>
+<h2 id="执行边界"><a href="#执行边界" class="headerlink" title="执行边界"></a>执行边界</h2><p>执行边界（until）指的是函数执行到满足条件为止。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> condition = <span class="function"><span class="params">x</span> =&gt;</span> x &gt; <span class="number">100</span>;</div><div class="line"><span class="keyword">let</span> inc = <span class="function"><span class="params">x</span> =&gt;</span> x + <span class="number">1</span>;</div><div class="line"><span class="keyword">let</span> until = f.until(condition, inc);</div><div class="line"></div><div class="line">until(<span class="number">0</span>) <span class="comment">// 101</span></div><div class="line"></div><div class="line">condition = <span class="function"><span class="params">x</span> =&gt;</span> x === <span class="number">5</span>;</div><div class="line">until = f.until(condition, inc);</div><div class="line"></div><div class="line">until(<span class="number">3</span>) <span class="comment">// 5</span></div></pre></td></tr></table></figure>
+<p>上面代码中，第一段的条件是执行到<code>x</code>大于100为止，所以<code>x</code>初值为0时，会一直执行到101。第二段的条件是执行到等于5为止，所以<code>x</code>最后的值是5。</p>
+<p>执行边界的实现如下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> f = &#123;&#125;;</div><div class="line">f.until = <span class="function">(<span class="params">condition, f</span>) =&gt;</span></div><div class="line">  (...args) =&gt; &#123;</div><div class="line">    <span class="keyword">var</span> r = f.apply(<span class="literal">null</span>, args);</div><div class="line">    <span class="keyword">return</span> condition(r) ? r : f.until(condition, f)(r);</div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+<p>上面代码的关键就是，如果满足条件就返回结果，否则不断递归执行。</p>
+<h2 id="队列操作"><a href="#队列操作" class="headerlink" title="队列操作"></a>队列操作</h2><p>队列（list）操作包括以下几种。</p>
+<ul>
+<li><code>head</code>： 取出队列的第一个非空成员。</li>
+<li><code>last</code>： 取出有限队列的最后一个非空成员。</li>
+<li><code>tail</code>： 取出除了“队列头”以外的其他非空成员。</li>
+<li><code>init</code>： 取出除了“队列尾”以外的其他非空成员。</li>
+</ul>
+<p>下面是例子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">f.head(<span class="number">5</span>, <span class="number">27</span>, <span class="number">3</span>, <span class="number">1</span>) <span class="comment">// 5</span></div><div class="line">f.last(<span class="number">5</span>, <span class="number">27</span>, <span class="number">3</span>, <span class="number">1</span>) <span class="comment">// 1</span></div><div class="line">f.tail(<span class="number">5</span>, <span class="number">27</span>, <span class="number">3</span>, <span class="number">1</span>) <span class="comment">// [27, 3, 1]</span></div><div class="line">f.init(<span class="number">5</span>, <span class="number">27</span>, <span class="number">3</span>, <span class="number">1</span>) <span class="comment">// [5, 27, 3]</span></div></pre></td></tr></table></figure>
+<p>这些方法的实现如下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> f = &#123;&#125;;</div><div class="line">f.head = <span class="function">(<span class="params">...xs</span>) =&gt;</span> xs[<span class="number">0</span>];</div><div class="line">f.last = <span class="function">(<span class="params">...xs</span>) =&gt;</span> xs.slice(<span class="number">-1</span>);</div><div class="line">f.tail = <span class="function">(<span class="params">...xs</span>) =&gt;</span> <span class="built_in">Array</span>.prototype.slice.call(xs, <span class="number">1</span>);</div><div class="line">f.init = <span class="function">(<span class="params">...xs</span>) =&gt;</span> xs.slice(<span class="number">0</span>, <span class="number">-1</span>);</div></pre></td></tr></table></figure>
+<h2 id="合并操作"><a href="#合并操作" class="headerlink" title="合并操作"></a>合并操作</h2><p>合并操作分为<code>concat</code>和<code>concatMap</code>两种。前者就是将多个数组合成一个，后者则是先处理一下参数，然后再将处理结果合成一个数组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f.concat([<span class="number">5</span>], [<span class="number">27</span>], [<span class="number">3</span>]) <span class="comment">// [5, 27, 3]</span></div><div class="line">f.concatMap(<span class="function"><span class="params">x</span> =&gt;</span> <span class="string">'hi '</span> + x, <span class="number">1</span>, [[<span class="number">2</span>]], <span class="number">3</span>) <span class="comment">// ['hi 1', 'hi 2', 'hi 3']</span></div></pre></td></tr></table></figure>
+<p>这两种方法的实现代码如下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> f = &#123;&#125;;</div><div class="line">f.concat =</div><div class="line">  <span class="function">(<span class="params">...xs</span>) =&gt;</span> xs.reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a.concat(b));</div><div class="line">f.concatMap =</div><div class="line">  <span class="function">(<span class="params">f, ...xs</span>) =&gt;</span> f.concat(xs.map(f));</div></pre></td></tr></table></figure>
+<h2 id="配对操作"><a href="#配对操作" class="headerlink" title="配对操作"></a>配对操作</h2><p>配对操作分为<code>zip</code>和<code>zipWith</code>两种方法。<code>zip</code>操作将两个队列的成员，一一配对，合成一个新的队列。如果两个队列不等长，较长的那个队列多出来的成员，会被忽略。<code>zipWith</code>操作的第一个参数是一个函数，然后会将后面的队列成员一一配对，输入该函数，返回值就组成一个新的队列。</p>
+<p>下面是例子。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</div><div class="line"><span class="keyword">let</span> b = [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</div><div class="line"><span class="keyword">let</span> c = [<span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];</div><div class="line"></div><div class="line">f.zip(a, b) <span class="comment">// [[0, 3], [1, 4], [2, 5]]</span></div><div class="line">f.zipWith(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b, a, b, c) <span class="comment">// [9, 12, 15]</span></div></pre></td></tr></table></figure>
+<p>上面代码中，<code>zipWith</code>方法的第一个参数是一个求和函数，它将后面三个队列的成员，一一配对进行相加。</p>
+<p>这两个方法的实现如下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> f = &#123;&#125;;</div><div class="line"></div><div class="line">f.zip = <span class="function">(<span class="params">...xs</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> r = [];</div><div class="line">  <span class="keyword">let</span> nple = [];</div><div class="line">  <span class="keyword">let</span> length = <span class="built_in">Math</span>.min.apply(<span class="literal">null</span>, xs.map(<span class="function"><span class="params">x</span> =&gt;</span> x.length));</div><div class="line"></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</div><div class="line">    xs.forEach(</div><div class="line">      <span class="function"><span class="params">x</span> =&gt;</span> nple.push(x[i])</div><div class="line">    );</div><div class="line"></div><div class="line">    r.push(nple);</div><div class="line">    nple = [];</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> r;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">f.zipWith = <span class="function">(<span class="params">op, ...xs</span>) =&gt;</span></div><div class="line">  f.zip.apply(<span class="literal">null</span>, xs).map(</div><div class="line">    <span class="function">(<span class="params">x</span>) =&gt;</span> x.reduce(op)</div><div class="line">  );</div></pre></td></tr></table></figure>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li>Mateo Gianolio, <a href="http://casualjavascript.com/?1" target="_blank" rel="external">Haskell in ES6: Part 1</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/12/10/JavaScript/fp/" data-id="ciwoljw120035eculhf92vkyy" class="article-share-link" data-share="baidu" data-title="函数式编程">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/12/10/JavaScript/fp/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ES6/">ES6</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/11/ReactNative/React Native使用Android原生模块/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          React Native使用Android原生模块
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/10/JavaScript/mixin/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Mixin</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/12/10/JavaScript/fp/" data-title="函数式编程" data-url="http://cokernut.top/2016/12/10/JavaScript/fp/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python3/">Python3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/12/14/Android/Android编码规范/">Android编码规范</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/11/ReactNative/React Native使用Android原生模块/">React Native使用Android原生模块</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/10/JavaScript/fp/">函数式编程</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/10/JavaScript/mixin/">Mixin</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/10/JavaScript/reference/">参考链接</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 12.5px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Python3/" style="font-size: 10px;">Python3</a> <a href="/tags/React-Native/" style="font-size: 17.5px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">34</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2016 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
