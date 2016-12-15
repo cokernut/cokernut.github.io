@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>React Native使用Android原生UI控件 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="React Native使用Android原生UI控件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native使用Android原生UI控件">
+<meta property="og:url" content="http://cokernut.top/2016/12/14/ReactNative/React Native使用Android原生UI控件/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="React Native使用Android原生UI控件">
+<meta property="og:updated_time" content="2016-12-15T03:47:33.555Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native使用Android原生UI控件">
+<meta name="twitter:description" content="React Native使用Android原生UI控件">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-ReactNative/React Native使用Android原生UI控件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/14/ReactNative/React Native使用Android原生UI控件/" class="article-date">
+  <time datetime="2016-12-13T16:00:00.000Z" itemprop="datePublished">2016-12-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React-Native/">React Native</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React Native使用Android原生UI控件
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>React Native使用Android原生UI控件<br><a id="more"></a></p>
+<p>在如今的App中，已经有成千上万的原生UI部件了——其中的一些是平台的一部分，另一些可能来自于一些第三方库，而且可能你自己还收藏了很多。React Native已经封装了大部分最常见的组件，譬如ScrollView和TextInput，但不可能封装全部组件。而且，说不定你曾经为自己以前的App还封装过一些组件，React Native肯定没法包含它们。幸运的是，在React Naitve应用程序中封装和植入已有的组件非常简单。</p>
+<h2 id="TextView控件"><a href="#TextView控件" class="headerlink" title="TextView控件"></a>TextView控件</h2><p>我们以TextView控件为例子。我们为了让JavaScript中可以使用TextView，原生视图需要被一个ViewManager的派生类（或者更常见的，SimpleViewManage的派生类）创建和管理。一个SimpleViewManager可以用于这个场景，是因为它能够包含更多公共的属性，譬如背景颜色、透明度、Flexbox布局等等。</p>
+<p>这些子类本质上都是单例——React Native只会为每个管理器创建一个实例。它们创建原生的视图并提供给NativeViewHierarchyManager，NativeViewHierarchyManager则会反过来委托它们在需要的时候去设置和更新视图的属性。ViewManager还会代理视图的所有委托，并给JavaScript发回对应的事件。</p>
+<p>提供原生视图很简单：</p>
+<ol>
+<li>创建一个ViewManager的子类。</li>
+<li>实现createViewInstance方法。</li>
+<li>导出视图的属性设置器：使用@ReactProp（或@ReactPropGroup）注解。</li>
+<li>把这个视图管理类注册到应用程序包的createViewManagers里。</li>
+<li>实现JavaScript模块。</li>
+</ol>
+<h3 id="创建ViewManager的子类"><a href="#创建ViewManager的子类" class="headerlink" title="创建ViewManager的子类"></a>创建ViewManager的子类</h3><p>创建一个视图管理类ReactImageManager，它继承自SimpleViewManager\<reactimageview\>。ReactImageView是这个视图管理类所管理的对象类型，这应当是一个自定义的原生视图。getName方法返回的名字会用于在JavaScript端引用这个原生视图类型。</reactimageview\></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> android.widget.TextView;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.facebook.react.uimanager.SimpleViewManager;</div><div class="line"><span class="keyword">import</span> com.facebook.react.uimanager.ThemedReactContext;</div><div class="line"><span class="keyword">import</span> com.facebook.react.uimanager.annotations.ReactProp;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * TextView的创建和管理</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TextViewManager</span> <span class="keyword">extends</span> <span class="title">SimpleViewManager</span>&lt;<span class="title">TextView</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String REACT_VIEW = <span class="string">"TextView"</span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> 返回的名字会用于在JavaScript端引用这个原生视图类型。</div><div class="line">     */</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> REACT_VIEW;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 创建视图，且应当把自己初始化为默认的状态。所有属性的设置都通过后续的updateView来进行。</div><div class="line">     */</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> TextView <span class="title">createViewInstance</span><span class="params">(ThemedReactContext reactContext)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TextView(reactContext);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 要导出给JavaScript使用的属性，需要申明带有<span class="doctag">@ReactProp</span>（或<span class="doctag">@ReactPropGroup</span>）注解的设置方法。</div><div class="line">     * 方法的第一个参数是要修改属性的视图实例，第二个参数是要设置的属性值。</div><div class="line">     * 方法的返回值类型必须为void，而且访问控制必须被声明为public。</div><div class="line">     * <span class="doctag">@param</span> view 要修改属性的视图实例</div><div class="line">     * <span class="doctag">@param</span> text 要设置的属性值</div><div class="line">     *</div><div class="line">     * 注意<span class="doctag">@ReactProp</span>注解必须包含一个字符串类型的参数name。这个参数指定了对应属性在JavaScript端的名字。</div><div class="line">     * 除了name，<span class="doctag">@ReactProp</span>注解还接受这些可选的参数：defaultBoolean, defaultInt, defaultFloat。</div><div class="line">     * 这些参数必须是对应的基础类型的值（也就是boolean, int, float），这些值会被传递给setter方法，</div><div class="line">     * 以免JavaScript端某些情况下在组件中移除了对应的属性。</div><div class="line">     */</div><div class="line">    <span class="meta">@ReactProp</span>(name = <span class="string">"text"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setText</span><span class="params">(TextView view, String text)</span> </span>&#123;</div><div class="line">        view.setText(text);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@ReactProp</span>(name = <span class="string">"textSize"</span>, defaultFloat = <span class="number">20f</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTextSize</span><span class="params">(TextView view, <span class="keyword">float</span> size)</span> </span>&#123;</div><div class="line">        view.setTextSize(size);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@ReactProp</span>(name = <span class="string">"textColor"</span>, defaultInt = <span class="number">0x000000</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTextColor</span><span class="params">(TextView view, <span class="keyword">int</span> color)</span> </span>&#123;</div><div class="line">        view.setTextColor(color);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现方法createViewInstance"><a href="#实现方法createViewInstance" class="headerlink" title="实现方法createViewInstance"></a>实现方法createViewInstance</h3><p>视图在createViewInstance中创建，且应当把自己初始化为默认的状态。所有属性的设置都通过后续的updateView来进行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 创建视图，且应当把自己初始化为默认的状态。所有属性的设置都通过后续的updateView来进行。</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> TextView <span class="title">createViewInstance</span><span class="params">(ThemedReactContext reactContext)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">new</span> TextView(reactContext);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="通过-ReactProp（或-ReactPropGroup）注解来导出属性的设置方法。"><a href="#通过-ReactProp（或-ReactPropGroup）注解来导出属性的设置方法。" class="headerlink" title="通过@ReactProp（或@ReactPropGroup）注解来导出属性的设置方法。"></a>通过@ReactProp（或@ReactPropGroup）注解来导出属性的设置方法。</h3><p>要导出给JavaScript使用的属性，需要申明带有@ReactProp（或@ReactPropGroup）注解的设置方法。方法的第一个参数是要修改属性的视图实例，第二个参数是要设置的属性值。方法的返回值类型必须为void，而且访问控制必须被声明为public。JavaScript所得知的属性类型会由该方法第二个参数的类型来自动决定。支持的类型有：boolean, int, float, double, String, Boolean, Integer, ReadableArray, ReadableMap。</p>
+<p>@ReactProp注解必须包含一个字符串类型的参数name。这个参数指定了对应属性在JavaScript端的名字。</p>
+<p>除了name，@ReactProp注解还接受这些可选的参数：defaultBoolean, defaultInt, defaultFloat。这些参数必须是对应的基础类型的值（也就是boolean, int, float），这些值会被传递给setter方法，以免JavaScript端某些情况下在组件中移除了对应的属性。注意这个”默认”值只对基本类型生效，对于其他的类型而言，当对应的属性删除时，null会作为默认值提供给方法。</p>
+<p>使用@ReactPropGroup来注解的设置方法和@ReactProp不同。请参见@ReactPropGroup注解类源代码中的文档来获取更多详情。</p>
+<p><strong>注意：</strong> 在ReactJS里，修改一个属性会引发一次对设置方法的调用。有一种修改情况是，移除掉之前设置的属性。在这种情况下设置方法也一样会被调用，并且“默认”值会被作为参数提供（对于基础类型来说可以通过defaultBoolean、defaultFloat等@ReactProp的属性提供，而对于复杂类型来说参数则会设置为null）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 要导出给JavaScript使用的属性，需要申明带有<span class="doctag">@ReactProp</span>（或<span class="doctag">@ReactPropGroup</span>）注解的设置方法。</div><div class="line"> * 方法的第一个参数是要修改属性的视图实例，第二个参数是要设置的属性值。</div><div class="line"> * 方法的返回值类型必须为void，而且访问控制必须被声明为public。</div><div class="line"> * <span class="doctag">@param</span> view 要修改属性的视图实例</div><div class="line"> * <span class="doctag">@param</span> text 要设置的属性值</div><div class="line"> *</div><div class="line"> * 注意<span class="doctag">@ReactProp</span>注解必须包含一个字符串类型的参数name。这个参数指定了对应属性在JavaScript端的名字。</div><div class="line"> * 除了name，<span class="doctag">@ReactProp</span>注解还接受这些可选的参数：defaultBoolean, defaultInt, defaultFloat。</div><div class="line"> * 这些参数必须是对应的基础类型的值（也就是boolean, int, float），这些值会被传递给setter方法，</div><div class="line"> * 以免JavaScript端某些情况下在组件中移除了对应的属性。</div><div class="line"> */</div><div class="line"><span class="meta">@ReactProp</span>(name = <span class="string">"text"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setText</span><span class="params">(TextView view, String text)</span> </span>&#123;</div><div class="line">	view.setText(text);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@ReactProp</span>(name = <span class="string">"textSize"</span>, defaultFloat = <span class="number">20f</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTextSize</span><span class="params">(TextView view, <span class="keyword">float</span> size)</span> </span>&#123;</div><div class="line">	view.setTextSize(size);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@ReactProp</span>(name = <span class="string">"textColor"</span>, defaultInt = <span class="number">0x000000</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTextColor</span><span class="params">(TextView view, <span class="keyword">int</span> color)</span> </span>&#123;</div><div class="line">	view.setTextColor(color);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="注册ViewManager"><a href="#注册ViewManager" class="headerlink" title="注册ViewManager"></a>注册ViewManager</h3><p>在Java中的最后一步就是把视图控制器注册到应用中。这和原生模块的注册方法类似，唯一的区别是我们把它放到createViewManagers方法的返回值里。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> com.facebook.react.ReactPackage;</div><div class="line"><span class="keyword">import</span> com.facebook.react.bridge.JavaScriptModule;</div><div class="line"><span class="keyword">import</span> com.facebook.react.uimanager.ViewManager;</div><div class="line"><span class="keyword">import</span> com.facebook.react.bridge.NativeModule;</div><div class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.Collections;</div><div class="line"></div><div class="line"><span class="keyword">import</span> top.cokernut.reactnativetonative.modules.ToastModule;</div><div class="line"><span class="keyword">import</span> top.cokernut.reactnativetonative.reactview.TextViewManager;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReactNativePackage</span> <span class="keyword">implements</span> <span class="title">ReactPackage</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="keyword">public</span> List&lt;Class&lt;? extends JavaScriptModule&gt;&gt; createJSModules() &#123;</div><div class="line">    <span class="keyword">return</span> Collections.emptyList();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;ViewManager&gt; <span class="title">createViewManagers</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</div><div class="line">    List&lt;ViewManager&gt; views = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    views.add(<span class="keyword">new</span> TextViewManager());</div><div class="line">    <span class="keyword">return</span> views;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;NativeModule&gt; <span class="title">createNativeModules</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> Collections.emptyList();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个package需要在项目的自定义的Application类的getPackages方法中提供。如果没有自定义的Application类则需要新建这个类，并且这个类实现了ReactApplication接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> android.app.Application;</div><div class="line"><span class="keyword">import</span> com.facebook.react.ReactApplication;</div><div class="line"><span class="keyword">import</span> com.facebook.react.ReactNativeHost;</div><div class="line"><span class="keyword">import</span> com.facebook.react.ReactPackage;</div><div class="line"><span class="keyword">import</span> com.facebook.react.bridge.ReactApplicationContext;</div><div class="line"><span class="keyword">import</span> com.facebook.react.shell.MainReactPackage;</div><div class="line"><span class="keyword">import</span> com.facebook.react.uimanager.ViewManager;</div><div class="line"><span class="keyword">import</span> com.facebook.soloader.SoLoader;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Arrays;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> <span class="keyword">extends</span> <span class="title">Application</span> <span class="keyword">implements</span> <span class="title">ReactApplication</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ReactNativeHost mReactNativeHost = <span class="keyword">new</span> ReactNativeHost(<span class="keyword">this</span>) &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">getUseDeveloperSupport</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> BuildConfig.DEBUG;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> List&lt;ReactPackage&gt; <span class="title">getPackages</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> Arrays.&lt;ReactPackage&gt;asList(</div><div class="line">                    <span class="keyword">new</span> MainReactPackage(),</div><div class="line">                    <span class="keyword">new</span> ReactNativePackage()); <span class="comment">// &lt;-- 添加这一行，类名替换成你的Package类的名字.</span></div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> ReactNativeHost <span class="title">getReactNativeHost</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> mReactNativeHost;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate();</div><div class="line">        SoLoader.init(<span class="keyword">this</span>, <span class="comment">/* native exopackage */</span> <span class="keyword">false</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意：别忘记修改AndroidManifest文件的application节点的name为我们自定义的Application（如：MyApplication ）：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">package</span>=<span class="string">"top.cokernut.reactnativetonative"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.INTERNET"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.SYSTEM_ALERT_WINDOW"</span>/&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">application</span></span></div><div class="line">        <span class="attr">android:allowBackup</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:name</span>=<span class="string">".MyApplication"</span></div><div class="line">        <span class="attr">android:icon</span>=<span class="string">"@mipmap/ic_launcher"</span></div><div class="line">        <span class="attr">android:label</span>=<span class="string">"@string/app_name"</span></div><div class="line">        <span class="attr">android:supportsRtl</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:theme</span>=<span class="string">"@style/AppTheme"</span>&gt;</div><div class="line">        ...</div><div class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="参数类型"><a href="#参数类型" class="headerlink" title="参数类型"></a>参数类型</h3><p>下面的参数类型在@ReactMethod注明的方法中，会被直接映射到它们对应的JavaScript类型。</p>
+<p>Boolean -&gt; Bool<br>Integer -&gt; Number<br>Double -&gt; Number<br>Float -&gt; Number<br>String -&gt; String<br>Callback -&gt; function<br>ReadableMap -&gt; Object<br>ReadableArray -&gt; Array</p>
+<h3 id="实现对应的JavaScript模块"><a href="#实现对应的JavaScript模块" class="headerlink" title="实现对应的JavaScript模块"></a>实现对应的JavaScript模块</h3><p>整个过程的最后一步就是创建JavaScript模块并且定义Java和JavaScript之间的接口层。大部分过程都由React底层的Java和JavaScript代码来完成，你所需要做的就是通过propTypes来描述属性的类型。</p>
+<blockquote>
+<p>TextView.js</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; PropTypes &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123; requireNativeComponent, View&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">let</span> iface = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'TextView'</span>,</div><div class="line">  <span class="attr">propTypes</span>: &#123;</div><div class="line">    <span class="attr">text</span>: PropTypes.string,</div><div class="line">    <span class="attr">textSize</span>: PropTypes.number,</div><div class="line">    <span class="attr">textColor</span>: PropTypes.number,</div><div class="line">    ...View.propTypes, <span class="comment">//包含默认的View的属性，如果没有这句会报‘"..." has no propType for native prop "..." of native type "..."’错误</span></div><div class="line">  &#125;,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> requireNativeComponent(<span class="string">'TextView'</span>, iface);</div></pre></td></tr></table></figure>
+<p>requireNativeComponent通常接受两个参数，第一个参数是原生视图的名字，而第二个参数是一个描述组件接口的对象。组件接口应当声明一个友好的name，用来在调试信息中显示；组件接口还必须声明propTypes字段，用来对应到原生视图上。这个propTypes还可以用来检查用户使用View的方式是否正确。</p>
+<p><strong>注意</strong>，如果你还需要一个JavaScript组件来做一些除了指定name和propTypes以外的事情，譬如事件处理，你可以把原生组件用一个普通React组件封装。在这种情况下，requireNativeComponent的第二个参数变为用于封装的组件。</p>
+<p><strong>注意</strong>：和原生模块不同，原生视图的前缀RCT不会被自动去掉。</p>
+<h3 id="使用实现的原生组件"><a href="#使用实现的原生组件" class="headerlink" title="使用实现的原生组件"></a>使用实现的原生组件</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123;&#125; <span class="keyword">from</span> <span class="string">'react-native'</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> TextView <span class="keyword">from</span> <span class="string">'../view/TextView'</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sample</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">          <span class="xml"><span class="tag">&lt;<span class="name">TextView</span> <span class="attr">text</span>=<span class="string">'TextView'</span> <span class="attr">textSize</span>=<span class="string">&#123;40&#125;</span> <span class="attr">textColor</span>=<span class="string">&#123;0x00ff00&#125;</span> <span class="attr">style</span>=<span class="string">&#123;&#123;width:200,</span> <span class="attr">height:100</span>&#125;&#125;/&gt;</span></span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">export default Sample;</div></pre></td></tr></table></figure>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><p>现在我们已经知道了怎么导出一个原生视图组件，并且我们可以在JS里很方便的控制它了。不过我们怎么才能处理来自用户的事件，譬如缩放操作或者拖动？当一个原生事件发生的时候，它应该也能触发JavaScript端视图上的事件，这两个视图会依据getId()而关联在一起。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyCustomView</span> <span class="keyword">extends</span> <span class="title">View</span> </span>&#123;</div><div class="line">   ...</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceiveNativeEvent</span><span class="params">()</span> </span>&#123;</div><div class="line">      WritableMap event = Arguments.createMap();</div><div class="line">      event.putString(<span class="string">"message"</span>, <span class="string">"MyMessage"</span>);</div><div class="line">      ReactContext reactContext = (ReactContext)getContext();</div><div class="line">      reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(</div><div class="line">          getId(),</div><div class="line">          <span class="string">"topChange"</span>,</div><div class="line">          event);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个事件名topChange在JavaScript端映射到onChange回调属性上（这个映射关系在UIManagerModuleConstants.java文件里）。这个回调会被原生事件执行，然后我们通常会在封装组件里构造一个类似的API：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyCustomView</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>() &#123;</div><div class="line">    <span class="keyword">this</span>._onChange = <span class="keyword">this</span>._onChange.bind(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line">  _onChange(event: Event) &#123;</div><div class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.props.onChangeMessage) &#123;</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">this</span>.props.onChangeMessage(event.nativeEvent.message);</div><div class="line">  &#125;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">RCTMyCustomView</span> &#123;<span class="attr">...this.props</span>&#125; <span class="attr">onChange</span>=<span class="string">&#123;this._onChange&#125;</span> /&gt;</span>;</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">MyCustomView.propTypes = &#123;</div><div class="line">  /**</div><div class="line">   * Callback that is called continuously when the user is dragging the map.</div><div class="line">   */</div><div class="line">  onChangeMessage: React.PropTypes.func,</div><div class="line">  ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var RCTMyCustomView = requireNativeComponent(`RCTMyCustomView`, MyCustomView, &#123;</div><div class="line">  nativeOnly: &#123;onChange: true&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>注意上面用到了nativeOnly。有时候有一些特殊的属性，想从原生组件中导出，但是又不希望它们成为对应React封装组件的属性。举个例子，Switch组件可能在原生组件上有一个onChange事件，然后在封装类中导出onValueChange回调属性。这个属性在调用的时候会带上Switch的状态作为参数之一。这样的话你可能不希望原生专用的属性出现在API之中，也就不希望把它放到propTypes里。可是如果你不放的话，又会出现一个报错。解决方案就是带上nativeOnly选项。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/12/14/ReactNative/React Native使用Android原生UI控件/" data-id="ciwq3v0t7003piculj0rdps63" class="article-share-link" data-share="baidu" data-title="React Native使用Android原生UI控件">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/12/14/ReactNative/React Native使用Android原生UI控件/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/14/Android/Android编码规范/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Android编码规范
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/11/ReactNative/React Native使用Android原生模块/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">React Native使用Android原生模块</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/12/14/ReactNative/React Native使用Android原生UI控件/" data-title="React Native使用Android原生UI控件" data-url="http://cokernut.top/2016/12/14/ReactNative/React Native使用Android原生UI控件/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python3/">Python3</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/12/14/Android/Android编码规范/">Android编码规范</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/ReactNative/React Native使用Android原生UI控件/">React Native使用Android原生UI控件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/11/ReactNative/React Native使用Android原生模块/">React Native使用Android原生模块</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/10/JavaScript/fp/">函数式编程</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/10/JavaScript/mixin/">Mixin</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 15px;">Android</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 12.5px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Python3/" style="font-size: 10px;">Python3</a> <a href="/tags/React-Native/" style="font-size: 17.5px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">35</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2016 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
