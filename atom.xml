@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://cokernut.top/"/>
-  <updated>2017-01-10T07:35:45.430Z</updated>
+  <updated>2017-01-10T07:38:15.910Z</updated>
   <id>http://cokernut.top/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://cokernut.top/2017/01/10/Python/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0--%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     <id>http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识/</id>
     <published>2017-01-10T02:40:43.000Z</published>
-    <updated>2017-01-10T07:35:45.430Z</updated>
+    <updated>2017-01-10T07:38:15.910Z</updated>
     
     <content type="html"><![CDATA[<p>Django学习笔记–基础知识<br><a id="more"></a></p>
 <p>[TOC]</p>
@@ -160,17 +160,11 @@
 <h3 id="模板中-获取当前网址，当前用户等"><a href="#模板中-获取当前网址，当前用户等" class="headerlink" title="模板中 获取当前网址，当前用户等"></a>模板中 获取当前网址，当前用户等</h3><p>如果不是在 views.py 中用的 render 函数，是 render_to_response 的话，需要将 request 加入到 上下文渲染器。<br>Django 1.8 及以后 修改 settings.py </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">TEMPLATES = [</div><div class="line">    &#123;</div><div class="line">        &apos;BACKEND&apos;: &apos;django.template.backends.django.DjangoTemplates&apos;,</div><div class="line">        &apos;DIRS&apos;: [],</div><div class="line">        &apos;APP_DIRS&apos;: True,</div><div class="line">        &apos;OPTIONS&apos;: &#123;</div><div class="line">            &apos;context_processors&apos;: [</div><div class="line">                ...</div><div class="line">                &apos;django.template.context_processors.request&apos;,</div><div class="line">                ...</div><div class="line">            ],</div><div class="line">        &#125;,</div><div class="line">    &#125;,</div><div class="line">]</div></pre></td></tr></table></figure>
 <p>然后在 模板中我们就可以用 request 了。一般情况下，推荐用 render 而不是用 render_to_response。</p>
-<h4 id="获取当前用户"><a href="#获取当前用户" class="headerlink" title="获取当前用户"></a>获取当前用户</h4><blockquote>
-
-</blockquote>
+<h4 id="获取当前用户"><a href="#获取当前用户" class="headerlink" title="获取当前用户"></a>获取当前用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.user &#125;&#125;</div></pre></td></tr></table></figure>
 <p>如果登陆就显示内容，不登陆就不显示内容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;% if request.user.is_authenticated %&#125;</div><div class="line">    &#123;&#123; request.user.username &#125;&#125;，您好！</div><div class="line">&#123;% else %&#125;</div><div class="line">    请登陆，这里放登陆链接</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
-<h4 id="获取当前网址"><a href="#获取当前网址" class="headerlink" title="获取当前网址"></a>获取当前网址</h4><blockquote>
-
-</blockquote>
-<h4 id="获取当前-GET-参数"><a href="#获取当前-GET-参数" class="headerlink" title="获取当前 GET 参数"></a>获取当前 GET 参数</h4><blockquote>
-
-</blockquote>
+<h4 id="获取当前网址"><a href="#获取当前网址" class="headerlink" title="获取当前网址"></a>获取当前网址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.path &#125;&#125;</div></pre></td></tr></table></figure>
+<h4 id="获取当前-GET-参数"><a href="#获取当前-GET-参数" class="headerlink" title="获取当前 GET 参数"></a>获取当前 GET 参数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.GET.urlencode &#125;&#125;</div></pre></td></tr></table></figure>
 <h4 id="合并到一起用的一个例子"><a href="#合并到一起用的一个例子" class="headerlink" title="合并到一起用的一个例子"></a>合并到一起用的一个例子</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;&#123;&#123; request.path &#125;&#125;?&#123;&#123; request.GET.urlencode &#125;&#125;&amp;delete=1&quot;&gt;当前网址加参数 delete&lt;/a&gt;</div></pre></td></tr></table></figure>
 <p>比如我们可以判断 delete 参数是不是 1 来删除当前的页面内容。</p>
 ]]></content>
@@ -187,6 +181,41 @@
       <category term="Python" scheme="http://cokernut.top/tags/Python/"/>
     
       <category term="Django" scheme="http://cokernut.top/tags/Django/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>React Native Headless JS（后台任务）</title>
+    <link href="http://cokernut.top/2016/12/15/ReactNative/React%20Native%20Headless%20JS%EF%BC%88%E5%90%8E%E5%8F%B0%E4%BB%BB%E5%8A%A1%EF%BC%89/"/>
+    <id>http://cokernut.top/2016/12/15/ReactNative/React Native Headless JS（后台任务）/</id>
+    <published>2016-12-14T16:00:00.000Z</published>
+    <updated>2016-12-15T09:56:17.872Z</updated>
+    
+    <content type="html"><![CDATA[<p>React Native Headless JS（后台任务）<br><a id="more"></a></p>
+<p>Headless JS是一种使用js在后台执行任务的方法。它可以用来在后台同步数据、处理推送通知或是播放音乐等等。</p>
+<h2 id="JS端的API"><a href="#JS端的API" class="headerlink" title="JS端的API"></a>JS端的API</h2><p>首先我们要通过AppRegistry来注册一个async函数，这个函数我们称之为“任务”。注册方式类似在index.js中注册RN应用：</p>
+<p><code>AppRegistry.registerHeadlessTask(&#39;SomeTaskName&#39;, () =&gt; require(&#39;SomeTaskName&#39;));</code></p>
+<p>然后创建require对应的SomeTaskName.js文件:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="keyword">async</span> (taskData) =&gt; &#123;</div><div class="line">  <span class="comment">// 要做的事情</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>你可以在任务中处理任何事情（网络请求、定时器等等），但唯独不要涉及用户界面！在任务完成后（例如在promise中调用resolve），RN会进入一个“暂停”模式，直到有新任务需要执行或者是应用回到前台。</p>
+<h2 id="Java端的API"><a href="#Java端的API" class="headerlink" title="Java端的API"></a>Java端的API</h2><p>没错，我们还需要一些原生代码，但是请放心并不麻烦。你需要像下面这样继承HeadlessJsTaskService，然后覆盖getTaskConfig方法的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTaskService</span> <span class="keyword">extends</span> <span class="title">HeadlessJsTaskService</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="keyword">protected</span> <span class="meta">@Nullable</span> <span class="function">HeadlessJsTaskConfig <span class="title">getTaskConfig</span><span class="params">(Intent intent)</span> </span>&#123;</div><div class="line">    Bundle extras = intent.getExtras();</div><div class="line">    <span class="keyword">if</span> (extras != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">new</span> HeadlessJsTaskConfig(</div><div class="line">          <span class="string">"SomeTaskName"</span>,</div><div class="line">          Arguments.fromBundle(extras),</div><div class="line">          <span class="number">5000</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好了，现在当你启动服务时（例如一个周期性的任务或是响应一些系统事件/广播），JS任务就会开始执行。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>默认情况下，如果应用正在前台运行时尝试执行任务，那么应用会崩溃。这是为了防止开发者在任务中处理太多逻辑而拖慢用户界面。<br>如果你是通过BroadcastReceiver来启动的服务，那么谨记在从onReceive()返回之前要调用HeadlessJsTaskService.acquireWakelockNow()。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;React Native Headless JS（后台任务）&lt;br&gt;
+    
+    </summary>
+    
+      <category term="React Native" scheme="http://cokernut.top/categories/React-Native/"/>
+    
+    
+      <category term="Android" scheme="http://cokernut.top/tags/Android/"/>
+    
+      <category term="React Native" scheme="http://cokernut.top/tags/React-Native/"/>
     
   </entry>
   
@@ -240,41 +269,6 @@
     <summary type="html">
     
       &lt;p&gt;React Native 打包APK&lt;br&gt;
-    
-    </summary>
-    
-      <category term="React Native" scheme="http://cokernut.top/categories/React-Native/"/>
-    
-    
-      <category term="Android" scheme="http://cokernut.top/tags/Android/"/>
-    
-      <category term="React Native" scheme="http://cokernut.top/tags/React-Native/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>React Native Headless JS（后台任务）</title>
-    <link href="http://cokernut.top/2016/12/15/ReactNative/React%20Native%20Headless%20JS%EF%BC%88%E5%90%8E%E5%8F%B0%E4%BB%BB%E5%8A%A1%EF%BC%89/"/>
-    <id>http://cokernut.top/2016/12/15/ReactNative/React Native Headless JS（后台任务）/</id>
-    <published>2016-12-14T16:00:00.000Z</published>
-    <updated>2016-12-15T09:56:17.872Z</updated>
-    
-    <content type="html"><![CDATA[<p>React Native Headless JS（后台任务）<br><a id="more"></a></p>
-<p>Headless JS是一种使用js在后台执行任务的方法。它可以用来在后台同步数据、处理推送通知或是播放音乐等等。</p>
-<h2 id="JS端的API"><a href="#JS端的API" class="headerlink" title="JS端的API"></a>JS端的API</h2><p>首先我们要通过AppRegistry来注册一个async函数，这个函数我们称之为“任务”。注册方式类似在index.js中注册RN应用：</p>
-<p><code>AppRegistry.registerHeadlessTask(&#39;SomeTaskName&#39;, () =&gt; require(&#39;SomeTaskName&#39;));</code></p>
-<p>然后创建require对应的SomeTaskName.js文件:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="keyword">async</span> (taskData) =&gt; &#123;</div><div class="line">  <span class="comment">// 要做的事情</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>你可以在任务中处理任何事情（网络请求、定时器等等），但唯独不要涉及用户界面！在任务完成后（例如在promise中调用resolve），RN会进入一个“暂停”模式，直到有新任务需要执行或者是应用回到前台。</p>
-<h2 id="Java端的API"><a href="#Java端的API" class="headerlink" title="Java端的API"></a>Java端的API</h2><p>没错，我们还需要一些原生代码，但是请放心并不麻烦。你需要像下面这样继承HeadlessJsTaskService，然后覆盖getTaskConfig方法的实现：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTaskService</span> <span class="keyword">extends</span> <span class="title">HeadlessJsTaskService</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="keyword">protected</span> <span class="meta">@Nullable</span> <span class="function">HeadlessJsTaskConfig <span class="title">getTaskConfig</span><span class="params">(Intent intent)</span> </span>&#123;</div><div class="line">    Bundle extras = intent.getExtras();</div><div class="line">    <span class="keyword">if</span> (extras != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">new</span> HeadlessJsTaskConfig(</div><div class="line">          <span class="string">"SomeTaskName"</span>,</div><div class="line">          Arguments.fromBundle(extras),</div><div class="line">          <span class="number">5000</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>好了，现在当你启动服务时（例如一个周期性的任务或是响应一些系统事件/广播），JS任务就会开始执行。</p>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>默认情况下，如果应用正在前台运行时尝试执行任务，那么应用会崩溃。这是为了防止开发者在任务中处理太多逻辑而拖慢用户界面。<br>如果你是通过BroadcastReceiver来启动的服务，那么谨记在从onReceive()返回之前要调用HeadlessJsTaskService.acquireWakelockNow()。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;React Native Headless JS（后台任务）&lt;br&gt;
     
     </summary>
     

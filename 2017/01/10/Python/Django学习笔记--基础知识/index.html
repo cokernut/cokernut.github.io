@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识/index.html">
 <meta property="og:site_name" content="Cokernut">
 <meta property="og:description" content="Django学习笔记–基础知识">
-<meta property="og:updated_time" content="2017-01-10T07:35:45.430Z">
+<meta property="og:updated_time" content="2017-01-10T07:38:15.910Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django学习笔记--基础知识">
 <meta name="twitter:description" content="Django学习笔记–基础知识">
@@ -233,17 +233,11 @@
 <h3 id="模板中-获取当前网址，当前用户等"><a href="#模板中-获取当前网址，当前用户等" class="headerlink" title="模板中 获取当前网址，当前用户等"></a>模板中 获取当前网址，当前用户等</h3><p>如果不是在 views.py 中用的 render 函数，是 render_to_response 的话，需要将 request 加入到 上下文渲染器。<br>Django 1.8 及以后 修改 settings.py </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">TEMPLATES = [</div><div class="line">    &#123;</div><div class="line">        &apos;BACKEND&apos;: &apos;django.template.backends.django.DjangoTemplates&apos;,</div><div class="line">        &apos;DIRS&apos;: [],</div><div class="line">        &apos;APP_DIRS&apos;: True,</div><div class="line">        &apos;OPTIONS&apos;: &#123;</div><div class="line">            &apos;context_processors&apos;: [</div><div class="line">                ...</div><div class="line">                &apos;django.template.context_processors.request&apos;,</div><div class="line">                ...</div><div class="line">            ],</div><div class="line">        &#125;,</div><div class="line">    &#125;,</div><div class="line">]</div></pre></td></tr></table></figure>
 <p>然后在 模板中我们就可以用 request 了。一般情况下，推荐用 render 而不是用 render_to_response。</p>
-<h4 id="获取当前用户"><a href="#获取当前用户" class="headerlink" title="获取当前用户"></a>获取当前用户</h4><blockquote>
-
-</blockquote>
+<h4 id="获取当前用户"><a href="#获取当前用户" class="headerlink" title="获取当前用户"></a>获取当前用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.user &#125;&#125;</div></pre></td></tr></table></figure>
 <p>如果登陆就显示内容，不登陆就不显示内容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;% if request.user.is_authenticated %&#125;</div><div class="line">    &#123;&#123; request.user.username &#125;&#125;，您好！</div><div class="line">&#123;% else %&#125;</div><div class="line">    请登陆，这里放登陆链接</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
-<h4 id="获取当前网址"><a href="#获取当前网址" class="headerlink" title="获取当前网址"></a>获取当前网址</h4><blockquote>
-
-</blockquote>
-<h4 id="获取当前-GET-参数"><a href="#获取当前-GET-参数" class="headerlink" title="获取当前 GET 参数"></a>获取当前 GET 参数</h4><blockquote>
-
-</blockquote>
+<h4 id="获取当前网址"><a href="#获取当前网址" class="headerlink" title="获取当前网址"></a>获取当前网址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.path &#125;&#125;</div></pre></td></tr></table></figure>
+<h4 id="获取当前-GET-参数"><a href="#获取当前-GET-参数" class="headerlink" title="获取当前 GET 参数"></a>获取当前 GET 参数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.GET.urlencode &#125;&#125;</div></pre></td></tr></table></figure>
 <h4 id="合并到一起用的一个例子"><a href="#合并到一起用的一个例子" class="headerlink" title="合并到一起用的一个例子"></a>合并到一起用的一个例子</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;&#123;&#123; request.path &#125;&#125;?&#123;&#123; request.GET.urlencode &#125;&#125;&amp;delete=1&quot;&gt;当前网址加参数 delete&lt;/a&gt;</div></pre></td></tr></table></figure>
 <p>比如我们可以判断 delete 参数是不是 1 来删除当前的页面内容。</p>
 
@@ -251,7 +245,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识/" data-id="cixr7e0g3002s1kulc5y2da80" class="article-share-link" data-share="baidu" data-title="Django学习笔记--基础知识">分享到</a>
+        <a data-url="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识/" data-id="cixr8454t00306wul60sq2kpe" class="article-share-link" data-share="baidu" data-title="Django学习笔记--基础知识">分享到</a>
       
 
       
@@ -268,9 +262,9 @@
 <nav id="article-nav">
   
   
-    <a href="/2016/12/15/ReactNative/React Native 打包APK/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">React Native 打包APK</div>
+      <div class="article-nav-title">React Native Headless JS（后台任务）</div>
     </a>
   
 </nav>
@@ -338,11 +332,11 @@
           </li>
         
           <li>
-            <a href="/2016/12/15/ReactNative/React Native 打包APK/">React Native 打包APK</a>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
           </li>
         
           <li>
-            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+            <a href="/2016/12/15/ReactNative/React Native 打包APK/">React Native 打包APK</a>
           </li>
         
           <li>
