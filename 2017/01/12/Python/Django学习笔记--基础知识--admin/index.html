@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Django学习笔记--基础知识--admin | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Django学习笔记--基础知识--admin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django学习笔记--基础知识--admin">
+<meta property="og:url" content="http://cokernut.top/2017/01/12/Python/Django学习笔记--基础知识--admin/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="Django学习笔记--基础知识--admin">
+<meta property="og:updated_time" content="2017-01-12T06:39:47.093Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django学习笔记--基础知识--admin">
+<meta name="twitter:description" content="Django学习笔记--基础知识--admin">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Python/Django学习笔记--基础知识--admin" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/12/Python/Django学习笔记--基础知识--admin/" class="article-date">
+  <time datetime="2017-01-12T02:03:44.000Z" itemprop="datePublished">2017-01-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Django学习笔记--基础知识--admin
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Django学习笔记–基础知识–admin–Python3.5.x、Django1.10.x<br><a id="more"></a></p>
+<h1 id="后台"><a href="#后台" class="headerlink" title="后台"></a>后台</h1><h3 id="新建一个-名称为-django-admin-的项目"><a href="#新建一个-名称为-django-admin-的项目" class="headerlink" title="新建一个 名称为 django_admin 的项目"></a>新建一个 名称为 django_admin 的项目</h3><blockquote>
+<p>django-admin startproject django_admin</p>
+</blockquote>
+<h3 id="新建一个-叫做-blog-的app"><a href="#新建一个-叫做-blog-的app" class="headerlink" title="新建一个 叫做 blog 的app"></a>新建一个 叫做 blog 的app</h3><blockquote>
+<p>cd django_admin<br>python manage.py startapp blog</p>
+</blockquote>
+<p>注意：不同版本的 Django 创建 project 和 app 出来的文件会有一些不同</p>
+<h3 id="修改-blog-文件夹中的-models-py"><a href="#修改-blog-文件夹中的-models-py" class="headerlink" title="修改 blog 文件夹中的 models.py"></a>修改 blog 文件夹中的 models.py</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding:utf-8</span></div><div class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></div><div class="line">    title = models.CharField(<span class="string">u'标题'</span>, max_length=<span class="number">256</span>)</div><div class="line">    content = models.TextField(<span class="string">u'内容'</span>)</div><div class="line">    pub_date = models.DateTimeField(<span class="string">u'发表时间'</span>, auto_now_add=<span class="keyword">True</span>, editable = <span class="keyword">True</span>)</div><div class="line">    update_time = models.DateTimeField(<span class="string">u'更新时间'</span>,auto_now=<span class="keyword">True</span>, null=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<h3 id="把-blog-加入到settings-py中的INSTALLED-APPS中"><a href="#把-blog-加入到settings-py中的INSTALLED-APPS中" class="headerlink" title="把 blog 加入到settings.py中的INSTALLED_APPS中"></a>把 blog 加入到settings.py中的INSTALLED_APPS中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">INSTALLED_APPS = [</div><div class="line">    &apos;django.contrib.admin&apos;,</div><div class="line">    &apos;django.contrib.auth&apos;,</div><div class="line">    &apos;django.contrib.contenttypes&apos;,</div><div class="line">    &apos;django.contrib.sessions&apos;,</div><div class="line">    &apos;django.contrib.messages&apos;,</div><div class="line">    &apos;django.contrib.staticfiles&apos;,</div><div class="line">    &apos;blog&apos;,</div><div class="line">]</div></pre></td></tr></table></figure>
+<h3 id="同步所有的数据表"><a href="#同步所有的数据表" class="headerlink" title="同步所有的数据表"></a>同步所有的数据表</h3><p>进入包含有 manage.py 的文件夹执行：</p>
+<blockquote>
+<p>python manage.py makemigrations<br>python manage.py migrate</p>
+</blockquote>
+<p>如果 Django 不主动提示创建管理员,可以用下面的命令创建一个管理员帐号：</p>
+<blockquote>
+<p>python manage.py createsuperuser</p>
+</blockquote>
+<h3 id="修改-admin-py"><a href="#修改-admin-py" class="headerlink" title="修改 admin.py"></a>修改 admin.py</h3><p>进入 blog 文件夹，修改 admin.py 文件（如果没有新建一个），内容如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Article</div><div class="line"></div><div class="line">admin.site.register(Article)</div></pre></td></tr></table></figure>
+<p>只需要这三行代码，我们就可以拥有一个强大的后台！<br>提示：urls.py中关于 admin的已经默认开启。</p>
+<h3 id="打开开发服务器"><a href="#打开开发服务器" class="headerlink" title="打开开发服务器"></a>打开开发服务器</h3><blockquote>
+<p>python manage.py runserver<br>如果提示 8000 端口已经被占用，可以用 python manage.py runserver 8001 以此类推</p>
+</blockquote>
+<p>访问 <a href="http://localhost:8000/admin/" target="_blank" rel="external">http://localhost:8000/admin/</a> 输入设定的帐号和密码, 就可以看到管理员界面。</p>
+<p>点击 Articles， 添加几篇文章，就可以看到新添加的文章列表。<br>这时我们会发现所有的文章都是叫 Article object，这样肯定不好，我们修改一下 blog 中的models.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding:utf-8</span></div><div class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></div><div class="line">    title = models.CharField(<span class="string">u'标题'</span>, max_length=<span class="number">256</span>)</div><div class="line">    content = models.TextField(<span class="string">u'内容'</span>)</div><div class="line"> </div><div class="line">    pub_date = models.DateTimeField(<span class="string">u'发表时间'</span>, auto_now_add=<span class="keyword">True</span>, editable = <span class="keyword">True</span>)</div><div class="line">    update_time = models.DateTimeField(<span class="string">u'更新时间'</span>,auto_now=<span class="keyword">True</span>, null=<span class="keyword">True</span>)</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span>  <span class="title">__str__</span> <span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.title</div></pre></td></tr></table></figure>
+<p>加了一个 <strong>str</strong>  函数，刷新后台网页，会看到文章列表显示的已经是文章的标题了。<br>所以建议定义 Model 的时候 写一个 <strong>str</strong>函数)。</p>
+<p>兼容python2.x和python3.x：<br>models.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># coding:utf-8</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</div><div class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</div><div class="line"><span class="keyword">from</span> django.utils.encoding <span class="keyword">import</span> python_2_unicode_compatible</div><div class="line"></div><div class="line"><span class="meta">@python_2_unicode_compatible</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></div><div class="line">    title = models.CharField(<span class="string">'标题'</span>, max_length=<span class="number">256</span>)</div><div class="line">    content = models.TextField(<span class="string">'内容'</span>)</div><div class="line">    pub_date = models.DateTimeField(<span class="string">'发表时间'</span>, auto_now_add=<span class="keyword">True</span>, editable = <span class="keyword">True</span>)</div><div class="line">    update_time = models.DateTimeField(<span class="string">'更新时间'</span>,auto_now=<span class="keyword">True</span>, null=<span class="keyword">True</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.title</div></pre></td></tr></table></figure>
+<p>python_2_unicode_compatible 会自动做一些处理去适应python不同的版本，这里的 unicode_literals 可以让python2.x 也像 python3 那个处理 unicode 字符，以便有更好地兼容性。</p>
+<h3 id="在列表显示与字段相关的其它内容"><a href="#在列表显示与字段相关的其它内容" class="headerlink" title="在列表显示与字段相关的其它内容"></a>在列表显示与字段相关的其它内容</h3><p>如果我们还需要显示一些其它的fields，如何做呢？</p>
+<blockquote>
+<p>blog/admin.py</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Article</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    list_display = (<span class="string">'title'</span>,<span class="string">'pub_date'</span>,<span class="string">'update_time'</span>,)</div><div class="line"></div><div class="line">admin.site.register(Article,ArticleAdmin)</div></pre></td></tr></table></figure>
+<p>list_display 就是来配置要显示的字段的，当然也可以显示非字段内容，或者字段相关的内容，比如：</p>
+<blockquote>
+<p>blog/models.py</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(models.Model)</span>:</span></div><div class="line">    first_name = models.CharField(max_length=<span class="number">50</span>)</div><div class="line">    last_name = models.CharField(max_length=<span class="number">50</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">my_property</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.first_name + <span class="string">' '</span> + self.last_name</div><div class="line">    my_property.short_description = <span class="string">"Full name of the person"</span></div><div class="line"></div><div class="line">    full_name = property(my_property)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>blog/admin.py</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Article, Person</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    list_display = (<span class="string">'title'</span>, <span class="string">'pub_date'</span>, <span class="string">'update_time'</span>,)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    list_display = (<span class="string">'full_name'</span>,)</div><div class="line"></div><div class="line">admin.site.register(Article, ArticleAdmin)</div><div class="line">admin.site.register(Person, PersonAdmin)</div></pre></td></tr></table></figure>
+<p>到这里我们发现我们又有新的需求，比如要改 models.py 中的字段，添加一个文章的状态（草稿，正式发布），这时候我们就需要更改表，django 1.7以前的都不会自动更改表，我们需要用第三方插件 South，Django 1.7 及以上用以下命令来同步数据库表的更改：</p>
+<blockquote>
+<p>python manage.py makemigrations<br>python manage.py migrate</p>
+</blockquote>
+<h4 id="其它一些常用的功能："><a href="#其它一些常用的功能：" class="headerlink" title="其它一些常用的功能："></a>其它一些常用的功能：</h4><p>搜索功能：search_fields = (‘title’, ‘content’,) 这样就可以按照 标题或内容搜索了<br><a href="https://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin.ModelAdmin.search_fields" target="_blank" rel="external">https://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin.ModelAdmin.search_fields</a></p>
+<p>筛选功能：list_filter = (‘status’,) 这样就可以根据文章的状态去筛选，比如找出是草稿的文章<br><a href="https://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_filter" target="_blank" rel="external">https://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_filter</a></p>
+<p>新增或修改时的布局顺序：<a href="https://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin.ModelAdmin.fieldsets" target="_blank" rel="external">https://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin.ModelAdmin.fieldsets</a></p>
+<p>有时候我们需要对django admin site进行修改以满足自己的需求：<br>举例说明：<br>1.定制加载的列表, 根据不同的人显示不同的内容列表，比如输入员只能看见自己输入的，审核员能看到所有的草稿，这时候就需要重写get_queryset方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyModelAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_queryset</span><span class="params">(self, request)</span>:</span></div><div class="line">        qs = super(MyModelAdmin, self).get_queryset(request)</div><div class="line">        <span class="keyword">if</span> request.user.is_superuser:</div><div class="line">            <span class="keyword">return</span> qs</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">return</span> qs.filter(author=request.user)</div></pre></td></tr></table></figure>
+<p>该类实现的功能是如果是超级管理员就列出所有的，如果不是，就仅列出访问者自己相关的。</p>
+<p>2.定制搜索功能（django 1.6及以上才有)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    list_display = (<span class="string">'name'</span>, <span class="string">'age'</span>)</div><div class="line">    search_fields = (<span class="string">'name'</span>,)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_search_results</span><span class="params">(self, request, queryset, search_term)</span>:</span></div><div class="line">        queryset, use_distinct = super(PersonAdmin, self).get_search_results(request, queryset, search_term)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            search_term_as_int = int(search_term)</div><div class="line">            queryset |= self.model.objects.filter(age=search_term_as_int)</div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            <span class="keyword">pass</span></div><div class="line">        <span class="keyword">return</span> queryset, use_distinct</div></pre></td></tr></table></figure>
+<p>queryset 是默认的结果，search_term 是在后台搜索的关键词</p>
+<p>3.修改保存时的一些操作，可以检查用户，保存的内容等，比如保存时加上添加人</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save_model</span><span class="params">(self, request, obj, form, change)</span>:</span></div><div class="line">        obj.user = request.user</div><div class="line">        obj.save()</div></pre></td></tr></table></figure>
+<p>其中obj是修改后的对象，form是返回的表单（修改后的），当新建一个对象时 change = False, 当修改一个对象时 change = True<br>如果需要获取修改前的对象的内容可以用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save_model</span><span class="params">(self, request, obj, form, change)</span>:</span></div><div class="line">        obj_original = self.model.objects.get(pk=obj.pk)</div><div class="line">        obj.user = request.user</div><div class="line">        obj.save()</div></pre></td></tr></table></figure>
+<p>那么又有问题了，这里如果原来的obj不存在，也就是如果我们是新建的一个怎么办呢，这时候可以用try,except的方法尝试获取,当然更好的方法是判断一下这个对象是新建还是修改，是新建就没有 obj_original，是修改就有</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save_model</span><span class="params">(self, request, obj, form, change)</span>:</span></div><div class="line">        <span class="keyword">if</span> change:<span class="comment"># 更改的时候</span></div><div class="line">            obj_original = self.model.objects.get(pk=obj.pk)</div><div class="line">        <span class="keyword">else</span>:<span class="comment"># 新增的时候</span></div><div class="line">            obj_original = <span class="keyword">None</span></div><div class="line"></div><div class="line">        obj.user = request.user</div><div class="line">        obj.save()</div></pre></td></tr></table></figure>
+<p>4, 删除时做一些处理,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete_model</span><span class="params">(self, request, obj)</span>:</span></div><div class="line">        <span class="string">"""</span></div><div class="line">        Given a model instance delete it from the database.</div><div class="line">        """</div><div class="line">        <span class="comment"># handle something here</span></div><div class="line">        obj.delete()</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2017/01/12/Python/Django学习笔记--基础知识--admin/" data-id="cixu09d4c0000houl4ax128wq" class="article-share-link" data-share="baidu" data-title="Django学习笔记--基础知识--admin">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2017/01/12/Python/Django学习笔记--基础知识--admin/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Django/">Django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/01/11/Android/Android知识点/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Android知识点</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/01/12/Python/Django学习笔记--基础知识--admin/" data-title="Django学习笔记--基础知识--admin" data-url="http://cokernut.top/2017/01/12/Python/Django学习笔记--基础知识--admin/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/12/Python/Django学习笔记--基础知识--admin/">Django学习笔记--基础知识--admin</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/11/Android/Android知识点/">Android知识点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识--sql/">Django学习笔记--基础知识--sql</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/">Django学习笔记--基础知识--views、url、templates</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Django/" style="font-size: 12px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 12px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/React-Native/" style="font-size: 18px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

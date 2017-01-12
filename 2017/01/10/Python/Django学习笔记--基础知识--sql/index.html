@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Django学习笔记--基础知识--sql | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Django学习笔记--基础知识--sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django学习笔记--基础知识--sql">
+<meta property="og:url" content="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识--sql/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="Django学习笔记--基础知识--sql">
+<meta property="og:updated_time" content="2017-01-12T06:35:46.149Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django学习笔记--基础知识--sql">
+<meta name="twitter:description" content="Django学习笔记--基础知识--sql">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Python/Django学习笔记--基础知识--sql" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/10/Python/Django学习笔记--基础知识--sql/" class="article-date">
+  <time datetime="2017-01-10T08:05:37.000Z" itemprop="datePublished">2017-01-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Django学习笔记--基础知识--sql
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Django学习笔记–基础知识–sql–Python3.5.x、Django1.10.x<br><a id="more"></a></p>
+<h1 id="模型（数据库）"><a href="#模型（数据库）" class="headerlink" title="模型（数据库）"></a>模型（数据库）</h1><p>Django 模型是与数据库相关的，与数据库相关的代码一般写在 models.py 中，Django 支持 sqlite3, MySQL, PostgreSQL等数据库，只需要在settings.py中配置即可，不用更改models.py中的代码，丰富的API极大的方便了使用。</p>
+<p>新建demo_sql项目和新建应用people：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">django-admin startproject demo_sql # 新建一个项目</div><div class="line">cd demo_sql # 进入到该项目的文件夹</div><div class="line">django-admin startapp people # 新建一个 people 应用（app)</div></pre></td></tr></table></figure>
+<p>注意：新建app也可以用 python manage.py startapp people, 需要指出的是，django-admin 是安装Django后多出的一个命令，并不是指一个 django-admin.py 脚本在当前目录下。</p>
+<p>一个项目一般包含多个应用，一个应用也可以用在多个项目中。</p>
+<p>将我们新建的应用（people）添加到 settings.py 中的 INSTALLED_APPS中，也就是告诉Django有这么一个应用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">INSTALLED_APPS = [</div><div class="line">    &apos;django.contrib.admin&apos;,</div><div class="line">    &apos;django.contrib.auth&apos;,</div><div class="line">    &apos;django.contrib.contenttypes&apos;,</div><div class="line">    &apos;django.contrib.sessions&apos;,</div><div class="line">    &apos;django.contrib.messages&apos;,</div><div class="line">    &apos;django.contrib.staticfiles&apos;,</div><div class="line">    &apos;people&apos;,</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>我们打开 people/models.py 文件，修改其中的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from django.db import models</div><div class="line"></div><div class="line">class Person(models.Model):</div><div class="line">    name = models.CharField(max_length=30)</div><div class="line">    age = models.IntegerField()</div></pre></td></tr></table></figure>
+<p>新建了一个Person类，继承自models.Model, 一个人有姓名和年龄。</p>
+<p>我们来同步一下数据库（我们使用默认的数据库 SQLite3，无需配置）:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">进入 manage.py 所在的那个文件夹下执行这些命令：</div><div class="line">python manage.py makemigrations</div><div class="line">python manage.py migrate</div></pre></td></tr></table></figure>
+<p>我们会看到，Django生成了一系列的表，也生成了我们新建的people_person这个表。</p>
+<p>Django提供了丰富的API, 下面演示如何使用它。</p>
+<blockquote>
+<p>python manage.py shell</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from people.models import Person</div><div class="line">&gt;&gt;&gt; Person.objects.create(name=&quot;Tom&quot;, age=24)</div><div class="line">&lt;Person: Person object&gt;</div><div class="line">&gt;&gt;&gt;</div><div class="line">我们新建了一个用户Tom 那么如何从数据库是查询到它呢？</div><div class="line"></div><div class="line">&gt;&gt;&gt; Person.objects.get(name=&quot;Tom&quot;)</div><div class="line">&lt;Person: Person object&gt;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>我们用了一个 .objects.get() 方法查询出来符合条件的对象，但是大家注意到了没有，查询结果中显示<person: person="" object="">，这里并没有显示出与Tom的相关信息，如果用户多了就无法知道查询出来的到底是谁，查询结果是否正确，我们重新修改一下 people/models.py</person:></p>
+<blockquote>
+<p>name 和 age 等字段中不能有 __（双下划线，因为在Django QuerySet API中有特殊含义（用于关系，包含，不区分大小写，以什么开头或结尾，日期的大于小于，正则等）</p>
+<p>也不能有Python中的关键字，name 是合法的，student_name 也合法，但是student__name不合法，try, class, continue 也不合法，因为它是Python的关键字( import keyword; print(keyword.kwlist) 可以打出所有的关键字)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">from django.db import models</div><div class="line"></div><div class="line">class Person(models.Model):</div><div class="line">    name = models.CharField(max_length=30)</div><div class="line">    age = models.IntegerField()</div><div class="line"></div><div class="line">    def __str__(self)：</div><div class="line">        return self.name</div></pre></td></tr></table></figure>
+<p>新建一个对象的方法有以下几种：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Person.objects.create(name=name,age=age)</div><div class="line">p = Person(name=&quot;Tom&quot;, age=23)</div><div class="line">p.save()</div><div class="line">p = Person(name=&quot;Joy&quot;)</div><div class="line">p.age = 23</div><div class="line">p.save()</div><div class="line">Person.objects.get_or_create(name=&quot;Joy&quot;, age=23)</div><div class="line">这种方法是防止重复很好的方法，但是速度要相对慢些，返回一个元组，第一个为Person对象，第二个为True或False, 新建时返回的是True, 已经存在时返回False.</div></pre></td></tr></table></figure>
+<p>获取对象有以下方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Person.objects.all()</div><div class="line">Person.objects.all()[:10] 切片操作，获取10个人，不支持负索引，切片可以节约内存</div><div class="line">Person.objects.get(name=name)</div><div class="line"></div><div class="line">get是用来获取一个对象的，如果需要获取满足条件的一些人，就要用到filter</div><div class="line"></div><div class="line">Person.objects.filter(name=&quot;abc&quot;) # 等于Person.objects.filter(name__exact=&quot;abc&quot;) 名称严格等于 &quot;abc&quot; 的人</div><div class="line">Person.objects.filter(name__iexact=&quot;abc&quot;) # 名称为 abc 但是不区分大小写，可以找到 ABC, Abc, aBC，这些都符合条件</div><div class="line">Person.objects.filter(name__contains=&quot;abc&quot;) # 名称中包含 &quot;abc&quot;的人</div><div class="line">Person.objects.filter(name__icontains=&quot;abc&quot;) #名称中包含 &quot;abc&quot;，且abc不区分大小写</div><div class="line">Person.objects.filter(name__regex=&quot;^abc&quot;) # 正则表达式查询</div><div class="line">Person.objects.filter(name__iregex=&quot;^abc&quot;)# 正则表达式不区分大小写</div><div class="line"></div><div class="line">filter是找出满足条件的，当然也有排除符合某条件的</div><div class="line"></div><div class="line">Person.objects.exclude(name__contains=&quot;WZ&quot;) # 排除包含 WZ 的Person对象</div><div class="line">Person.objects.filter(name__contains=&quot;abc&quot;).exclude(age=23) # 找出名称含有abc, 但是排除年龄是23岁的</div></pre></td></tr></table></figure>
+<h1 id="自定义Field-字段"><a href="#自定义Field-字段" class="headerlink" title="自定义Field(字段)"></a>自定义Field(字段)</h1><p>Django 的官方提供了很多的 Field，但是有时候还是不能满足我们的需求，不过Django提供了自定义 Field 的方法。</p>
+<ol>
+<li>减少文本的长度，保存数据的时候压缩，读取的时候解压缩，如果发现压缩后更长，就用原文本直接存储：<br>Django 1.8 以上版本，可以用：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CompressedTextField</span><span class="params">(models.TextField)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    model Fields for storing text in a compressed format (bz2 by default)</div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">from_db_value</span><span class="params">(self, value, expression, connection, context)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> value:</div><div class="line">            <span class="keyword">return</span> value</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">return</span> value.decode(<span class="string">'base64'</span>).decode(<span class="string">'bz2'</span>).decode(<span class="string">'utf-8'</span>)</div><div class="line">        <span class="keyword">except</span> Exception:</div><div class="line">            <span class="keyword">return</span> value</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_python</span><span class="params">(self, value)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> value:</div><div class="line">            <span class="keyword">return</span> value</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">return</span> value.decode(<span class="string">'base64'</span>).decode(<span class="string">'bz2'</span>).decode(<span class="string">'utf-8'</span>)</div><div class="line">        <span class="keyword">except</span> Exception:</div><div class="line">            <span class="keyword">return</span> value</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_prep_value</span><span class="params">(self, value)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> value:</div><div class="line">            <span class="keyword">return</span> value</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            value.decode(<span class="string">'base64'</span>)</div><div class="line">            <span class="keyword">return</span> value</div><div class="line">        <span class="keyword">except</span> Exception:</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                <span class="keyword">return</span> value.encode(<span class="string">'utf-8'</span>).encode(<span class="string">'bz2'</span>).encode(<span class="string">'base64'</span>)</div><div class="line">            <span class="keyword">except</span> Exception:</div><div class="line">                <span class="keyword">return</span> value</div></pre></td></tr></table></figure>
+<p>Django 1.8及以上版本中，from_db_value 函数用于转化数据库中的字符到 Python的变量，get_prep_value 用于将Python变量处理后(此处为压缩）保存到数据库，使用和Django自带的 Field 一样。</p>
+<h1 id="数据表更改"><a href="#数据表更改" class="headerlink" title="数据表更改"></a>数据表更改</h1><h4 id="初始化、更新数据库"><a href="#初始化、更新数据库" class="headerlink" title="初始化、更新数据库"></a>初始化、更新数据库</h4><p>Django 1.7.x 及以后的版本集成了 South 的功能，在修改models.py了后运行：</p>
+<blockquote>
+<p>python manage.py makemigrations<br>python manage.py migrate</p>
+</blockquote>
+<p>这两行命令就会对我们的models.py 进行检测，自动发现需要更改的，应用到数据库中去。<br>你会发现应用people的migrations 目录，里面生成了一个 0001_initial.py 文件。</p>
+<p>修改models.py后再运行：</p>
+<blockquote>
+<p>python manage.py makemigrations<br>python manage.py migrate</p>
+</blockquote>
+<p>你会发现应用people的migrations 目录，里面生成了一个 0002_auto_20170111_1446.py 文件。<br>这里的0001_initial.py和0002_auto_20170111_1446.py是数据库的版本变化记录文件，可以用来恢复到指定版本（0001、0002）。</p>
+<h4 id="恢复到以前"><a href="#恢复到以前" class="headerlink" title="恢复到以前"></a>恢复到以前</h4><p>South好处就是可以随时恢复到之前的一个版本，比如我们想要回到最开始的那个版本：</p>
+<blockquote>
+<p>python manage.py migrate people 0001<br>“0001”指向的是更新数据库是生成的版本文件号（0001_initial.py）。<br>比如要恢复到0002版本可以执行python manage.py migrate people 0002命令这样就用根据0002_auto_20170111_1446.py的内容来恢复数据库</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; python manage.py migrate people 0001</div><div class="line">Operations to perform:</div><div class="line">  Target specific migration: 0001_initial, from people</div><div class="line">Running migrations:</div><div class="line">  Rendering model states... DONE</div><div class="line">  Unapplying people.0002_auto_20170111_1446... OK</div></pre></td></tr></table></figure>
+<p>这样就搞定了，数据库就恢复到以前了，比你手动更改要方便太多了。</p>
+<h1 id="QuerySet-API"><a href="#QuerySet-API" class="headerlink" title="QuerySet API"></a>QuerySet API</h1><p>从数据库中查询出来的结果一般是一个集合，这个集合叫做 QuerySet。</p>
+<blockquote>
+<p>blog/models.py</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Blog</span><span class="params">(models.Model)</span>:</span></div><div class="line">    name = models.CharField(max_length=<span class="number">100</span>)</div><div class="line">    tagline = models.TextField()</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__unicode__</span><span class="params">(self)</span>:</span>  <span class="comment"># __str__ on Python 3</span></div><div class="line">        <span class="keyword">return</span> self.name</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Author</span><span class="params">(models.Model)</span>:</span></div><div class="line">    name = models.CharField(max_length=<span class="number">50</span>)</div><div class="line">    email = models.EmailField()</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__unicode__</span><span class="params">(self)</span>:</span>  <span class="comment"># __str__ on Python 3</span></div><div class="line">        <span class="keyword">return</span> self.name</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Entry</span><span class="params">(models.Model)</span>:</span></div><div class="line">    blog = models.ForeignKey(Blog)</div><div class="line">    headline = models.CharField(max_length=<span class="number">255</span>)</div><div class="line">    body_text = models.TextField()</div><div class="line">    pub_date = models.DateField()</div><div class="line">    mod_date = models.DateField()</div><div class="line">    authors = models.ManyToManyField(Author)</div><div class="line">    n_comments = models.IntegerField()</div><div class="line">    n_pingbacks = models.IntegerField()</div><div class="line">    rating = models.IntegerField()</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__unicode__</span><span class="params">(self)</span>:</span>  <span class="comment"># __str__ on Python 3</span></div><div class="line">        <span class="keyword">return</span> self.headline</div></pre></td></tr></table></figure>
+<h4 id="QuerySet-创建对象的方法"><a href="#QuerySet-创建对象的方法" class="headerlink" title="QuerySet 创建对象的方法"></a>QuerySet 创建对象的方法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> blog.models <span class="keyword">import</span> Blog</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b = Blog(name=<span class="string">'Beatles Blog'</span>, tagline=<span class="string">'All the latest Beatles news.'</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>b.save()</div><div class="line"></div><div class="line">总之，一共有四种方法</div><div class="line"><span class="comment"># 方法 1</span></div><div class="line">Author.objects.create(name=<span class="string">"Tom"</span>, email=<span class="string">"Tom@gmail.com"</span>)</div><div class="line"></div><div class="line"><span class="comment"># 方法 2</span></div><div class="line">tom = Author(name=<span class="string">"Tom"</span>, email=<span class="string">"Tom@gmail.com"</span>)</div><div class="line">tom.save()</div><div class="line"></div><div class="line"><span class="comment"># 方法 3</span></div><div class="line">tom = Author()</div><div class="line">tom.name=<span class="string">"Tom"</span></div><div class="line">tom.email=<span class="string">"Tom@gmail.com"</span></div><div class="line">tom.save()</div><div class="line"></div><div class="line"><span class="comment"># 方法 4，首先尝试获取，不存在就创建，可以防止重复</span></div><div class="line">Author.objects.get_or_create(name=<span class="string">"Tom"</span>, email=<span class="string">"Tom@gmail.com"</span>)</div><div class="line"><span class="comment"># 返回值(object, True/False)</span></div></pre></td></tr></table></figure>
+<p>备注：前三种方法返回的都是对应的 object，最后一种方法返回的是一个元组，(object, True/False)，创建时返回 True, 已经存在时返回 False</p>
+<p>当有一对多，多对一，或者多对多的关系的时候，先把相关的对象查询出来</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> blog.models <span class="keyword">import</span> Entry</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>entry = Entry.objects.get(pk=<span class="number">1</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>cheese_blog = Blog.objects.get(name=<span class="string">"Cheddar Talk"</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>entry.blog = cheese_blog</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>entry.save()</div></pre></td></tr></table></figure>
+<h4 id="获取对象的方法"><a href="#获取对象的方法" class="headerlink" title="获取对象的方法"></a>获取对象的方法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Person.objects.all() <span class="comment"># 查询所有</span></div><div class="line">Person.objects.all()[:<span class="number">10</span>] 切片操作，获取<span class="number">10</span>个人，不支持负索引，切片可以节约内存，不支持负索引，后面有相应解决办法，第<span class="number">7</span>条</div><div class="line">Person.objects.get(name=<span class="string">"Tom"</span>) <span class="comment"># 名称为 Tom 的一条，多条会报错</span></div><div class="line"> </div><div class="line">get是用来获取一个对象的，如果需要获取满足条件的一些人，就要用到filter</div><div class="line">Person.objects.filter(name=<span class="string">"abc"</span>) <span class="comment"># 等于Person.objects.filter(name__exact="abc") 名称严格等于 "abc" 的人</span></div><div class="line">Person.objects.filter(name__iexact=<span class="string">"abc"</span>) <span class="comment"># 名称为 abc 但是不区分大小写，可以找到 ABC, Abc, aBC，这些都符合条件</span></div><div class="line"> </div><div class="line">Person.objects.filter(name__contains=<span class="string">"abc"</span>) <span class="comment"># 名称中包含 "abc"的人</span></div><div class="line">Person.objects.filter(name__icontains=<span class="string">"abc"</span>) <span class="comment">#名称中包含 "abc"，且abc不区分大小写</span></div><div class="line"> </div><div class="line">Person.objects.filter(name__regex=<span class="string">"^abc"</span>) <span class="comment"># 正则表达式查询</span></div><div class="line">Person.objects.filter(name__iregex=<span class="string">"^abc"</span>)<span class="comment"># 正则表达式不区分大小写</span></div><div class="line"> </div><div class="line"><span class="comment"># filter是找出满足条件的，当然也有排除符合某条件的</span></div><div class="line">Person.objects.exclude(name__contains=<span class="string">"Tom"</span>) <span class="comment"># 排除包含 Tom 的Person对象</span></div><div class="line">Person.objects.filter(name__contains=<span class="string">"abc"</span>).exclude(age=<span class="number">23</span>) <span class="comment"># 找出名称含有abc, 但是排除年龄是23岁的</span></div></pre></td></tr></table></figure>
+<h4 id="QuerySet-是可迭代的，比如："><a href="#QuerySet-是可迭代的，比如：" class="headerlink" title="QuerySet 是可迭代的，比如："></a>QuerySet 是可迭代的，比如：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">es = Entry.objects.all()</div><div class="line"><span class="keyword">for</span> e <span class="keyword">in</span> es:</div><div class="line">    print(e.headline)</div><div class="line">Entry.objects.all() 或者 es 就是 QuerySet 是查询所有的 Entry 条目。</div></pre></td></tr></table></figure>
+<p>注意事项：</p>
+<blockquote>
+<p>(1). 如果只是检查 Entry 中是否有对象，应该用 Entry.objects.all().exists()<br>(2). QuerySet 支持切片 Entry.objects.all()[:10] 取出10条，可以节省内存<br>(3). 用 len(es) 可以得到Entry的数量，但是推荐用 Entry.objects.count()来查询数量，后者用的是SQL：SELECT COUNT(*)<br>(4). list(es) 可以强行将 QuerySet 变成 列表</p>
+</blockquote>
+<h4 id="QuerySet-是可以用pickle序列化到硬盘再读取出来的"><a href="#QuerySet-是可以用pickle序列化到硬盘再读取出来的" class="headerlink" title="QuerySet 是可以用pickle序列化到硬盘再读取出来的"></a>QuerySet 是可以用pickle序列化到硬盘再读取出来的</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> pickle</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>query = pickle.loads(s)     <span class="comment"># Assuming 's' is the pickled string.</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>qs = MyModel.objects.all()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>qs.query = query            <span class="comment"># Restore the original 'query'.</span></div></pre></td></tr></table></figure>
+<h4 id="QuerySet-查询结果排序"><a href="#QuerySet-查询结果排序" class="headerlink" title="QuerySet 查询结果排序"></a>QuerySet 查询结果排序</h4><p>作者按照名称排序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Author.objects.all().order_by(<span class="string">'name'</span>)</div><div class="line">Author.objects.all().order_by(<span class="string">'-name'</span>) <span class="comment"># 在 column name 前加一个负号，可以实现倒序</span></div></pre></td></tr></table></figure>
+<h4 id="QuerySet-支持链式查询"><a href="#QuerySet-支持链式查询" class="headerlink" title="QuerySet 支持链式查询"></a>QuerySet 支持链式查询</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Author.objects.filter(name__contains=<span class="string">"Tom"</span>).filter(email=<span class="string">"tuweizhong@163.com"</span>)</div><div class="line">Author.objects.filter(name__contains=<span class="string">"Wei"</span>).exclude(email=<span class="string">"tuweizhong@163.com"</span>)</div><div class="line"><span class="comment"># 找出名称含有abc, 但是排除年龄是23岁的</span></div><div class="line">Person.objects.filter(name__contains=<span class="string">"abc"</span>).exclude(age=<span class="number">23</span>)</div></pre></td></tr></table></figure>
+<h4 id="QuerySet-不支持负索引"><a href="#QuerySet-不支持负索引" class="headerlink" title="QuerySet 不支持负索引"></a>QuerySet 不支持负索引</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Person.objects.all()[:<span class="number">10</span>] 切片操作，前<span class="number">10</span>条</div><div class="line">Person.objects.all()[<span class="number">-10</span>:] 会报错！！！</div><div class="line"><span class="comment"># 1. 使用 reverse() 解决</span></div><div class="line">Person.objects.all().reverse()[:<span class="number">2</span>] <span class="comment"># 最后两条</span></div><div class="line">Person.objects.all().reverse()[<span class="number">0</span>] <span class="comment"># 最后一条</span></div><div class="line"><span class="comment"># 2. 使用 order_by，在栏目名（column name）前加一个负号</span></div><div class="line">Author.objects.order_by(<span class="string">'-id'</span>)[:<span class="number">20</span>] <span class="comment"># id最大的20条</span></div></pre></td></tr></table></figure>
+<h4 id="QuerySet-重复的问题，使用-distinct-去重"><a href="#QuerySet-重复的问题，使用-distinct-去重" class="headerlink" title="QuerySet 重复的问题，使用 .distinct() 去重"></a>QuerySet 重复的问题，使用 .distinct() 去重</h4><p>一般的情况下，QuerySet 中不会出来重复的，重复是很罕见的，但是当跨越多张表进行检索后，结果并到一起，可以会出来重复的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">qs1 = Pathway.objects.filter(label__name=&apos;x&apos;)</div><div class="line">qs2 = Pathway.objects.filter(reaction__name=&apos;A + B &gt;&gt; C&apos;)</div><div class="line">qs3 = Pathway.objects.filter(inputer__name=&apos;Tom&apos;)</div><div class="line"># 合并到一起</div><div class="line">qs = qs1 | qs2 | qs3</div><div class="line">这个时候就有可能出现重复的</div><div class="line"># 去重方法</div><div class="line">qs = qs.distinct()</div></pre></td></tr></table></figure>
+<h1 id="QuerySet-进阶"><a href="#QuerySet-进阶" class="headerlink" title="QuerySet 进阶"></a>QuerySet 进阶</h1><p>准备阶段，可以直接在下面下载代码开始练习，建议看一下 models.py 的代码。</p>
+<p>新建一个项目 sql，建一个 app 名称是 blog</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">django-admin startproject sql</div><div class="line">cd dql</div><div class="line">python manage.py startapp blog</div></pre></td></tr></table></figure>
+<p>把 blog 加入到 settings.py 中的 INSTALL_APPS 中</p>
+<blockquote>
+<p>blog/models.py</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</div><div class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</div><div class="line"><span class="keyword">from</span> django.utils.encoding <span class="keyword">import</span> python_2_unicode_compatible</div><div class="line"> </div><div class="line"><span class="meta">@python_2_unicode_compatible</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Author</span><span class="params">(models.Model)</span>:</span></div><div class="line">    name = models.CharField(max_length=<span class="number">50</span>)</div><div class="line">    qq = models.CharField(max_length=<span class="number">10</span>)</div><div class="line">    addr = models.TextField()</div><div class="line">    email = models.EmailField()</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.name</div><div class="line"> </div><div class="line"><span class="meta">@python_2_unicode_compatible</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></div><div class="line">    title = models.CharField(max_length=<span class="number">50</span>)</div><div class="line">    author = models.ForeignKey(Author)</div><div class="line">    content = models.TextField()</div><div class="line">    score = models.IntegerField()  <span class="comment"># 文章的打分</span></div><div class="line">    tags = models.ManyToManyField(<span class="string">'Tag'</span>)</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.title</div><div class="line"> </div><div class="line"><span class="meta">@python_2_unicode_compatible</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tag</span><span class="params">(models.Model)</span>:</span></div><div class="line">    name = models.CharField(max_length=<span class="number">50</span>)</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.name</div></pre></td></tr></table></figure>
+<p>假设一篇文章只有一个作者(Author)，一个作者可以有多篇文章(Article)，一篇文章可以有多个标签（Tag)。</p>
+<p>创建 migrations 然后 migrate 在数据库中生成相应的表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">python manage.py makemigrations</div><div class="line">python manage.py migrate</div></pre></td></tr></table></figure>
+<p>生成示例数据，运行 initdb.py:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</div><div class="line"><span class="keyword">import</span> random</div><div class="line"><span class="keyword">from</span> sql.wsgi <span class="keyword">import</span> *</div><div class="line"><span class="keyword">from</span> blog.models <span class="keyword">import</span> Author, Article, Tag</div><div class="line"> </div><div class="line">author_name_list = [<span class="string">'Tom'</span>, <span class="string">'AA'</span>, <span class="string">'BB'</span>, <span class="string">'CC'</span>, <span class="string">'DD'</span>]</div><div class="line">article_title_list = [<span class="string">'Django 教程'</span>, <span class="string">'Python 教程'</span>, <span class="string">'HTML 教程'</span>]</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_authors</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">for</span> author_name <span class="keyword">in</span> author_name_list:</div><div class="line">        author, created = Author.objects.get_or_create(name=author_name)</div><div class="line">        <span class="comment"># 随机生成9位数的QQ，</span></div><div class="line">        author.qq = <span class="string">''</span>.join(</div><div class="line">            str(random.choice(range(<span class="number">10</span>))) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">9</span>)</div><div class="line">        )</div><div class="line">        author.addr = <span class="string">'addr_%s'</span> % (random.randrange(<span class="number">1</span>, <span class="number">3</span>))</div><div class="line">        author.email = <span class="string">'%s@ziqiangxuetang.com'</span> % (author.addr)</div><div class="line">        author.save()</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_articles_and_tags</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># 随机生成文章</span></div><div class="line">    <span class="keyword">for</span> article_title <span class="keyword">in</span> article_title_list:</div><div class="line">        <span class="comment"># 从文章标题中得到 tag</span></div><div class="line">        tag_name = article_title.split(<span class="string">' '</span>, <span class="number">1</span>)[<span class="number">0</span>]</div><div class="line">        tag, created = Tag.objects.get_or_create(name=tag_name)</div><div class="line"> </div><div class="line">        random_author = random.choice(Author.objects.all())</div><div class="line"> </div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">21</span>):</div><div class="line">            title = <span class="string">'%s_%s'</span> % (article_title, i)</div><div class="line">            article, created = Article.objects.get_or_create(</div><div class="line">                title=title, defaults=&#123;</div><div class="line">                    <span class="string">'author'</span>: random_author,  <span class="comment"># 随机分配作者</span></div><div class="line">                    <span class="string">'content'</span>: <span class="string">'%s 正文'</span> % title,</div><div class="line">                    <span class="string">'score'</span>: random.randrange(<span class="number">70</span>, <span class="number">101</span>),  <span class="comment"># 随机给文章一个打分</span></div><div class="line">                &#125;</div><div class="line">            )</div><div class="line">            article.tags.add(tag)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    create_authors()</div><div class="line">    create_articles_and_tags()</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div><div class="line">    print(<span class="string">"Done!"</span>)</div></pre></td></tr></table></figure>
+<p>执行</p>
+<blockquote>
+<p>python initdb.py</p>
+</blockquote>
+<p>导入数据后，我们确认一下数据是不是已经导入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;python manage.py shell</div><div class="line">In [1]: from blog.models import Article, Author, Tag</div><div class="line"></div><div class="line">In [2]: Article.objects.all()</div><div class="line">Out[2]: &lt;QuerySet [&lt;Article: Django 教程_1&gt;, &lt;Article: Django 教程_2&gt;, &lt;Article: Django 教程_3&gt;, &lt;Article: Django 教程_4&gt;, &lt;Article: Django 教程_5&gt;, &lt;Article: Django 教程_6&gt;, &lt;Article: Django 教程_7&gt;, &lt;Article: Django 教程_8&gt;, &lt;Article: Django 教程_9&gt;, &lt;Article: Django 教程_10&gt;, &lt;Article: Django 教程_11&gt;, &lt;Article: Django 教程_12&gt;, &lt;Article: Django 教程_13&gt;, &lt;Article: Django 教程_14&gt;, &lt;Article: Django 教程_15&gt;, &lt;Article: Django 教程_16&gt;, &lt;Article: Django 教程_17&gt;, &lt;Article: Django 教程_18&gt;, &lt;Article: Django 教程_19&gt;, &lt;Article: Django 教程_20&gt;, &apos;...(remaining elements truncated)...&apos;]&gt;</div><div class="line"></div><div class="line">In [3]: Author.objects.all()</div><div class="line">Out[3]: &lt;QuerySet [&lt;Author: Tom&gt;, &lt;Author: twz915&gt;, &lt;Author: wangdachui&gt;, &lt;Author: xiaoming&gt;]&gt;</div><div class="line"></div><div class="line">In [4]: Tag.objects.all()</div><div class="line">Out[4]: &lt;QuerySet [&lt;Tag: Django&gt;, &lt;Tag: Python&gt;, &lt;Tag: HTML&gt;]&gt;</div></pre></td></tr></table></figure>
+<p>准备阶段结束。</p>
+<h3 id="查看-Django-queryset-执行的-SQL"><a href="#查看-Django-queryset-执行的-SQL" class="headerlink" title="查看 Django queryset 执行的 SQL"></a>查看 Django queryset 执行的 SQL</h3><blockquote>
+<p>print str(Author.objects.all().query)<br>简化一下，就是：SELECT id, name, qq, addr, email FROM blog_author;</p>
+<p>print str(Author.objects.filter(name=”Tom”).query)<br>简化一下，就是：SELECT id, name, qq, addr, email FROM blog_author WHERE name=Tom;</p>
+</blockquote>
+<p>所以，当不知道Django做了什么时，你可以把执行的 SQL 打出来看看，也可以借助 django-debug-toolbar 等工具在页面上看到访问当前页面执行了哪些SQL，耗时等。<br>还有一种办法就是修改一下 log 的设置。</p>
+<h3 id="values-list-获取元组形式结果"><a href="#values-list-获取元组形式结果" class="headerlink" title="values_list 获取元组形式结果"></a>values_list 获取元组形式结果</h3><h4 id="比如我们要获取作者的-name-和-qq"><a href="#比如我们要获取作者的-name-和-qq" class="headerlink" title="比如我们要获取作者的 name 和 qq"></a>比如我们要获取作者的 name 和 qq</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; authors = Author.objects.values_list(&apos;name&apos;, &apos;qq&apos;)</div><div class="line">&gt; authors</div><div class="line">&gt; list(authors)</div><div class="line">如果只需要 1 个字段，可以指定 flat=True</div><div class="line">&gt; Author.objects.values_list(&apos;name&apos;, flat=True)</div><div class="line">&gt; list(Author.objects.values_list(&apos;name&apos;, flat=True))</div></pre></td></tr></table></figure>
+<h4 id="查询-AA-这个人的文章标题"><a href="#查询-AA-这个人的文章标题" class="headerlink" title="查询 AA 这个人的文章标题"></a>查询 AA 这个人的文章标题</h4><p><code>&gt; Article.objects.filter(author__name=&#39;AA&#39;).values_list(&#39;title&#39;, flat=True)</code></p>
+<h3 id="values-获取字典形式的结果"><a href="#values-获取字典形式的结果" class="headerlink" title="values 获取字典形式的结果"></a>values 获取字典形式的结果</h3><h4 id="比如我们要获取作者的-name-和-qq-1"><a href="#比如我们要获取作者的-name-和-qq-1" class="headerlink" title="比如我们要获取作者的 name 和 qq"></a>比如我们要获取作者的 name 和 qq</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; Author.objects.values(&apos;name&apos;, &apos;qq&apos;)</div><div class="line">&gt; list(Author.objects.values(&apos;name&apos;, &apos;qq&apos;))</div></pre></td></tr></table></figure>
+<h4 id="查询-twz915-这个人的文章标题"><a href="#查询-twz915-这个人的文章标题" class="headerlink" title="查询 twz915 这个人的文章标题"></a>查询 twz915 这个人的文章标题</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; Article.objects.filter(author__name=&apos;twz915&apos;).values(&apos;title&apos;)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：</p>
+<ol>
+<li>values_list 和 values 返回的并不是真正的 列表 或 字典，也是 queryset，他们也是 lazy evaluation 的（惰性评估，通俗地说，就是用的时候才真正的去数据库查）</li>
+<li>如果查询后没有使用，在数据库更新后再使用，你发现得到在是新内容！！！如果想要旧内容保持着，数据库更新后不要变，可以 list 一下</li>
+<li>如果只是遍历这些结果，没有必要 list 它们转成列表（浪费内存，数据量大的时候要更谨慎！！！）</li>
+</ol>
+</blockquote>
+<h3 id="extra-实现-别名，条件，排序等"><a href="#extra-实现-别名，条件，排序等" class="headerlink" title="extra 实现 别名，条件，排序等"></a>extra 实现 别名，条件，排序等</h3><p>extra 中可实现别名，条件，排序等，后面两个用 filter, exclude 一般都能实现，排序用 order_by 也能实现。我们主要看一下别名这个</p>
+<p>比如 Author 中有 name， Tag 中有 name 我们想执行:<br>SELECT name AS tag_name FROM blog_tag;<br>这样的语句，就可以用 select 来实现，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; tags = Tag.objects.all().extra(select=&#123;&apos;tag_name&apos;: &apos;name&apos;&#125;)</div><div class="line">&gt; tags[0].name</div><div class="line">&gt; tags[0].tag_name</div></pre></td></tr></table></figure>
+<p>我们发现 name 和 tag_name 都可以使用，确认一下执行的 SQL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; Tag.objects.all().extra(select=&#123;&apos;tag_name&apos;: &apos;name&apos;&#125;).query.__str__()</div><div class="line">输出：u&apos;SELECT (name) AS &quot;tag_name&quot;, &quot;blog_tag&quot;.&quot;id&quot;, &quot;blog_tag&quot;.&quot;name&quot; FROM &quot;blog_tag&quot;&apos;</div></pre></td></tr></table></figure>
+<p>我们发现查询的时候弄了两次 (name) AS “tag_name” 和 “blog_tag”.”name”<br>如果我们只想其中一个能用，可以用 defer 排除掉原来的 name</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; Tag.objects.all().extra(select=&#123;&apos;tag_name&apos;: &apos;name&apos;&#125;).defer(&apos;name&apos;).query.__str__()</div><div class="line">输出： u&apos;SELECT (name) AS &quot;tag_name&quot;, &quot;blog_tag&quot;.&quot;id&quot; FROM &quot;blog_tag&quot;&apos;</div></pre></td></tr></table></figure>
+<p>也许你会说为什么要改个名称，最常见的需求就是数据转变成 list，然后可视化等。</p>
+<h3 id="annotate-聚合-计数，求和，平均数等"><a href="#annotate-聚合-计数，求和，平均数等" class="headerlink" title="annotate 聚合 计数，求和，平均数等"></a>annotate 聚合 计数，求和，平均数等</h3><h4 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h4><p>计算每个作者的文章数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; Article.objects.all().values(&apos;author_id&apos;).annotate(count=Count(&apos;author&apos;)).values(&apos;author_id&apos;, &apos;count&apos;)</div><div class="line">&gt;Article.objects.all().values(&apos;author_id&apos;).annotate(count=Count(&apos;author&apos;)).values(&apos;author_id&apos;,&apos;count&apos;).query.__str__()</div><div class="line">输出：u&apos;SELECT &quot;blog_article&quot;.&quot;author_id&quot;, COUNT(&quot;blog_article&quot;.&quot;author_id&quot;) AS &quot;count&quot; FROM &quot;blog_article&quot; GROUP BY &quot;blog_article&quot;.&quot;author_id&quot;&apos;</div><div class="line">简化一下SQL: SELECT author_id, COUNT(author_id) AS count FROM blog_article GROUP BY author_id</div></pre></td></tr></table></figure>
+<p>获取作者的名称 及 作者的文章数</p>
+<blockquote>
+<p>Article.objects.all().values(‘author<strong>name’).annotate(count=Count(‘author’)).values(‘author</strong>name’, ‘count’)</p>
+</blockquote>
+<h4 id="求和-与-平均值"><a href="#求和-与-平均值" class="headerlink" title="求和 与 平均值"></a>求和 与 平均值</h4><p>求一个作者的所有文章的得分(score)平均值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; from django.db.models import Avg</div><div class="line">&gt; Article.objects.values(&apos;author_id&apos;).annotate(avg_score=Avg(&apos;score&apos;)).values(&apos;author_id&apos;, &apos;avg_score&apos;)</div><div class="line">执行的SQL</div><div class="line">&gt; Article.objects.values(&apos;author_id&apos;).annotate(avg_score=Avg(&apos;score&apos;)).values(&apos;author_id&apos;, &apos;avg_score&apos;).query.__str__()</div><div class="line">&gt; 输出：u&apos;SELECT &quot;blog_article&quot;.&quot;author_id&quot;, AVG(&quot;blog_article&quot;.&quot;score&quot;) AS &quot;avg_score&quot; FROM &quot;blog_article&quot; GROUP BY &quot;blog_article&quot;.&quot;author_id&quot;&apos;</div></pre></td></tr></table></figure>
+<p>求一个作者所有文章的总分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; from django.db.models import Sum</div><div class="line">&gt; Article.objects.values(&apos;author__name&apos;).annotate(sum_score=Sum(&apos;score&apos;)).values(&apos;author__name&apos;, &apos;sum_score&apos;)</div><div class="line">执行的SQL：</div><div class="line">&gt; Article.objects.values(&apos;author__name&apos;).annotate(sum_score=Sum(&apos;score&apos;)).values(&apos;author__name&apos;, &apos;sum_score&apos;).query.__str__()</div><div class="line">输出：u&apos;SELECT &quot;blog_author&quot;.&quot;name&quot;, SUM(&quot;blog_article&quot;.&quot;score&quot;) AS &quot;sum_score&quot; FROM &quot;blog_article&quot; INNER JOIN &quot;blog_author&quot; ON (&quot;blog_article&quot;.&quot;author_id&quot; = &quot;blog_author&quot;.&quot;id&quot;) GROUP BY &quot;blog_author&quot;.&quot;name&quot;&apos;</div></pre></td></tr></table></figure>
+<h3 id="select-related-做化一对一，多对一查询"><a href="#select-related-做化一对一，多对一查询" class="headerlink" title="select_related 做化一对一，多对一查询"></a>select_related 做化一对一，多对一查询</h3><p>开始之前我们修改一个 settings.py 让Django打印出在数据库中执行的语句</p>
+<p>settings.py 尾部加上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">LOGGING = &#123;</div><div class="line">    &apos;version&apos;: 1,</div><div class="line">    &apos;disable_existing_loggers&apos;: False,</div><div class="line">    &apos;handlers&apos;: &#123;</div><div class="line">        &apos;console&apos;: &#123;</div><div class="line">            &apos;class&apos;: &apos;logging.StreamHandler&apos;,</div><div class="line">        &#125;,</div><div class="line">    &#125;,</div><div class="line">    &apos;loggers&apos;: &#123;</div><div class="line">        &apos;django.db.backends&apos;: &#123;</div><div class="line">            &apos;handlers&apos;: [&apos;console&apos;],</div><div class="line">            &apos;level&apos;: &apos;DEBUG&apos; if DEBUG else &apos;INFO&apos;,</div><div class="line">        &#125;,</div><div class="line">    &#125;,</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样当 DEBUG 为 True 的时候，我们可以看出 django 执行了什么 SQL 语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; python manage.py shell</div><div class="line">&gt; from blog.models import *</div><div class="line">&gt; Author.objects.all()</div></pre></td></tr></table></figure>
+<p>假如，我们取出10篇Django相关的文章，并需要用到作者的姓名:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt; articles = Article.objects.all()[:10]</div><div class="line">&gt; a1 = articles[0]  # 取第一篇</div><div class="line">&gt; a1.title</div><div class="line">&gt; a1.author_id</div><div class="line">&gt; a1.author.name   # 再次查询了数据库，注意！！！</div></pre></td></tr></table></figure>
+<p>这样的话我们遍历查询结果的时候就会查询很多次数据库，能不能只查询一次，把作者的信息也查出来呢？<br>当然可以，这时就用到 select_related，我们的数据库设计的是一篇文章只能有一个作者，一个作者可以有多篇文章。<br>现在要查询文章的时候连同作者一起查询出来，“文章”和“作者”的关系就是多对一，换句说说，就是一篇文章只可能有一个作者。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; articles = Article.objects.all().select_related(&apos;author&apos;)[:10]</div><div class="line">&gt; a1 = articles[0]  # 取第一篇</div><div class="line">&gt; a1.title</div><div class="line">&gt; a1.author.name   # 没有再次查询数据库！！</div></pre></td></tr></table></figure>
+<h3 id="prefetch-related-做化一对多，多对多查询"><a href="#prefetch-related-做化一对多，多对多查询" class="headerlink" title="prefetch_related 做化一对多，多对多查询"></a>prefetch_related 做化一对多，多对多查询</h3><p>和 select_related 功能类似，但是实现不同。<br>select_related 是使用 SQL JOIN 一次性取出相关的内容。<br>prefetch_related 用于 一对多，多对多 的情况，这时 select_related 用不了，因为当前一条有好几条与之相关的内容。<br>prefetch_related是通过再执行一条额外的SQL语句，然后用 Python 把两次SQL查询的内容关联（joining)到一起</p>
+<p>看个例子，查询文章的同时，查询文章对应的标签。“文章”与“标签”是多对多的关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; articles = Article.objects.all().prefetch_related(&apos;tags&apos;)[:10]</div><div class="line">&gt; articles</div></pre></td></tr></table></figure>
+<p>遍历查询的结果：</p>
+<p>不用 prefetch_related 时</p>
+<blockquote>
+<p>articles = Article.objects.all()[:3]<br>for a in articles:<br>        print a.title, a.tags.all()</p>
+</blockquote>
+<p>用 prefetch_related 我们看一下是什么样子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; articles = Article.objects.all().prefetch_related(&apos;tags&apos;)[:3]</div><div class="line">&gt; for a in articles:</div><div class="line">       print a.title, a.tags.all()</div></pre></td></tr></table></figure>
+<p>第二条 SQL 语句，一次性查出了所有相关的内容。</p>
+<h3 id="defer-排除不需要的字段"><a href="#defer-排除不需要的字段" class="headerlink" title="defer 排除不需要的字段"></a>defer 排除不需要的字段</h3><p>在复杂的情况下，表中可能有些字段内容非常多，取出来转化成 Python 对象会占用大量的资源。</p>
+<p>这时候可以用 defer 来排除这些字段，比如我们在文章列表页，只需要文章的标题和作者，没有必要把文章的内容也获取出来（因为会转换成python对象，浪费内存）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt; Article.objects.all()</div><div class="line">&gt; Article.objects.all().defer(&apos;content&apos;)</div></pre></td></tr></table></figure>
+<h3 id="only-仅选择需要的字段"><a href="#only-仅选择需要的字段" class="headerlink" title="only 仅选择需要的字段"></a>only 仅选择需要的字段</h3><p>和 defer 相反，only 用于取出需要的字段，假如我们只需要查出作者的名称</p>
+<blockquote>
+<p>Author.objects.all().only(‘name’)</p>
+</blockquote>
+<p>可以发现，我们让查 name ， id 也查了，这个 id 是 主键，能不能没有这个 id 呢？</p>
+<p>试一下原生的 SQL 查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; authors =  Author.objects.raw(&apos;select name from blog_author limit 1&apos;)</div><div class="line">&gt; author = authors[0]</div><div class="line">InvalidQuery: Raw query must include the primary key</div><div class="line">报错信息说 非法查询，原生SQL查询必须包含 主键！</div></pre></td></tr></table></figure>
+<p>再试试直接执行 SQL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; python manage.py dbshell</div><div class="line">sqlite&gt; select name from blog_author limit 1;</div><div class="line">Tom       &lt;---  成功！！！</div></pre></td></tr></table></figure>
+<p>虽然直接执行SQL语句可以这样，但是 django queryset 不允许这样做，一般也不需要关心，反正 only 一定会取出你指定了的字段。</p>
+<h3 id="自定义聚合功能"><a href="#自定义聚合功能" class="headerlink" title="自定义聚合功能"></a>自定义聚合功能</h3><p>我们前面看到了 django.db.models 中有 Count, Avg, Sum 等，但是有一些没有的，比如 GROUP_CONCAT，它用来聚合时将符合某分组条件(group by)的不同的值，连到一起，作为整体返回。</p>
+<p>实现 GROUP_CONCAT 功能:</p>
+<p>新建一个文件my_aggregate.py:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.db.models <span class="keyword">import</span> Aggregate, CharField</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GroupConcat</span><span class="params">(Aggregate)</span>:</span></div><div class="line">    function = <span class="string">'GROUP_CONCAT'</span></div><div class="line">    template = <span class="string">'%(function)s(%(distinct)s%(expressions)s%(ordering)s%(separator)s)'</span></div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, expression, distinct=False, ordering=None, separator=<span class="string">','</span>, **extra)</span>:</span></div><div class="line">        super(GroupConcat, self).__init__(</div><div class="line">            expression,</div><div class="line">            distinct=<span class="string">'DISTINCT '</span> <span class="keyword">if</span> distinct <span class="keyword">else</span> <span class="string">''</span>,</div><div class="line">            ordering=<span class="string">' ORDER BY %s'</span> % ordering <span class="keyword">if</span> ordering <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span> <span class="keyword">else</span> <span class="string">''</span>,</div><div class="line">            separator=<span class="string">' SEPARATOR "%s"'</span> % separator,</div><div class="line">            output_field=CharField(),</div><div class="line">            **extra        )</div></pre></td></tr></table></figure>
+<p>使用时先引入 GroupConcat 这个类，比如聚合后的错误日志记录有这些字段 time, level, info</p>
+<p>我们想把 level, info 一样的 聚到到一起，按时间和发生次数倒序排列，并含有每次日志发生的时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ErrorLogModel.objects.values(&apos;level&apos;, &apos;info&apos;).annotate(count=Count(1), time=GroupConcat(&apos;time&apos;, ordering=&apos;time DESC&apos;, separator=&apos; | &apos;)).order_by(&apos;-time&apos;, &apos;-count&apos;)</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识--sql/" data-id="cixu04lf8002xawul2xxbamd7" class="article-share-link" data-share="baidu" data-title="Django学习笔记--基础知识--sql">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识--sql/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Django/">Django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/11/Android/Android知识点/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Android知识点
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Django学习笔记--基础知识--views、url、templates</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/01/10/Python/Django学习笔记--基础知识--sql/" data-title="Django学习笔记--基础知识--sql" data-url="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识--sql/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/12/Python/Django学习笔记--基础知识--admin/">Django学习笔记--基础知识--admin</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/11/Android/Android知识点/">Android知识点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识--sql/">Django学习笔记--基础知识--sql</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/">Django学习笔记--基础知识--views、url、templates</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Django/" style="font-size: 12px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 12px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/React-Native/" style="font-size: 18px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

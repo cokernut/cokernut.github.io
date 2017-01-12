@@ -2,9 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://cokernut.top/2017/01/10/Python/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0--%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</loc>
+    <loc>http://cokernut.top/2017/01/10/Python/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0--%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86--views%E3%80%81url%E3%80%81templates/</loc>
     
-    <lastmod>2017-01-10T07:38:15.910Z</lastmod>
+    <lastmod>2017-01-12T06:41:14.047Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://cokernut.top/2017/01/12/Python/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0--%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86--admin/</loc>
+    
+    <lastmod>2017-01-12T06:39:47.093Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://cokernut.top/2017/01/10/Python/Django%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0--%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86--sql/</loc>
+    
+    <lastmod>2017-01-12T06:35:46.149Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://cokernut.top/2017/01/11/Android/Android%E7%9F%A5%E8%AF%86%E7%82%B9/</loc>
+    
+    <lastmod>2017-01-11T01:59:54.456Z</lastmod>
     
   </url>
   

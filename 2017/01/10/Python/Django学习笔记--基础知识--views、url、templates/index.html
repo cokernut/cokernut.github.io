@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Django学习笔记--基础知识--views、url、templates | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Django学习笔记--基础知识--views、url、templates">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django学习笔记--基础知识--views、url、templates">
+<meta property="og:url" content="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="Django学习笔记--基础知识--views、url、templates">
+<meta property="og:updated_time" content="2017-01-12T06:41:14.047Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django学习笔记--基础知识--views、url、templates">
+<meta name="twitter:description" content="Django学习笔记--基础知识--views、url、templates">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Python/Django学习笔记--基础知识--views、url、templates" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/" class="article-date">
+  <time datetime="2017-01-10T02:40:43.000Z" itemprop="datePublished">2017-01-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Django学习笔记--基础知识--views、url、templates
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Django学习笔记–基础知识–views、url、templates–Python3.5.x、Django1.10.x<br><a id="more"></a></p>
+<h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h3 id="新建一个-django项目"><a href="#新建一个-django项目" class="headerlink" title="新建一个 django项目"></a>新建一个 django项目</h3><blockquote>
+<p>django-admin.py startproject project-name</p>
+</blockquote>
+<p>project-name 项目名称，要符合Python 的变量命名规则（以下划线或字母开头）</p>
+<h3 id="新建-app"><a href="#新建-app" class="headerlink" title="新建 app"></a>新建 app</h3><blockquote>
+<p>python manage.py startapp app-name<br>或 django-admin.py startapp app-name</p>
+</blockquote>
+<p>一般一个项目有多个app, 当然通用的app也可以在多个项目中使用。</p>
+<h3 id="同步数据库"><a href="#同步数据库" class="headerlink" title="同步数据库"></a>同步数据库</h3><blockquote>
+<p>python manage.py syncdb<br>注意：Django 1.7.1及以上的版本需要用以下命令<br>python manage.py makemigrations<br>python manage.py migrate</p>
+</blockquote>
+<p>这种方法可以创建表，当你在models.py中新增了类时，运行它就可以自动在数据库中创建表了，不用手动创建。</p>
+<p>备注：对已有的 models 进行修改，Django 1.7之前的版本的Django都是无法自动更改表结构的，不过有第三方工具 south,详见 Django 数据库迁移 一节。</p>
+<h3 id="使用开发服务器"><a href="#使用开发服务器" class="headerlink" title="使用开发服务器"></a>使用开发服务器</h3><p>开发服务器，即开发时使用，一般修改代码后会自动重启，方便调试和开发，但是由于性能问题，建议只用来测试，不要用在生产环境。</p>
+<blockquote>
+<p>python manage.py runserver</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 当提示端口被占用的时候，可以用其它端口：</div><div class="line">python manage.py runserver 8001</div><div class="line">python manage.py runserver 9999</div><div class="line">（当然也可以kill掉占用端口的进程）</div><div class="line"></div><div class="line"># 监听所有可用 ip （电脑可能有一个或多个内网ip，一个或多个外网ip，即有多个ip地址）</div><div class="line">python manage.py runserver 0.0.0.0:8000</div><div class="line"># 如果是外网或者局域网电脑上可以用其它电脑查看开发服务器</div><div class="line"># 访问对应的 ip加端口，比如 http://172.16.20.2:8000</div></pre></td></tr></table></figure>
+<h3 id="清空数据库"><a href="#清空数据库" class="headerlink" title="清空数据库"></a>清空数据库</h3><blockquote>
+<p>python manage.py flush</p>
+</blockquote>
+<p>此命令会询问是 yes 还是 no, 选择 yes 会把数据全部清空掉，只留下空表。</p>
+<h3 id="创建超级管理员"><a href="#创建超级管理员" class="headerlink" title="创建超级管理员"></a>创建超级管理员</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">python manage.py createsuperuser</div><div class="line"># 按照提示输入用户名和对应的密码就好了邮箱可以留空，用户名和密码必填</div><div class="line"># 修改 用户密码可以用：</div><div class="line">python manage.py changepassword username</div></pre></td></tr></table></figure>
+<h3 id="导出数据、导入数据"><a href="#导出数据、导入数据" class="headerlink" title="导出数据、导入数据"></a>导出数据、导入数据</h3><blockquote>
+<p>python manage.py dumpdata appname &gt; appname.json<br>python manage.py loaddata appname.json</p>
+</blockquote>
+<p>关于数据操作 详见：数据导入数据迁移，现在了解有这个用法就可以了。</p>
+<h3 id="Django-项目环境终端"><a href="#Django-项目环境终端" class="headerlink" title="Django 项目环境终端"></a>Django 项目环境终端</h3><blockquote>
+<p>python manage.py shell</p>
+</blockquote>
+<p>如果你安装了 bpython 或 ipython 会自动用它们的界面，推荐安装 bpython。</p>
+<p>这个命令和 直接运行 python 或 bpython 进入 shell 的区别是：你可以在这个 shell 里面调用当前项目的 models.py 中的 API，对于操作数据，还有一些小测试非常方便。</p>
+<h3 id="数据库命令行"><a href="#数据库命令行" class="headerlink" title="数据库命令行"></a>数据库命令行</h3><blockquote>
+<p>python manage.py dbshell</p>
+</blockquote>
+<p>Django 会自动进入在settings.py中设置的数据库(默认是SQLite)，如果是 MySQL 或 postgreSQL,会要求输入数据库用户密码。<br>在这个终端可以执行数据库的SQL语句。如果您对SQL比较熟悉，可能喜欢这种方式。</p>
+<h3 id="更多命令"><a href="#更多命令" class="headerlink" title="更多命令"></a>更多命令</h3><p>终端上输入 python manage.py 可以看到详细的列表，在忘记子名称的时候特别有用。</p>
+<h1 id="视图与网址"><a href="#视图与网址" class="headerlink" title="视图与网址"></a>视图与网址</h1><h3 id="新建项目，新建app，创建数据库表"><a href="#新建项目，新建app，创建数据库表" class="headerlink" title="新建项目，新建app，创建数据库表"></a>新建项目，新建app，创建数据库表</h3><blockquote>
+<p>django-admin startproject demo<br>python manage.py startapp app<br>python manage.py migrate</p>
+</blockquote>
+<p>目录结构为（Django1.10.x）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">demo</div><div class="line">├── app</div><div class="line">│   ├── __init__.py</div><div class="line">│   ├── migrations</div><div class="line">│   │   └── __init__.py</div><div class="line">│   ├── templates</div><div class="line">│   │   └── home.html</div><div class="line">│   ├── admin.py</div><div class="line">│   ├── models.py</div><div class="line">│   ├── apps.py</div><div class="line">│   ├── tests.py</div><div class="line">│   └── views.py</div><div class="line">├── manage.py</div><div class="line">├── db.sqlite3</div><div class="line">└── demo</div><div class="line">    ├── __init__.py</div><div class="line">    ├── settings.py</div><div class="line">    ├── urls.py</div><div class="line">    └── wsgi.py</div></pre></td></tr></table></figure></p>
+<p>注：Django 1.8.x 以上的，才有 migrations 文件夹。Django 1.9.x 会在 Django 1.8 的基础上多出一个 apps.py 文件。</p>
+<h3 id="把我们新定义的app加到settings-py中的INSTALL-APPS中："><a href="#把我们新定义的app加到settings-py中的INSTALL-APPS中：" class="headerlink" title="把我们新定义的app加到settings.py中的INSTALL_APPS中："></a>把我们新定义的app加到settings.py中的INSTALL_APPS中：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 新建的 app 如果不加到 INSTALL_APPS 中的话, django 就不能自动找到app中的模板文件(app-name/templates/下的文件)和静态文件(app-name/static/中的文件)</span></div><div class="line">INSTALLED_APPS = [</div><div class="line">    <span class="string">'django.contrib.admin'</span>,</div><div class="line">    <span class="string">'django.contrib.auth'</span>,</div><div class="line">    <span class="string">'django.contrib.contenttypes'</span>,</div><div class="line">    <span class="string">'django.contrib.sessions'</span>,</div><div class="line">    <span class="string">'django.contrib.messages'</span>,</div><div class="line">    <span class="string">'django.contrib.staticfiles'</span>,</div><div class="line">    <span class="string">'app'</span>,</div><div class="line">]</div></pre></td></tr></table></figure>
+<h3 id="定义视图函数（访问页面时的内容）"><a href="#定义视图函数（访问页面时的内容）" class="headerlink" title="定义视图函数（访问页面时的内容）"></a>定义视图函数（访问页面时的内容）</h3><p>我们在app这个目录中,把views.py打开,修改其中的源代码,改成下面的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(request)</span>:</span></div><div class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">u"欢迎光临!"</span>)</div></pre></td></tr></table></figure>
+<p>第一行是声明编码为utf-8, 因为我们在代码中用到了中文,如果不声明就报错.<br>第二行引入HttpResponse，它是用来向网页返回内容的，就像Python中的 print 一样，只不过 HttpResponse 是把内容显示到网页上。<br>我们定义了一个index()函数，第一个参数必须是 request，与网页发来的请求有关，request 变量里面包含get或post的内容，用户浏览器，系统等信息在里面。<br>函数返回了一个 HttpResponse 对象，可以经过一些处理，最终显示几个字到网页上。  </p>
+<h3 id="定义视图函数相关的URL-网址-（即规定-访问什么网址对应什么内容）"><a href="#定义视图函数相关的URL-网址-（即规定-访问什么网址对应什么内容）" class="headerlink" title="定义视图函数相关的URL(网址)  （即规定 访问什么网址对应什么内容）"></a>定义视图函数相关的URL(网址)  （即规定 访问什么网址对应什么内容）</h3><p>我们打开 demo/demo/urls.py 这个文件, 修改其中的代码:<br>Django 1.8.x及以上，Django 官方鼓励（或说要求）先引入，再使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.conf.urls <span class="keyword">import</span> url</div><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"><span class="keyword">from</span> app <span class="keyword">import</span> views <span class="keyword">as</span> app_views</div><div class="line"></div><div class="line">urlpatterns = [</div><div class="line">    url(<span class="string">r'^$'</span>, app_views.index, name=<span class="string">'index'</span>),</div><div class="line">    url(<span class="string">r'^admin/'</span>, admin.site.urls),</div><div class="line">]</div></pre></td></tr></table></figure>
+<h3 id="在终端上运行-python-manage-py-runserver-开启服务器"><a href="#在终端上运行-python-manage-py-runserver-开启服务器" class="headerlink" title="在终端上运行 python manage.py runserver 开启服务器"></a>在终端上运行 python manage.py runserver 开启服务器</h3><p>我们打开浏览器,访问 <a href="http://127.0.0.1:8000/" target="_blank" rel="external">http://127.0.0.1:8000/</a> 即可看到网页中显示的“欢迎光临!”。</p>
+<p>注意：如果是在另一台电脑上访问要用 python manage.py ip:port 的形式，比如监听所有ip:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">python manage.py runserver 0.0.0.0:8000</div><div class="line">监听机器上所有ip 8000端口，访问时用电脑的ip代替 127.0.0.1</div></pre></td></tr></table></figure>
+<h3 id="采用-add-a-4-amp-b-5-这样GET方法进行加法运算"><a href="#采用-add-a-4-amp-b-5-这样GET方法进行加法运算" class="headerlink" title="采用 /add/?a=4&amp;b=5 这样GET方法进行加法运算"></a>采用 /add/?a=4&amp;b=5 这样GET方法进行加法运算</h3><p>修改 app/views.py文件，添加add方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(request)</span>:</span></div><div class="line">    a = request.GET[<span class="string">'a'</span>]</div><div class="line">    b = request.GET[<span class="string">'b'</span>]</div><div class="line">    c = int(a)+int(b)</div><div class="line">    <span class="keyword">return</span> HttpResponse(str(c))</div></pre></td></tr></table></figure>
+<p>打开 demo/demo/urls.py 这个文件, 修改其中的代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.conf.urls <span class="keyword">import</span> url</div><div class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</div><div class="line"><span class="keyword">from</span> app <span class="keyword">import</span> views <span class="keyword">as</span> app_views</div><div class="line"></div><div class="line">urlpatterns = [</div><div class="line">    url(<span class="string">r'^add/$'</span>, app_views.add, name=<span class="string">'add'</span>),</div><div class="line">  	url(<span class="string">r'^$'</span>, app_views.index, name=<span class="string">'index'</span>),</div><div class="line">    url(<span class="string">r'^admin/'</span>, admin.site.urls),</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>然后我们访问 <a href="http://127.0.0.1:8000/add/?a=4&amp;b=5" target="_blank" rel="external">http://127.0.0.1:8000/add/?a=4&amp;b=5</a><br>就可以看到网页上显示运算结果 9。</p>
+<h3 id="采用-add-3-4-这样的网址的方式进行加法运算"><a href="#采用-add-3-4-这样的网址的方式进行加法运算" class="headerlink" title="采用 /add/3/4/ 这样的网址的方式进行加法运算"></a>采用 /add/3/4/ 这样的网址的方式进行加法运算</h3><p>修改 app/views.py文件，添加add2方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add2</span><span class="params">(request, a, b)</span>:</span></div><div class="line">    c = int(a) + int(b)</div><div class="line">    <span class="keyword">return</span> HttpResponse(str(c))</div></pre></td></tr></table></figure>
+<p>打开 demo/demo/urls.py 这个文件, 添加一个url映射:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># (\d+), 正则表达式中 \d 代表一个数字，+ 代表一个或多个前面的字符，写在一起 \d+ 就是一个或多个数字，用括号括起来的意思是保存为一个子组，每一个子组将作为一个参数，被 views.py 中的对应视图函数接收。</span></div><div class="line">    url(<span class="string">r'^add/(\d+)/(\d+)/$'</span>, app_views.add2, name=<span class="string">'add2'</span>),</div></pre></td></tr></table></figure>
+<p>然后我们访问 <a href="http://127.0.0.1:8000/add/4/5/" target="_blank" rel="external">http://127.0.0.1:8000/add/4/5/</a><br>就可以看到网页上显示运算结果 9。</p>
+<h3 id="reverse"><a href="#reverse" class="headerlink" title="reverse"></a>reverse</h3><blockquote>
+<p>reverse(‘add2’, args=(4,5))<br>得到 u’/add/4/5/‘</p>
+</blockquote>
+<p>reverse 接收 url 中的 name 作为第一个参数，我们在代码中就可以通过 reverse() 来获取对应的网址（这个网址可以用来跳转，也可以用来计算相关页面的地址，可以用在 views.py，models.py等各种需要转换得到网址的地方），只要对应的 url 的name不改，就不用改代码中的网址。</p>
+<h3 id="网页模板中也是一样，可以很方便的使用"><a href="#网页模板中也是一样，可以很方便的使用" class="headerlink" title="网页模板中也是一样，可以很方便的使用"></a>网页模板中也是一样，可以很方便的使用</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">不带参数的：</div><div class="line">&#123;% url 'name' %&#125;</div><div class="line">带参数的：参数可以是变量名</div><div class="line">&#123;% url 'name' 参数 %&#125;</div><div class="line"></div><div class="line">例如：</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;% url 'add2' 4 5 %&#125;"</span>&gt;</span>link<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">上面的代码渲染成最终的页面是</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/add/4/5/"</span>&gt;</span>link<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">这样就可以通过 &#123;% url 'add2' 4 5 %&#125; 获取到对应的网址 /add/4/5/</div></pre></td></tr></table></figure>
+<p>当 urls.py 进行更改，前提是不改 name（这个参数设定好后不要轻易改），获取的网址也会动态地跟着变，比如改成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">url(r&apos;^new_add/(\d+)/(\d+)/$&apos;, app_views.add2, name=&apos;add2&apos;),</div><div class="line">注意add 变成了 new_add，但是后面的 name=&apos;add2&apos; 没改，这时 &#123;% url &apos;add2&apos; 4 5 %&#125;就会渲染对应的网址成 /new_add/4/5/</div></pre></td></tr></table></figure>
+<p>reverse 函数也是一样，获取的时候会跟着变成新的网址，这样，在想改网址时只需要改 urls.py 中的正则表达式（url 参数第一部分），其它地方都“自动”跟着变了。</p>
+<p>另外，比如用户收藏夹中收藏的URL是旧的，如何让以前的 /old_add/3/4/自动跳转到现在新的网址呢？<br>要知道Django不会帮你做这个，这个需要自己来写一个跳转方法：<br>修改 app/views.py文件，添加add3方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 有 /old_add/4/5/ ，访问时就会自动跳转到新的 /add/4/5/</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add3</span><span class="params">(request, a, b)</span>:</span></div><div class="line">    <span class="keyword">return</span> HttpResponseRedirect(reverse(<span class="string">'add2'</span>, args=(a, b)))</div></pre></td></tr></table></figure>
+<p>打开 demo/demo/urls.py 这个文件, 添加一个url映射:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 有 /old_add/4/5/ ，访问时就会自动跳转到新的 /add/4/5/</span></div><div class="line">   url(<span class="string">r'^old_add/(\d+)/(\d+)/$'</span>, app_views.add3),</div></pre></td></tr></table></figure>
+<p>然后我们访问 <a href="http://127.0.0.1:8000/old_add/4/5/" target="_blank" rel="external">http://127.0.0.1:8000/old_add/4/5/</a> 时会自动跳转到 <a href="http://127.0.0.1:8000/add/4/5/" target="_blank" rel="external">http://127.0.0.1:8000/add/4/5/</a><br>就可以看到网页上显示运算结果 9。</p>
+<h1 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h1><h3 id="显示一个基本的字符串在网页上、基本的-for-循环-和-List内容的显示、显示字典中内容、条件判断和-for-循环的详细操作"><a href="#显示一个基本的字符串在网页上、基本的-for-循环-和-List内容的显示、显示字典中内容、条件判断和-for-循环的详细操作" class="headerlink" title="显示一个基本的字符串在网页上、基本的 for 循环 和 List内容的显示、显示字典中内容、条件判断和 for 循环的详细操作"></a>显示一个基本的字符串在网页上、基本的 for 循环 和 List内容的显示、显示字典中内容、条件判断和 for 循环的详细操作</h3><blockquote>
+<p>views.py</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">home</span><span class="params">(request)</span>:</span></div><div class="line">    <span class="comment"># 一般的变量之类的用 &#123;&#123; &#125;&#125;（变量），功能类的，比如循环，条件判断是用 &#123;%  %&#125;（标签）</span></div><div class="line">    <span class="comment"># &#123;&#123;string&#125;&#125;</span></div><div class="line">    string = <span class="string">u"学习Django，用它来建网站"</span></div><div class="line">    <span class="comment"># &#123;% for i in TutorialList %&#125; &#123;&#123; i &#125;&#125; &#123;% endfor %&#125;</span></div><div class="line">    Tlist = [<span class="string">"HTML"</span>, <span class="string">"CSS"</span>, <span class="string">"jQuery"</span>, <span class="string">"Python"</span>, <span class="string">"Django"</span>]</div><div class="line">    <span class="comment"># 站点：&#123;&#123; info_dict.site &#125;&#125; 内容：&#123;&#123; info_dict.content &#125;&#125;</span></div><div class="line">    <span class="comment"># &#123;% for key, value in info_dict.items %&#125; &#123;&#123; key &#125;&#125;: &#123;&#123; value &#125;&#125; &#123;% endfor %</span></div><div class="line">    dict = &#123;<span class="string">'title'</span>: <span class="string">u'标题'</span>, <span class="string">'content'</span>: <span class="string">u'内容'</span>&#125;</div><div class="line">    <span class="comment"># &#123;% for item in List %&#125; &#123;&#123; item&#125;&#125;&#123;% if not forloop.last %&#125;,&#123;% endif %&#125; &#123;% endfor %&#125;</span></div><div class="line">    <span class="comment"># 变量 forloop.last 这个变量，如果是最后一项其为真，否则为假</span></div><div class="line">    List = map(str, range(<span class="number">10</span>))<span class="comment"># 一个长度为100的 List</span></div><div class="line">    <span class="keyword">return</span> render(request, <span class="string">'home.html'</span>, &#123;<span class="string">'info_dict'</span>: dict, <span class="string">'string'</span>: string, <span class="string">'TutorialList'</span>: Tlist, <span class="string">'List'</span>: List&#125;)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>home.html</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Django<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">        &#123;&#123;string&#125;&#125;<span class="tag">&lt;<span class="name">br</span>&gt;</span> </div><div class="line">        教程列表： &#123;% for i in TutorialList %&#125; &#123;&#123; i &#125;&#125; &#123;% endfor %&#125;<span class="tag">&lt;<span class="name">br</span>&gt;</span> </div><div class="line">        标题：&#123;&#123; info_dict.title &#125;&#125; 内容：&#123;&#123; info_dict.content&#125;&#125;<span class="tag">&lt;<span class="name">br</span>&gt;</span> </div><div class="line">        &#123;% for key, value in info_dict.items %&#125; &#123;&#123; key &#125;&#125;: &#123;&#123; value &#125;&#125; &#123;% endfor %&#125; <span class="tag">&lt;<span class="name">br</span>&gt;</span> </div><div class="line">        &#123;% for item in List %&#125; &#123;&#123; item&#125;&#125;&#123;% if not forloop.last %&#125;,&#123;% endif %&#125;  &#123;% endfor %&#125; <span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="在for循环中还有很多有用的方法，如下："><a href="#在for循环中还有很多有用的方法，如下：" class="headerlink" title="在for循环中还有很多有用的方法，如下："></a>在for循环中还有很多有用的方法，如下：</h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>forloop.counter</td>
+<td>索引从 1 开始算</td>
+</tr>
+<tr>
+<td>forloop.counter0</td>
+<td>索引从 0 开始算</td>
+</tr>
+<tr>
+<td>forloop.revcounter</td>
+<td>索引从最大长度到 1</td>
+</tr>
+<tr>
+<td>forloop.revcounter0</td>
+<td>索引从最大长度到 0</td>
+</tr>
+<tr>
+<td>forloop.first</td>
+<td>当遍历的元素为第一项时为真</td>
+</tr>
+<tr>
+<td>forloop.last</td>
+<td>当遍历的元素为最后一项时为真</td>
+</tr>
+<tr>
+<td>forloop.parentloop</td>
+<td>用在嵌套的 for 循环中，获取上一层 for 循环的 forloop</td>
+</tr>
+</tbody>
+</table>
+<p>当列表中可能为空值时用 for  empty</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">&#123;% for athlete in athlete_list %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>&#123;&#123; athlete.name &#125;&#125;<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">&#123;% empty %&#125;</div><div class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span>抱歉，列表为空<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">&#123;% endfor %&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="模板上得到视图对应的网址"><a href="#模板上得到视图对应的网址" class="headerlink" title="模板上得到视图对应的网址"></a>模板上得到视图对应的网址</h3><p>修改 app/views.py文件，添加add方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(request, a, b)</span>:</span></div><div class="line">    c = int(a) + int(b)</div><div class="line">    <span class="keyword">return</span> HttpResponse(str(c))</div></pre></td></tr></table></figure>
+<p>打开 demo/demo/urls.py 这个文件, 添加一个url映射:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">url(<span class="string">r'^add/(\d+)/(\d+)/$'</span>, app_views.add, name=<span class="string">'add'</span>),</div></pre></td></tr></table></figure>
+<p>在html中使用：<br>可以使用 as 语句将内容取别名（相当于定义一个变量），多次使用（但视图名称到网址转换只进行了一次）.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&#123;% url 'add' 4 5 as the_add %&#125;</div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; the_add &#125;&#125;"</span>&gt;</span>计算4+5<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="模板中的逻辑操作"><a href="#模板中的逻辑操作" class="headerlink" title="模板中的逻辑操作"></a>模板中的逻辑操作</h3><h4 id="gt-lt-gt-lt-这些比较都可以在模板中使用，比如："><a href="#gt-lt-gt-lt-这些比较都可以在模板中使用，比如：" class="headerlink" title="==, !=, &gt;=, &lt;=, &gt;, &lt; 这些比较都可以在模板中使用，比如："></a>==, !=, &gt;=, &lt;=, &gt;, &lt; 这些比较都可以在模板中使用，比如：</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&#123;% if var &gt;= 90 %&#125;</div><div class="line">成绩优秀</div><div class="line">&#123;% elif var &gt;= 80 %&#125;</div><div class="line">成绩良好</div><div class="line">&#123;% elif var &gt;= 70 %&#125;</div><div class="line">成绩一般</div><div class="line">&#123;% elif var &gt;= 60 %&#125;</div><div class="line">需要努力</div><div class="line">&#123;% else %&#125;</div><div class="line">不及格</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
+<h4 id="and-or-not-in-not-in-也可以在模板中使用"><a href="#and-or-not-in-not-in-也可以在模板中使用" class="headerlink" title="and, or, not, in, not in 也可以在模板中使用"></a>and, or, not, in, not in 也可以在模板中使用</h4><p>假如我们判断 num 是不是在 0 到 100 之间：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;% if num <span class="tag">&lt;<span class="name">=</span> <span class="attr">100</span> <span class="attr">and</span> <span class="attr">num</span> &gt;</span>= 0 %&#125;</div><div class="line">num在0到100之间</div><div class="line">&#123;% else %&#125;</div><div class="line">数值不在范围之内！</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
+<p>假如我们判断 ‘string’ 在不在一个列表变量 List 中：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;% if 'string' in List %&#125;</div><div class="line">存在</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
+<h3 id="模板中-获取当前网址，当前用户等"><a href="#模板中-获取当前网址，当前用户等" class="headerlink" title="模板中 获取当前网址，当前用户等"></a>模板中 获取当前网址，当前用户等</h3><p>如果不是在 views.py 中用的 render 函数，是 render_to_response 的话，需要将 request 加入到 上下文渲染器。<br>Django 1.8 及以后 修改 settings.py </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">TEMPLATES = [</div><div class="line">    &#123;</div><div class="line">        &apos;BACKEND&apos;: &apos;django.template.backends.django.DjangoTemplates&apos;,</div><div class="line">        &apos;DIRS&apos;: [],</div><div class="line">        &apos;APP_DIRS&apos;: True,</div><div class="line">        &apos;OPTIONS&apos;: &#123;</div><div class="line">            &apos;context_processors&apos;: [</div><div class="line">                ...</div><div class="line">                &apos;django.template.context_processors.request&apos;,</div><div class="line">                ...</div><div class="line">            ],</div><div class="line">        &#125;,</div><div class="line">    &#125;,</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>然后在 模板中我们就可以用 request 了。一般情况下，推荐用 render 而不是用 render_to_response。</p>
+<h4 id="获取当前用户"><a href="#获取当前用户" class="headerlink" title="获取当前用户"></a>获取当前用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.user &#125;&#125;</div></pre></td></tr></table></figure>
+<p>如果登陆就显示内容，不登陆就不显示内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;% if request.user.is_authenticated %&#125;</div><div class="line">    &#123;&#123; request.user.username &#125;&#125;，您好！</div><div class="line">&#123;% else %&#125;</div><div class="line">    请登陆，这里放登陆链接</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure>
+<h4 id="获取当前网址"><a href="#获取当前网址" class="headerlink" title="获取当前网址"></a>获取当前网址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.path &#125;&#125;</div></pre></td></tr></table></figure>
+<h4 id="获取当前-GET-参数"><a href="#获取当前-GET-参数" class="headerlink" title="获取当前 GET 参数"></a>获取当前 GET 参数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; request.GET.urlencode &#125;&#125;</div></pre></td></tr></table></figure>
+<h4 id="合并到一起用的一个例子"><a href="#合并到一起用的一个例子" class="headerlink" title="合并到一起用的一个例子"></a>合并到一起用的一个例子</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;&#123;&#123; request.path &#125;&#125;?&#123;&#123; request.GET.urlencode &#125;&#125;&amp;delete=1&quot;&gt;当前网址加参数 delete&lt;/a&gt;</div></pre></td></tr></table></figure>
+<p>比如我们可以判断 delete 参数是不是 1 来删除当前的页面内容。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/" data-id="cixu0b81z0000qgul1e5vvx2e" class="article-share-link" data-share="baidu" data-title="Django学习笔记--基础知识--views、url、templates">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Django/">Django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/10/Python/Django学习笔记--基础知识--sql/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Django学习笔记--基础知识--sql
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">React Native Headless JS（后台任务）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/" data-title="Django学习笔记--基础知识--views、url、templates" data-url="http://cokernut.top/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/12/Python/Django学习笔记--基础知识--admin/">Django学习笔记--基础知识--admin</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/11/Android/Android知识点/">Android知识点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识--sql/">Django学习笔记--基础知识--sql</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/">Django学习笔记--基础知识--views、url、templates</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Django/" style="font-size: 12px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 12px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/React-Native/" style="font-size: 18px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
