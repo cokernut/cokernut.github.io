@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Activity启动标记与启动模式 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Activity启动标记与启动模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Activity启动标记与启动模式">
+<meta property="og:url" content="http://cokernut.top/2017/01/16/Android/Activity启动标记与启动模式/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="Activity启动标记与启动模式">
+<meta property="og:updated_time" content="2017-01-16T06:47:40.767Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Activity启动标记与启动模式">
+<meta name="twitter:description" content="Activity启动标记与启动模式">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Android/Activity启动标记与启动模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/16/Android/Activity启动标记与启动模式/" class="article-date">
+  <time datetime="2017-01-16T03:55:04.000Z" itemprop="datePublished">2017-01-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Activity启动标记与启动模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Activity启动标记与启动模式<br><a id="more"></a></p>
+<h3 id="Task是包含一系列Activity的堆栈-遵循先进后出原则"><a href="#Task是包含一系列Activity的堆栈-遵循先进后出原则" class="headerlink" title="Task是包含一系列Activity的堆栈, 遵循先进后出原则"></a>Task是包含一系列Activity的堆栈, 遵循先进后出原则</h3><h3 id="Task默认行为"><a href="#Task默认行为" class="headerlink" title="Task默认行为"></a>Task默认行为</h3><p>(1) 前提: Activity A和Activity B在同一个应用中.<br>操作: Activity A启动开僻Task堆栈(堆栈状态: A), 在Activity A中启动Activity B(堆栈状态: AB), 按下BACK返回键(堆栈状态: A).</p>
+<p>(2) 前提: Activity A和Activity B在同一个应用中, 应用名称为”TaskOne应用”.<br>操作: 在Launcher中单击”TaskOne应用”图标, Activity A启动开僻Task堆栈, 命名为TaskA(TaskA堆栈状态: A), 在Activity A中启动Activity B(TaskA堆栈状态: AB), 长按Home键, 返回Launcher, 启动其它应用(如:电子书),开僻一个新Task堆栈, 命名: TaskB, 长按Home健, 返回Launcher, 单击”TaskOne应用”图标, 此时TaskA堆栈返回前台,Activity B为栈顶应用, 供用户使用.</p>
+<p>(3) 前提: Activity A在名称为”TaskOne应用”的应用中, Activity C在名称为”TaskTwo应用”的应用中.<br>操作: 在Launcher中单击”TaskOne应用”图标, Activity A启动开僻Task堆栈, 命名为TaskA(TaskA堆栈状态: A),在Activity A中启动Activity C(TaskA堆栈状态: AC),长按Home键, 返回Launcher, 启动”TaskTwo应用”即Activity C,开僻新的Task堆栈, 命名为TaskB, 按BACK键返回Launcher, 单击”TaskOne应用”图标, 此时TaskA堆栈返回前台,Activity C为栈顶应用, 供用户使用.</p>
+<h3 id="Intent-FLAG介绍"><a href="#Intent-FLAG介绍" class="headerlink" title="Intent FLAG介绍"></a>Intent FLAG介绍</h3><h4 id="FLAG-ACTIVITY-NEW-TASK"><a href="#FLAG-ACTIVITY-NEW-TASK" class="headerlink" title="FLAG_ACTIVITY_NEW_TASK"></a>FLAG_ACTIVITY_NEW_TASK</h4><p>设置此状态，记住以下原则，首先会查找是否存在和被启动的Activity具有相同的亲和性的任务栈（即taskAffinity，注意同一个应用程序中的activity的亲和性一样，所以下面的a情况会在同一个栈中，前面这句话有点拗口，请多读几遍），如果有，刚直接把这个栈整体移动到前台，并保持栈中的状态不变，即栈中的activity顺序不变，如果没有，则新建一个栈来存放被启动的activity</p>
+<p>a. 前提: Activity A和Activity B在同一个应用中.<br>操作: Activity A启动开僻Task堆栈(堆栈状态: A), 在Activity A中启动Activity B, 启动Activity B的Intent的Flag设为FLAG_ACTIVITY_NEW_TASK, Activity B被压入Activity A所在堆栈(堆栈状态: AB).<br>原因: 默认情况下同一个应用中的所有Activity拥有相同的关系(taskAffinity).</p>
+<p>b. 前提: Activity A在名称为”TaskOne应用”的应用中, Activity C和Activity D在名称为”TaskTwo应用”的应用中.<br>操作1: 在Launcher中单击”TaskOne应用”图标, Activity A启动开僻Task堆栈, 命名为TaskA(TaskA堆栈状态: A),在Activity A中启动Activity C, 启动Activity C的Intent的Flag设为FLAG_ACTIVITY_NEW_TASK,Android系统会为Activity C开僻一个新的Task, 命名为TaskB(TaskB堆栈状态: C), 长按Home键, 选择TaskA,Activity A回到前台, 再次启动Activity C（两种情况1.从桌面启动；2.从Activity A启动，两种情况一样）, 这时TaskB回到前台, Activity C显示, 供用户使用, 即:包含FLAG_ACTIVITY_NEW_TASK的Intent启动Activity的Task正在运行, 则不会为该Activity创建新的Task,而是将原有的Task返回到前台显示.<br>操作2: 在Launcher中单击”TaskOne应用”图标, Activity A启动开僻Task堆栈, 命名为TaskA(TaskA堆栈状态: A),在Activity A中启动Activity C,启动Activity C的Intent的Flag设为FLAG_ACTIVITY_NEW_TASK,Android系统会为Activity C开僻一个新的Task, 命名为TaskB(TaskB堆栈状态: C),  在Activity C中启动Activity D(TaskB的状态: CD) 长按Home键, 选择TaskA, Activity A回到前台, 再次启动Activity C(从桌面或者ActivityA启动，也是一样的),这时TaskB回到前台, Activity D显示,供用户使用.说明了在此种情况下设置FLAG_ACTIVITY_NEW_TASK后，会先查找是不是有Activity C存在的栈，根据亲和性(taskAffinity)，如果有，刚直接把这个栈整体移动到前台，并保持栈中的状态不变，即栈中的顺序不变</p>
+<h4 id="FLAG-ACTIVITY-CLEAR-TOP"><a href="#FLAG-ACTIVITY-CLEAR-TOP" class="headerlink" title="FLAG_ACTIVITY_CLEAR_TOP"></a>FLAG_ACTIVITY_CLEAR_TOP</h4><p>前提: Activity A, Activity B, Activity C和Activity D在同一个应用中.<br>操作: Activity A启动开僻Task堆栈(堆栈状态: A), 在Activity A中启动Activity B(堆栈状态: AB), 在Activity B中启动Activity C(堆栈状态: ABC), 在Activity C中启动Activity D(堆栈状态: ABCD), 在Activity D中启动Activity B,启动Activity B的Intent的Flag设置为FLAG_ACTIVITY_CLEAR_TOP, (堆栈状态: AB).</p>
+<h4 id="FLAG-ACTIVITY-BROUGHT-TO-FRONT"><a href="#FLAG-ACTIVITY-BROUGHT-TO-FRONT" class="headerlink" title="FLAG_ACTIVITY_BROUGHT_TO_FRONT"></a>FLAG_ACTIVITY_BROUGHT_TO_FRONT</h4><p>前提: Activity A在名称为”TaskOne应用”的应用中, Activity C和Activity D在名称为”TaskTwo应用”的应用中.<br>操作: 在Launcher中单击”TaskOne应用”图标, Activity A启动开僻Task堆栈, 命名为TaskA(TaskA堆栈状态: A),在Activity A中启动Activity C,启动Activity C的Intent的Flag设为FLAG_ACTIVITY_NEW_TASK,Android系统会为Activity C开僻一个新的Task, 命名为TaskB(TaskB堆栈状态: C), 在Activity C中启动Activity D(TaskB的堆栈状态: CD), 长按Home键, 选择TaskA, Activity A回到前台, 在Activity A中再次启动Activity C,在启动Activity C的Intent中设置Flag为FLAG_ACTIVITY_BROUGHT_TO_FRONT, TaskB回到前台,Activity C显示, (TaskB的堆栈状态: C).</p>
+<h4 id="FLAG-ACTIVITY-MULTIPLE-TASK"><a href="#FLAG-ACTIVITY-MULTIPLE-TASK" class="headerlink" title="FLAG_ACTIVITY_MULTIPLE_TASK"></a>FLAG_ACTIVITY_MULTIPLE_TASK</h4><p>与FLAG_ACTIVITY_NEW_TASK结合使用, 首先在Intent中设置FLAG_ACTIVITY_NEW_TASK, 打开Activity,则启动一个新Task, 接着在Intent中设置FLAG_ACTIVITY_MULTIPLE_TASK, 再次打开同一个Activity,则还会新启动一个Task.</p>
+<h4 id="FLAG-ACTIVITY-SINGLE-TOP"><a href="#FLAG-ACTIVITY-SINGLE-TOP" class="headerlink" title="FLAG_ACTIVITY_SINGLE_TOP"></a>FLAG_ACTIVITY_SINGLE_TOP</h4><p>当前Task堆栈中存在ABCD四个Activity, A是栈顶Activity, D为栈底Activity, 存在打开A的Intent中设置了FLAG_ACTIVITY_SINGLE_TOP标志, 则会使用栈顶A, 而不会从新New A.</p>
+<h4 id="FLAG-ACTIVITY-RESET-TASK-IF-NEEDED"><a href="#FLAG-ACTIVITY-RESET-TASK-IF-NEEDED" class="headerlink" title="FLAG_ACTIVITY_RESET_TASK_IF_NEEDED"></a>FLAG_ACTIVITY_RESET_TASK_IF_NEEDED</h4><p>一般与FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET结合使用，如果设置该属性，这个activity将在一个新的task中启动或者或者被带到一个已经存在的task的顶部，这时这个activity将会作为这个task的首个页面加载。将会导致与这个应用具有相同亲和力的task处于一个合适的状态(移动activity到这个task或者从中移出)，或者简单的重置这个task到它的初始状态</p>
+<h4 id="FLAG-ACTIVITY-CLEAR-WHEN-TASK-RESET"><a href="#FLAG-ACTIVITY-CLEAR-WHEN-TASK-RESET" class="headerlink" title="FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET"></a>FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET</h4><p>在当前的Task堆栈中设置一个还原点，当带有FLAG_ACTIVITY_RESET_TASK_IF_NEEDED的Intent请求启动这个堆栈时(典型的例子是用户从桌面再次启动这个应用)，还原点之上包括这个应用将会被清除。应用场景：在email程序中预览图片时，会启动图片观览的actvity，当用户离开email处理其他事情，然后下次再次从home进入email时，我们呈现给用户的应该是上次email的会话，而不是图片观览，这样才不会给用户造成困惑。</p>
+<p>例: 存在Activity A, Activity B, Activity C, Activity A启动开僻Task堆栈, 命名为TaskA(TaskA堆栈状态: A),在Activity A中启动Activity B(TaskA堆栈状态: AB), 接着Activity B启动Activity C(TaskA堆栈状态: ABC),启动Activity C的Intent中设置FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET标题, 这样TaskA中有一个还原点,当有包含FLAG_ACTIVITY_RESET_TASK_IF_NEEDED的Intent请求TaskA堆栈时(比如请求Activity A)系统就会将还原点以上的Activity清除, TaskA堆栈中只剩下了AB.</p>
+<h3 id="启动模式launchMode介绍"><a href="#启动模式launchMode介绍" class="headerlink" title="启动模式launchMode介绍"></a>启动模式launchMode介绍</h3><h4 id="standard"><a href="#standard" class="headerlink" title="standard"></a>standard</h4><p>如果启动此Activity的Intent中没有设置FLAG_ACTIVITY_NEW_TASK标志, 则这个Activity与启动他的Activity在同一个Task中,如果设置了Activity请参考上面FLAG_ACTIVITY_NEW_TASK的詳細说明,”launchMode”设置为”standard”的Activity可以被实例化多次, 可以在Task中的任何位置, 对于一个新的Intent请求就会实例化一次.</p>
+<h4 id="singleTop"><a href="#singleTop" class="headerlink" title="singleTop"></a>singleTop</h4><p>如果启动此Activity的Intent中没有设置FLAG_ACTIVITY_NEW_TASK标志, 则这个Activity与启动他的Activity在同一个Task中,如果设置了Activity请参考上面FLAG_ACTIVITY_NEW_TASK的詳細说明,”launchMode”设置为”singleTop”的Activity可以被实例化多次,  可以在Task中的任何位置, 对于一个新的Intent请求如果在Task栈顶, 则会用栈顶的Activity响影Intent请求,而不会重新实例化对象接收请求, 如果没有在栈顶, 则会实例化一个新的对象接收Intent请求.</p>
+<h4 id="singleTask"><a href="#singleTask" class="headerlink" title="singleTask"></a>singleTask</h4><p>“launchMode”设置为”singleTask”的Activity总是在栈底, 只能被实例化一次, 它允许其它Activity压入”singleTask”的Activity所在的Task栈,如果有新的Intent请求有此标志的Activity, 则系统会清除有此标志的Task栈中的全部Activity,并把此Activity显示出来.</p>
+<h4 id="singleInstance"><a href="#singleInstance" class="headerlink" title="singleInstance"></a>singleInstance</h4><p>launchMode”设置为”singleInstance”的Activity总是在栈底, 只能被实例化一次, 不允许其它的Activity压入”singleInstance”的Activity所在Task栈,  即整个Task栈中只能有这么一个Activity.</p>
+<h3 id="taskAffinity属性"><a href="#taskAffinity属性" class="headerlink" title="taskAffinity属性"></a>taskAffinity属性</h3><h4 id="taskAffinity属性应和FLAG-ACTIVITY-NEW-TASK标志及allowTaskReparenting属性结合使用-如果只使用taskAffinity属性"><a href="#taskAffinity属性应和FLAG-ACTIVITY-NEW-TASK标志及allowTaskReparenting属性结合使用-如果只使用taskAffinity属性" class="headerlink" title="taskAffinity属性应和FLAG_ACTIVITY_NEW_TASK标志及allowTaskReparenting属性结合使用, 如果只使用taskAffinity属性"></a>taskAffinity属性应和FLAG_ACTIVITY_NEW_TASK标志及allowTaskReparenting属性结合使用, 如果只使用taskAffinity属性</h4><p>请参考上面Task默认的行为.</p>
+<h4 id="与FLAG-ACTIVITY-NEW-TASK标志结合"><a href="#与FLAG-ACTIVITY-NEW-TASK标志结合" class="headerlink" title="与FLAG_ACTIVITY_NEW_TASK标志结合"></a>与FLAG_ACTIVITY_NEW_TASK标志结合</h4><p>a. 前题: Activity A和Activity B在同一个应用中, Activity A与Activity B设置不同的taskAffinity属性.<br>操作: Activity A启动开僻Task堆栈,命名为TaskA(TaskA堆栈状态: A), 在Activity A中启动Activity B, 启动Activity B的Intent中设置FLAG_ACTIVITY_NEW_TASK标志,这时系统会新开僻一个Task堆栈,TaskB(TaskB堆栈状态: B).<br>b. 前题: Activity A在”TaskOne应用”中, Activity C在”TaskTwo应用”中, Activity A和ActivityC设置了相同的taskAffinity属性.<br>操作: Activity A启动开僻Task堆栈,命名为TaskA(TaskA堆栈状态: A), 在Activity A中启动Activity C, 启动Activity C的Intent中设置FLAG_ACTIVITY_NEW_TASK标志,这时Activity C会压入与Activity A堆栈相同的TaskA堆栈(TaskA堆栈状态: AC).</p>
+<h4 id="与allowTaskReparenting属性"><a href="#与allowTaskReparenting属性" class="headerlink" title="与allowTaskReparenting属性"></a>与allowTaskReparenting属性</h4><p>例: 在”TaskOne应用”中有一个天气预报Activity A, Activity A与”TaskOne应用”中的其它Activity有默认的关系(taskAffinity属性都没有设置), 并且allowTaskReparenting属性设置为true, 现在存在一个”TaskTwo应用”启动了”TaskOne应用”中的天气预报Activity A,  这时Activity A与”TaskTwo应用”中的Activity在同一个Task,命名这个Task堆栈为TaskA, 这时”TaskOne应用”启动, 并且又打开发天气预报Activity A, 这时Activity A会从TaskA堆栈中转移到”TaskOne应用”所在的堆栈, 即Activity A可以在多个堆栈中来回转移.</p>
+<h3 id="alwaysRetainTaskState属性"><a href="#alwaysRetainTaskState属性" class="headerlink" title="alwaysRetainTaskState属性"></a>alwaysRetainTaskState属性</h3><p>如果Task堆栈中的Root Activity设置了此属性值为true, 不管出现任何情况, 一直会保留Task栈中Activity的状态.</p>
+<h3 id="clearTaskOnLaunch属性"><a href="#clearTaskOnLaunch属性" class="headerlink" title="clearTaskOnLaunch属性"></a>clearTaskOnLaunch属性</h3><p>如果Task堆栈中的Root Activity设置了此属性值为true, 只要你一离开这个Task栈, 则系统会马上清理除了Root Activity的全部Activity.</p>
+<h3 id="finishOnTaskLaunch属性"><a href="#finishOnTaskLaunch属性" class="headerlink" title="finishOnTaskLaunch属性"></a>finishOnTaskLaunch属性</h3><p>如果某Activity设置了finishOnTaskLaunch属性, 只要你一离开这个Task栈, 则系统会马上清除这个Activity,<br>不管这个Activity在堆栈的任何位置.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2017/01/16/Android/Activity启动标记与启动模式/" data-id="cixzqcavb0000sguluvjqz38c" class="article-share-link" data-share="baidu" data-title="Activity启动标记与启动模式">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2017/01/16/Android/Activity启动标记与启动模式/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/01/12/Python/Django学习笔记--基础知识--admin/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Django学习笔记--基础知识--admin</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/01/16/Android/Activity启动标记与启动模式/" data-title="Activity启动标记与启动模式" data-url="http://cokernut.top/2017/01/16/Android/Activity启动标记与启动模式/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/16/Android/Activity启动标记与启动模式/">Activity启动标记与启动模式</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/12/Python/Django学习笔记--基础知识--admin/">Django学习笔记--基础知识--admin</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/11/Android/Android知识点/">Android知识点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识--sql/">Django学习笔记--基础知识--sql</a>
+          </li>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识--views、url、templates/">Django学习笔记--基础知识--views、url、templates</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 17.5px;">Android</a> <a href="/tags/Django/" style="font-size: 12.5px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 12.5px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/React-Native/" style="font-size: 17.5px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
