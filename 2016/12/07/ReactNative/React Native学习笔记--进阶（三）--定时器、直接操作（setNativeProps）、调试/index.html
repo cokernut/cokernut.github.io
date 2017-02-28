@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="React Native 进阶（三）–定时器、直接操作（setNativeProps）、调试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试">
+<meta property="og:url" content="http://cokernut.top/2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="React Native 进阶（三）–定时器、直接操作（setNativeProps）、调试">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/advance/3.png">
+<meta property="og:updated_time" content="2016-12-08T08:41:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试">
+<meta name="twitter:description" content="React Native 进阶（三）–定时器、直接操作（setNativeProps）、调试">
+<meta name="twitter:image" content="http://cokernut.top/images/ReactNative/advance/3.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/" class="article-date">
+  <time datetime="2016-12-06T16:00:00.000Z" itemprop="datePublished">2016-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React-Native/">React Native</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>React Native 进阶（三）–定时器、直接操作（setNativeProps）、调试<br><a id="more"></a></p>
+<h2 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h2><ul>
+<li>setTimeout, clearTimeout</li>
+<li>setInterval, clearInterval</li>
+<li>setImmediate, clearImmediate</li>
+<li>requestAnimationFrame, cancelAnimationFrame</li>
+</ul>
+<p>requestAnimationFrame(fn)和setTimeout(fn, 0)不同，前者会在每帧刷新之后执行一次，而后者则会尽可能快的执行。</p>
+<p>setImmediate则会在当前JavaScript执行块结束的时候执行，就在将要发送批量响应数据到原生之前。注意如果你在setImmediate的回调函数中又执行了setImmediate，它会紧接着立刻执行，而不会在调用之前等待原生代码。</p>
+<p>Promise的实现就使用了setImmediate来执行异步调用。</p>
+<h3 id="InteractionManager"><a href="#InteractionManager" class="headerlink" title="InteractionManager"></a>InteractionManager</h3><p>原生应用感觉如此流畅的一个重要原因就是在互动和动画的过程中避免繁重的操作。在React Native里，你可以用InteractionManager将一些耗时较长的工作安排到所有互动或动画完成之后再进行，这样可以保证JavaScript动画的流畅运行。</p>
+<p>应用可以通过以下代码来安排一个任务，使其在交互结束之后执行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">InteractionManager.runAfterInteractions(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">   <span class="comment">// ...需要长时间同步执行的任务...</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>我们来把它和之前的几个任务安排方法对比一下：</p>
+<ul>
+<li>requestAnimationFrame(): 用来执行在一段时间内控制视图动画的代码</li>
+<li>setImmediate/setTimeout/setInterval(): 在稍后执行代码。注意这有可能会延迟当前正在进行的动画。</li>
+<li>runAfterInteractions(): 在稍后执行代码，不会延迟当前进行的动画。</li>
+</ul>
+<p>触摸处理系统会把一个或多个进行中的触摸操作认定为’交互’，并且会将runAfterInteractions()的回调函数延迟执行，直到所有的触摸操作都结束或取消了。</p>
+<p>InteractionManager还允许应用注册动画，在动画开始时创建一个交互“句柄”，然后在结束的时候清除它。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> handle = InteractionManager.createInteractionHandle();</div><div class="line"><span class="comment">// 执行动画... (`runAfterInteractions`中的任务现在开始排队等候)</span></div><div class="line"><span class="comment">// 在动画完成之后</span></div><div class="line">InteractionManager.clearInteractionHandle(handle);</div><div class="line"><span class="comment">// 在所有句柄都清除之后，现在开始依序执行队列中的任务</span></div></pre></td></tr></table></figure>
+<p>runAfterInteractions接受一个普通的回调函数，或是一个PromiseTask对象，该对象需要带有名为gen的方法，并返回一个Promise。如果提供的参数是一个PromiseTask， 那么即便它是异步的它也会阻塞任务队列，直到它（以及它所有的依赖任务，哪怕这些依赖任务也是异步的）执行完毕后，才会执行下一个任务。</p>
+<p>默认情况下，排队的任务会在一次setImmediate方法中依序批量执行。如果你调用了setDeadLine方法并设定了一个正整数值，则任务只会在设定的时间到达后开始执行。在此之前，任务会通过setTimeout来挂起并阻塞其他任务执行，这样可以给诸如触摸交互一类的事件留出时间，使应用可以更快地响应用户。</p>
+<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><blockquote>
+<p>static runAfterInteractions(callback: Function) </p>
+</blockquote>
+<p>安排一个函数在所有的交互和动画完成之后运行。返回一个可取消的promise。</p>
+<blockquote>
+<p>static createInteractionHandle() </p>
+</blockquote>
+<p>通知管理器有某个动画或者交互开始了。</p>
+<blockquote>
+<p>static clearInteractionHandle(handle: Handle) </p>
+</blockquote>
+<p>通知管理器有某个动画或者交互已经结束了。</p>
+<blockquote>
+<p>static setDeadline(deadline: number) </p>
+</blockquote>
+<p>如果设定了一个正整数值，则会使用setTimeout来挂起所有尚未执行的任务。在eventLoopRunningTime到达设定时间后，才开始使用一个setImmediate方法来批量执行所有任务。</p>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><p>Events: CallExpression<br>addListener: CallExpression </p>
+<h3 id="TimerMixin"><a href="#TimerMixin" class="headerlink" title="TimerMixin"></a>TimerMixin</h3><p>很多React Native应用发生致命错误（闪退）是与计时器有关。具体来说，是在某个组件被卸载（unmount）之后，计时器却仍然被激活。为了解决这个问题，引入了TimerMixin。如果你在组件中引入TimerMixin，就可以把你原本的setTimeout(fn, 500)改为this.setTimeout(fn, 500)(只需要在前面加上this.)，然后当你的组件卸载时，所有的计时器事件也会被正确的清除。</p>
+<p>这个库并没有跟着React Native一起发布。你需要在项目文件夹下输入npm i react-timer-mixin –save来单独安装它。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> TimerMixin <span class="keyword">from</span> <span class="string">'react-timer-mixin'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> Component = React.createClass(&#123;</div><div class="line">  <span class="attr">mixins</span>: [TimerMixin],</div><div class="line">  <span class="attr">componentDidMount</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.setTimeout(</div><div class="line">      <span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="built_in">console</span>.log(<span class="string">'I do not leak!'</span>); &#125;,</div><div class="line">      <span class="number">500</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>强烈建议您使用react-timer-mixin提供的this.setTimeout(…)来代替setTimeout(…)。这可以规避许多难以排查的BUG。</p>
+<p>如果你的项目是用ES6代码编写，因为ES6中没有内置Mixin，你可以使用<a href="https://github.com/brigand/react-mixin" target="_blank" rel="external">react-mixin</a>来代替TimerMixin或者在unmount组件时记住清除（clearTimeout/clearInterval）所有用到的定时器，那么也可以实现和TimerMixin同样的效果。例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React,&#123;</div><div class="line">  Component</div><div class="line">&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  componentDidMount() &#123;</div><div class="line">    <span class="keyword">this</span>.timer = setTimeout(</div><div class="line">      <span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="built_in">console</span>.log(<span class="string">'把一个定时器的引用挂在this上'</span>); &#125;,</div><div class="line">      <span class="number">500</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">  componentWillUnmount() &#123;</div><div class="line">    <span class="comment">// 如果存在this.timer，则使用clearTimeout清空。</span></div><div class="line">    <span class="comment">// 如果你使用多个timer，那么用多个变量，或者用个数组来保存引用，然后逐个clear</span></div><div class="line">    <span class="keyword">this</span>.timer &amp;&amp; clearTimeout(<span class="keyword">this</span>.timer);</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="直接操作（setNativeProps）"><a href="#直接操作（setNativeProps）" class="headerlink" title="直接操作（setNativeProps）"></a>直接操作（setNativeProps）</h2><p>有时候我们需要直接改动组件并触发局部的刷新，但不使用state或是props。譬如在浏览器中使用React库，有时候会需要直接修改一个DOM节点，而在手机App中操作View时也会碰到同样的情况。在React Native中，setNativeProps就是等价于直接操作DOM节点的方法。</p>
+<blockquote>
+<p>什么时候使用setNativeProps呢？在（不得不）频繁刷新而又遇到了性能瓶颈的时候。<br>直接操作组件并不是应该经常使用的工具。一般来说只是用来创建连续的动画，同时避免渲染组件结构和同步太多视图变化所带来的大量开销。setNativeProps是一个“简单粗暴”的方法，它直接在底层（DOM、UIView等）而不是React组件中记录state，这样会使代码逻辑难以理清。所以在使用这个方法之前，请尽量先尝试用setState和shouldComponentUpdate方法来解决问题。</p>
+</blockquote>
+<h3 id="setNativeProps与TouchableOpacity"><a href="#setNativeProps与TouchableOpacity" class="headerlink" title="setNativeProps与TouchableOpacity"></a>setNativeProps与TouchableOpacity</h3><p>TouchableOpacity这个组件就在内部使用了setNativeProps方法来更新其子组件的透明度：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">setOpacityTo(value) &#123;</div><div class="line">  <span class="comment">// Redacted: animation related code</span></div><div class="line">  <span class="keyword">this</span>.refs[CHILD_REF].setNativeProps(&#123;</div><div class="line">    <span class="attr">opacity</span>: value</div><div class="line">  &#125;);</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>由此我们可以写出下面这样的代码：子组件可以响应点击事件，更改自己的透明度。而子组件自身并不需要处理这件事情，也不需要在实现中做任何修改。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;TouchableOpacity onPress=&#123;<span class="keyword">this</span>._handlePress&#125;&gt;</div><div class="line">  <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">&#123;styles.button&#125;</span>&gt;</span></span></div><div class="line">    <span class="tag">&lt;<span class="name">Text</span>&gt;</span>Press me!<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">&lt;<span class="regexp">/TouchableOpacity&gt;</span></div></pre></td></tr></table></figure>
+<p>如果不使用setNativeProps这个方法来实现这一需求，那么一种可能的办法是把透明值保存到state中，然后在onPress事件触发时更新这个值：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">constructor</span>(props) &#123;</div><div class="line">  <span class="keyword">super</span>(props);</div><div class="line">  <span class="keyword">this</span>.state = &#123; <span class="attr">myButtonOpacity</span>: <span class="number">1</span>, &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">render() &#123;</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">TouchableOpacity</span> <span class="attr">onPress</span>=<span class="string">&#123;()</span> =&gt;</span> this.setState(&#123;myButtonOpacity: 0.5&#125;)&#125;</span></div><div class="line">                      onPressOut=&#123;() =&gt; this.setState(&#123;myButtonOpacity: 1&#125;)&#125;&gt;</div><div class="line">      <span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">&#123;[styles.button,</span> &#123;<span class="attr">opacity:</span> <span class="attr">this.state.myButtonOpacity</span>&#125;]&#125;&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">Text</span>&gt;</span>Press me!<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">TouchableOpacity</span>&gt;</span></div><div class="line">  )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>比起之前的例子，这一做法会消耗大量的计算 —— 每一次透明值变更的时候都要重新渲染组件结构，即便视图的其他属性和子组件并没有变化。一般来说这一开销也不足为虑，但当执行连续的动画以及响应用户手势的时候，只有正确地优化组件才能提高动画的流畅度。setNativeProps方法实际是对RCTUIManager.updateView的封装 —— 而这正是重渲染所触发的函数调用。</p>
+<h3 id="复合组件与setNativeProps"><a href="#复合组件与setNativeProps" class="headerlink" title="复合组件与setNativeProps"></a>复合组件与setNativeProps</h3><p>复合组件并不是单纯的由一个原生视图构成，所以你不能对其直接使用setNativeProps。比如下面这个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyButton</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">Text</span>&gt;</span>&#123;this.props.label&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">TouchableOpacity</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">MyButton</span> <span class="attr">label</span>=<span class="string">"Press me!"</span> /&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">TouchableOpacity</span>&gt;</span></div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行这个例子会马上看到一行报错： <font color="#D02591">Touchable child must either be native or forward setNativeProps to a native component.</font> 这是因为MyButton并非直接由原生视图构成，而我们只能给原生视图设置透明值。你可以尝试这样去理解：如果你通过React.createClass方法自定义了一个组件，直接给它设置样式prop是不会生效的，你得把样式props层层向下传递给子组件，直到子组件是一个能够直接定义样式的原生组件。同理，我们也需要把setNativeProps传递给由原生组件封装的子组件。</p>
+<h4 id="将setNativeProps传递给子组件"><a href="#将setNativeProps传递给子组件" class="headerlink" title="将setNativeProps传递给子组件"></a>将setNativeProps传递给子组件</h4><p>具体要做的就是在我们的自定义组件中再封装一个setNativeProps方法，其内容为对合适的子组件调用真正的setNativeProps方法，并传递要设置的参数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyButton</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  setNativeProps(nativeProps) &#123;</div><div class="line">    <span class="keyword">this</span>._root.setNativeProps(nativeProps);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">ref</span>=<span class="string">&#123;component</span> =&gt;</span> this._root = component&#125; &#123;...this.props&#125;&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">Text</span>&gt;</span>&#123;this.props.label&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在你可以在TouchableOpacity中嵌入MyButton了！有一点需要特别说明：这里我们使用了ref回调语法，而不是传统的字符串型ref引用。</p>
+<p>你可能还会注意到我们在向下传递props时使用了{…this.props}语法（对象的扩展运算符,将多个对象合并到某个对象）。这是因为TouchableOpacity本身其实也是个复合组件， 它除了要求在子组件上执行setNativeProps 以外，还要求子组件对触摸事件进行处理。因此，它会传递多个props，其中包含了onmoveshouldsetresponder 函数，这个函数需要回调给TouchableOpacity组件，以完成触摸事件的处理。与之相对的是TouchableHighlight组件，它本身是由原生视图构成，因而只需要我们实现setNativeProps。</p>
+<h3 id="setNativeProps清除TextInput的值"><a href="#setNativeProps清除TextInput的值" class="headerlink" title="setNativeProps清除TextInput的值"></a>setNativeProps清除TextInput的值</h3><p>另一种很常见的setNativeProps的用法是清除TextInput的值。当缓冲区延迟低和用户输入很快的时候可以通过控制TextInput的属性来减少输入的字符。一些开发人员更喜欢完全跳过这个属性，而直接使用setNativeProps直接操作TextInput值。<br>下面的代码演示了点击按钮是清除TextInput的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.clearText = <span class="keyword">this</span>.clearText.bind(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  clearText() &#123;</div><div class="line">    <span class="keyword">this</span>._textInput.setNativeProps(&#123;<span class="attr">text</span>: <span class="string">''</span>&#125;);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">&#123;styles.container&#125;</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">TextInput</span> <span class="attr">ref</span>=<span class="string">&#123;component</span> =&gt;</span> this._textInput = component&#125;</div><div class="line">                   style=&#123;styles.textInput&#125; /&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">TouchableOpacity</span> <span class="attr">onPress</span>=<span class="string">&#123;this.clearText&#125;</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">Text</span>&gt;</span>Clear text<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">TouchableOpacity</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="避免和render方法的冲突"><a href="#避免和render方法的冲突" class="headerlink" title="避免和render方法的冲突"></a>避免和render方法的冲突</h3><p>如果要更新一个由render方法来维护的属性，则可能会碰到一些出人意料的bug。因为每一次组件重新渲染都可能引起属性变化，这样一来，之前通过setNativeProps所设定的值就被完全忽略和覆盖掉了。</p>
+<h3 id="setNativeProps与shouldComponentUpdate"><a href="#setNativeProps与shouldComponentUpdate" class="headerlink" title="setNativeProps与shouldComponentUpdate"></a>setNativeProps与shouldComponentUpdate</h3><p>通过巧妙运用 shouldComponentUpdate方法，可以避免重新渲染那些实际没有变化的子组件所带来的额外开销，此时使用setState的性能已经可以与setNativeProps相媲美了。</p>
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><h3 id="访问App内的开发菜单"><a href="#访问App内的开发菜单" class="headerlink" title="访问App内的开发菜单"></a>访问App内的开发菜单</h3><p>你可以通过摇晃设备或是选择iOS模拟器的”Hardware”菜单中的”Shake Gesture”选项来打开开发菜单。另外，如果是在iOS模拟器中运行，还可以按下Command⌘ + D 快捷键，Android模拟器对应的则是Command⌘ + M（windows上可能是F1或者F2）。</p>
+<p><img src="/images/ReactNative/advance/3.png" alt="开发者菜单"></p>
+<blockquote>
+<p>注意：在成品（release/producation builds）中开发者菜单会被关闭。</p>
+</blockquote>
+<h3 id="刷新JavaScript"><a href="#刷新JavaScript" class="headerlink" title="刷新JavaScript"></a>刷新JavaScript</h3><p>传统的原生应用开发中，每一次修改都需要重新编译，但在React Native中你只需要刷新一下JavaScript代码，就能立刻看到变化。具体的操作就是在开发菜单中点击”Reload”选项。也可以在iOS模拟器中按下Command⌘ + R ，Android模拟器上对应的则是按两下R。（注意，某些React Native版本可能在windows中reload无效，请等待官方修复）</p>
+<p>如果在iOS模拟器中按下Command⌘ + R没啥感觉，则注意检查Hardware菜单中，Keyboard选项下的”Connect Hardware Keyboard”是否被选中。</p>
+<h4 id="自动刷新"><a href="#自动刷新" class="headerlink" title="自动刷新"></a>自动刷新</h4><p>选择开发菜单中的”Enable Live Reload”可以开启自动刷新，这样可以节省你开发中的时间。<br>更神奇的是，你还可以保持应用的当前运行状态，修改后的JavaScript文件会自动注入进来（就好比行驶中的汽车不用停下就能更换新的轮胎）。要实现这一特性只需开启开发菜单中的Hot Reloading选项。  </p>
+<p>某些情况下hot reload并不能顺利实施。如果碰到任何界面刷新上的问题，请尝试手动完全刷新。</p>
+<p>但有些时候你必须要重新编译应用才能使修改生效：<br>增加了新的资源(比如给iOS的Images.xcassets或是Andorid的res/drawable文件夹添加了图片)<br>更改了任何的原生代码（objective-c/swift/java）</p>
+<h3 id="应用内的错误与警告提示（红屏和黄屏）"><a href="#应用内的错误与警告提示（红屏和黄屏）" class="headerlink" title="应用内的错误与警告提示（红屏和黄屏）"></a>应用内的错误与警告提示（红屏和黄屏）</h3><p>红屏或黄屏提示都只会在开发版本中显示，正式的离线包中是不会显示的。</p>
+<h4 id="红屏错误"><a href="#红屏错误" class="headerlink" title="红屏错误"></a>红屏错误</h4><p>应用内的报错会以全屏红色显示在应用中（调试模式下），我们称为红屏（red box）报错。你可以使用console.error()来手动触发红屏错误。</p>
+<h4 id="黄屏警告"><a href="#黄屏警告" class="headerlink" title="黄屏警告"></a>黄屏警告</h4><p>应用内的警告会以全屏黄色显示在应用中（调试模式下），我们称为黄屏（yellow box）报错。点击警告可以查看详情或是忽略掉。 和红屏报警类似，你可以使用console.warn()来手动触发黄屏警告。 在默认情况下，开发模式中启用了黄屏警告。可以通过以下代码关闭：</p>
+<blockquote>
+<p>console.disableYellowBox = true;<br>console.warn(‘YellowBox is disabled.’);</p>
+</blockquote>
+<p>你也可以通过代码屏蔽指定的警告，像下面这样设置一个数组：</p>
+<blockquote>
+<p>console.ignoredYellowBox = [‘Warning: …’];</p>
+</blockquote>
+<p>数组中的字符串就是要屏蔽的警告的开头的内容。（例如上面的代码会屏蔽掉所有以Warning开头的警告内容）</p>
+<blockquote>
+<p>红屏和黄屏在发布版（release/production）中都是自动禁用的。</p>
+</blockquote>
+<h3 id="访问控制台日志"><a href="#访问控制台日志" class="headerlink" title="访问控制台日志"></a>访问控制台日志</h3><p>在运行RN应用时，可以在终端中运行如下命令来查看控制台的日志：</p>
+<blockquote>
+<p>react-native log-ios<br>react-native log-android</p>
+</blockquote>
+<p>此外，你也可以在iOS模拟器的菜单中选择Debug → Open System Log…来查看。如果是Android应用，无论是运行在模拟器或是真机上，都可以通过在终端命令行里运行adb logcat *:S ReactNative:V ReactNativeJS:V命令来查看。</p>
+<h3 id="Chrome开发者工具"><a href="#Chrome开发者工具" class="headerlink" title="Chrome开发者工具"></a>Chrome开发者工具</h3><p>在开发者菜单中选择”Debug JS Remotely”选项，即可以开始在Chrome中调试JavaScript代码。点击这个选项的同时会自动打开调试页面 <a href="http://localhost:8081/debugger-ui" target="_blank" rel="external">http://localhost:8081/debugger-ui</a>.</p>
+<p>在Chrome的菜单中选择Tools → Developer Tools可以打开开发者工具，也可以通过键盘快捷键来打开（Mac上是Command⌘ + Option⌥ + I，Windows上是Ctrl + Shift + I或是F12）。打开有异常时暂停（Pause On Caught Exceptions）选项，能够获得更好的开发体验。</p>
+<blockquote>
+<p>Chrome中并不能直接看到App的用户界面，而只能提供console的输出，以及在sources项中断点调试js脚本。</p>
+<p>目前无法正常使用React开发插件（就是某些教程或截图上提到的Chrome开发工具上多出来的React选项），但这并不影响代码的调试。如果你需要像调试web页面那样查看RN应用的jsx结构，暂时只能使用Nuclide的”React Native Inspector”这一功能来代替。</p>
+</blockquote>
+<h4 id="使用Chrome开发者工具来在设备上调试"><a href="#使用Chrome开发者工具来在设备上调试" class="headerlink" title="使用Chrome开发者工具来在设备上调试"></a>使用Chrome开发者工具来在设备上调试</h4><p>对于iOS真机来说，需要打开 RCTWebSocketExecutor.m文件，然后将其中的”localhost”改为你的电脑的IP地址，最后启用开发者菜单中的”Debug JS Remotely”选项。</p>
+<p>对于Android 5.0+设备（包括模拟器）来说，将设备通过USB连接到电脑上后，可以使用adb命令行工具来设定从设备到电脑的端口转发：</p>
+<blockquote>
+<p>adb reverse tcp:8081 tcp:8081</p>
+</blockquote>
+<p>如果设备Android版本在5.0以下，则可以在开发者菜单中选择”Dev Settings - Debug server host for device”，然后在其中填入电脑的”IP地址:端口“。</p>
+<blockquote>
+<p>如果在Chrome调试时遇到一些问题，那有可能是某些Chrome的插件引起的。试着禁用所有的插件，然后逐个启用，以确定是否某个插件影响到了调试。</p>
+</blockquote>
+<h4 id="使用自定义的JavaScript调试器来调试"><a href="#使用自定义的JavaScript调试器来调试" class="headerlink" title="使用自定义的JavaScript调试器来调试"></a>使用自定义的JavaScript调试器来调试</h4><p>如果想用其他的JavaScript调试器来代替Chrome，可以设置一个名为REACT_DEBUGGER的环境变量，其值为启动自定义调试器的命令。调试的流程依然是从开发者菜单中的”Debug JS Remotely”选项开始。</p>
+<p>被指定的调试器需要知道项目所在的目录（可以一次传递多个目录参数，以空格隔开）。例如，如果你设定了REACT_DEBUGGER=”node /某个路径/launchDebugger.js –port 2345 –type ReactNative”，那么启动调试器的命令就应该是node /某个路径/launchDebugger.js –port 2345 –type ReactNative /某个路径/你的RN项目目录。</p>
+<blockquote>
+<p>以这种方式执行的调试器最好是一个短进程（short-lived processes），同时最好也不要有超过200k的文字输出。</p>
+</blockquote>
+<h4 id="在Android上使用Stetho来调试"><a href="#在Android上使用Stetho来调试" class="headerlink" title="在Android上使用Stetho来调试"></a>在Android上使用Stetho来调试</h4><ol>
+<li>在android/app/build.gradle文件中添加：</li>
+</ol>
+<blockquote>
+<p>compile ‘com.facebook.stetho:stetho:1.3.1’<br>compile ‘com.facebook.stetho:stetho-okhttp3:1.3.1’</p>
+</blockquote>
+<ol>
+<li>在android/app/src/main/java/com/{yourAppName}/MainApplication.java文件中添加：</li>
+</ol>
+<blockquote>
+<p>import com.facebook.react.modules.network.ReactCookieJarContainer;<br>import com.facebook.stetho.Stetho;<br>import okhttp3.OkHttpClient;<br>import com.facebook.react.modules.network.OkHttpClientProvider;<br>import com.facebook.stetho.okhttp3.StethoInterceptor;<br>import java.util.concurrent.TimeUnit;</p>
+</blockquote>
+<ol>
+<li>在android/app/src/main/java/com/{yourAppName}/MainApplication.java文件中添加：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">super</span>.onCreate();</div><div class="line">      Stetho.initializeWithDefaults(<span class="keyword">this</span>);</div><div class="line">      OkHttpClient client = <span class="keyword">new</span> OkHttpClient.Builder()</div><div class="line">      .connectTimeout(<span class="number">0</span>, TimeUnit.MILLISECONDS)</div><div class="line">      .readTimeout(<span class="number">0</span>, TimeUnit.MILLISECONDS)</div><div class="line">      .writeTimeout(<span class="number">0</span>, TimeUnit.MILLISECONDS)</div><div class="line">      .cookieJar(<span class="keyword">new</span> ReactCookieJarContainer())</div><div class="line">      .addNetworkInterceptor(<span class="keyword">new</span> StethoInterceptor())</div><div class="line">      .build();</div><div class="line">      OkHttpClientProvider.replaceOkHttpClient(client);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li><p>运行react-native run-android</p>
+</li>
+<li><p>打开一个新的Chrome选项卡，在地址栏中输入chrome://inspect并回车。在页面中选择’Inspect device’ （标有”Powered by Stetho”字样）。</p>
+</li>
+</ol>
+<h3 id="调试原生代码"><a href="#调试原生代码" class="headerlink" title="调试原生代码"></a>调试原生代码</h3><p>在和原生代码打交道时（比如编写原生模块），可以直接从Android Studio或是Xcode中启动应用，并利用这些IDE的内置功能来调试（比如设置断点）。这一方面和开发原生应用并无二致。</p>
+<h3 id="性能监测"><a href="#性能监测" class="headerlink" title="性能监测"></a>性能监测</h3><p>你可以在开发者菜单中选择”Pref Monitor”选项以开启一个悬浮层，其中会显示应用的当前帧数。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/" data-id="cizp6sung003spsu0x2tbomsh" class="article-share-link" data-share="baidu" data-title="React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          React Native 学习笔记--进阶（四）--导航器
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/06/ReactNative/React Native学习笔记--进阶（二）--动画/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">React Native 学习笔记--进阶（二）--动画</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/" data-title="React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试" data-url="http://cokernut.top/2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识/">Django学习笔记--基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native 打包APK/">React Native 打包APK</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/ReactNative/React Native使用Android原生UI控件/">React Native使用Android原生UI控件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/Android/Android编码规范/">Android编码规范</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 14px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/React-Native/" style="font-size: 18px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

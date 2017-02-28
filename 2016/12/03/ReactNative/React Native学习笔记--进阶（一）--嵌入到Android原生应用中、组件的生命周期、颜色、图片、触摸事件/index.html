@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="React Native 进阶（一）–嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件">
+<meta property="og:url" content="http://cokernut.top/2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="React Native 进阶（一）–嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/advance/1.png">
+<meta property="og:image" content="http://cokernut.top/images/ReactNative/advance/2.png">
+<meta property="og:updated_time" content="2016-12-08T08:41:05.787Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件">
+<meta name="twitter:description" content="React Native 进阶（一）–嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件">
+<meta name="twitter:image" content="http://cokernut.top/images/ReactNative/advance/1.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/" class="article-date">
+  <time datetime="2016-12-02T16:00:00.000Z" itemprop="datePublished">2016-12-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React-Native/">React Native</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>React Native 进阶（一）–嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件<br><a id="more"></a></p>
+<h2 id="嵌入到Android原生应用中"><a href="#嵌入到Android原生应用中" class="headerlink" title="嵌入到Android原生应用中"></a>嵌入到Android原生应用中</h2><p>参考：<a href="http://cokernut.top/2016/11/25/Android/React%20Native%E5%B5%8C%E5%85%A5Android%E5%8E%9F%E7%94%9F%E9%A1%B9%E7%9B%AE%E4%B8%AD/">React Native嵌入Android原生项目中</a></p>
+<h2 id="组件的生命周期"><a href="#组件的生命周期" class="headerlink" title="组件的生命周期"></a>组件的生命周期</h2><p>React Native组件的生命周期如下图：<br><img src="/images/ReactNative/advance/1.png" alt="生命周期图"><br>如图，可以把组件生命周期大致分为三个阶段：</p>
+<p>第一阶段：是组件第一次绘制阶段，如图中的上面虚线框内，在这里完成了组件的初始化和加载；<br>第二阶段：是组件在运行和交互阶段，如图中左下角虚线框，这个阶段组件可以处理用户交互，或者接收事件更新界面；<br>第三阶段：是组件卸载消亡的阶段，如图中右下角的虚线框中，这里做一些组件的清理工作。</p>
+<h3 id="getDefaultProps"><a href="#getDefaultProps" class="headerlink" title="getDefaultProps"></a>getDefaultProps</h3><p>组件实例创建前会先调用 getDefaultProps()，这是全局调用一次，多个实例间共享引用。严格地来说，这不是组件的生命周期的一部分。注意：如果父组件传递过来的Props和你在该函数中定义的Props的key一样，将会被覆盖。</p>
+<h3 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h3><p>在这个阶段之前会先调用getDefaultProps()这个函数，这个阶段完成了组件的初始化和加载。这个阶段会按顺序调用下面4个函数，这4个函数在整个组件被创建到销毁的过程中只调用一次。  </p>
+<h4 id="getInitalState"><a href="#getInitalState" class="headerlink" title="getInitalState"></a>getInitalState</h4><p>组件示例创建的时候调用的第一个函数(getDefaultProps全局调用一次)。主要用于初始化状态(state)。注意：为了在使用中不出现空值，建议初始化state的时候尽可能给每一个可能用到的值都赋一个初始值。这个函数在整个生命周期中只被调用一次。</p>
+<h4 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h4><p>准备加载组件，会调用 componentWillMount()，这个函数调用时机是在组件创建，并初始化了状态之后，在第一次绘制 render() 之前。可以在这里做一些业务初始化操作，也可以设置组件状态。这个函数在整个生命周期中只被调用一次。</p>
+<h4 id="render"><a href="#render" class="headerlink" title="render"></a>render</h4><p>组件渲染函数，会返回一个虚拟DOM，只允许返回一个最外层容器组件。render函数尽量保持纯净，只渲染组件，不修改状态，不执行副操作（比如计时器）。</p>
+<h4 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount"></a>componentDidMount</h4><p>在render渲染之后，React Native会根据虚拟DOM来生成真实DOM，生成完毕后会调用该函数，通知组件已经加载（绘制）完成。这个函数调用的时候，其虚拟 DOM 已经构建完成，你可以在这个函数开始获取其中的元素或者子组件了。需要注意的是，React Native框架是先调用子组件的 componentDidMount()，然后调用父组件的函数。从这个函数开始，就可以和 JS 其他框架交互了，例如设置计时 setTimeout 或者 setInterval，或者发起网络请求。这个函数也是只被调用一次。这个函数之后，就进入了稳定运行状态，等待事件触发。</p>
+<h3 id="运行中"><a href="#运行中" class="headerlink" title="运行中"></a>运行中</h3><p>初始化完成之后，组件将会进入到运行中状态，运行中状态我们将会遇到如下几个函数：</p>
+<h4 id="componentWillReceiveProps-nextProps"><a href="#componentWillReceiveProps-nextProps" class="headerlink" title="componentWillReceiveProps(nextProps)"></a>componentWillReceiveProps(nextProps)</h4><p>如果组件收到新的属性（props改变），就会调用 componentWillReceiveProps()，输入参数 nextProps 是即将被设置的属性，旧的属性还是可以通过 this.props 来获取。在这个回调函数里面，可以根据属性的变化，通过调用 this.setState() 来更新你的组件状态(state)，这里调用更新状态是安全的，并不会触发额外的 render() 调用(二次渲染)。</p>
+<h4 id="boolean-shouldComponentUpdate-nextProps-nextState"><a href="#boolean-shouldComponentUpdate-nextProps-nextState" class="headerlink" title="boolean shouldComponentUpdate(nextProps, nextState)"></a>boolean shouldComponentUpdate(nextProps, nextState)</h4><p>该函数传递过来两个参数，新的state和新的props。state和props的改变都会调到该函数。该函数主要对传递过来的nextProps和nextState作判断。如果返回true则重新渲染，如果返回false则不重新渲染。默认情况下，这个函数永远返回 true 用来保证数据变化的时候 UI 能够同步更新。在大型项目中，你可以自己重载这个函数，通过检查变化前后属性和状态（props和state），来决定 UI 是否需要更新，能有效提高应用性能。</p>
+<h4 id="componentWillUpdate-nextProps-nextState"><a href="#componentWillUpdate-nextProps-nextState" class="headerlink" title="componentWillUpdate(nextProps, nextState)"></a>componentWillUpdate(nextProps, nextState)</h4><p>如果组件状态或者属性改变，并且上面的 shouldComponentUpdate() 返回为 true，就会开始准更新组件，并调用 componentWillUpdate()<br>输入参数与 shouldComponentUpdate 一样，在这个回调中，可以做一些在更新界面之前要做的事情。需要特别注意的是，在这个函数里面，你不可以在该方法中更新state和props。这个函数调用之后，就会把 nextProps 和 nextState 分别设置到 this.props 和 this.state 中。紧接着这个函数，就会调用 render() 来更新界面了。</p>
+<h4 id="render-1"><a href="#render-1" class="headerlink" title="render"></a>render</h4><p>组件渲染</p>
+<h4 id="componentDidUpdate-prevProps-prevState"><a href="#componentDidUpdate-prevProps-prevState" class="headerlink" title="componentDidUpdate(prevProps, prevState)"></a>componentDidUpdate(prevProps, prevState)</h4><p>和初始化时期的componentDidMount类似，在render之后，真实DOM生成之后调用该函数。因为到这里已经完成了属性和状态的更新了，传递过来的是当前的props和state。在该函数中同样可以使用this.getDOMNode()来拿到相应的DOM节点。如果你需要在运行中执行某些副操作，请在该函数中完成。</p>
+<h3 id="销毁"><a href="#销毁" class="headerlink" title="销毁"></a>销毁</h3><p>销毁阶段只有一个函数。</p>
+<h4 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h4><p>组件DOM中移除的时候调用。在这里进行一些相关的销毁操作，比如定时器，监听等等。</p>
+<h3 id="props和state"><a href="#props和state" class="headerlink" title="props和state"></a>props和state</h3><h4 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h4><ol>
+<li>不管是props还是state的改变，都会引发render的重新渲染。  </li>
+<li>都能由自身组件的相应初始化函数设定初始值。</li>
+</ol>
+<h4 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h4><ol>
+<li>初始值来源：state的初始值来自于自身的getInitalState（constructor）函数；props来自于父组件或者自身getDefaultProps（若key相同前者可覆盖后者）。  </li>
+<li>修改方式：state只能在自身组件中setState，不能由父组件修改；props只能由父组件修改，不能在自身组件修改。  </li>
+<li>对子组件：props是一个父组件传递给子组件的数据流，这个数据流可以一直传递到子孙组件；state代表的是一个组件内部自身的状态，只能在自身组件中存在。<br><img src="/images/ReactNative/advance/2.png" alt="props和state">  </li>
+</ol>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123;</div><div class="line">  View</div><div class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sample</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123; </div><div class="line"></div><div class="line">  getInitalState() &#123;  <span class="comment">//组件示例创建的时候调用的第一个函数。主要用于初始化state。注意：为了在使用中不出现空值，建议初始化state的时候尽可能给每一个可能用到的值都赋一个初始值。</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"getInitalState"</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentWillMount() &#123;  <span class="comment">//准备加载组件，会调用 componentWillMount()，这个函数调用时机是在组件创建，并初始化了状态之后，在第一次绘制 render() 之前。可以在这里做一些业务初始化操作，也可以设置组件状态。这个函数在整个生命周期中只被调用一次。</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"componentWillMount"</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;  <span class="comment">//组件渲染函数，会返回一个Virtual DOM，只允许返回一个最外层容器组件。render函数尽量保持纯净，只渲染组件，不修改状态，不执行副操作（比如计时器）</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"render"</span>);</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span><span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentDidMount() &#123;  <span class="comment">//在render渲染之后，React会根据Virtual DOM来生成真实DOM，生成完毕后会调用该函数。主要在该函数中执行网络请求，定时器开启等相关操作</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"componentDidMount"</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentWillReceiveProps(nextProps) &#123; <span class="comment">//props改变时调用</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"componentWillReceiveProps"</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  shouldComponentUpdate(nextProps, nextState) &#123; <span class="comment">//如果 true 表示需要更新，继续走后面的更新流程。否者，则不更新，直接进入等待状态，默认true，可以根据传递过来的props和state来选择更新或者不更新，从而提高效率。</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"shouldComponentUpdate"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentWillUpdate(nextProps, nextState) &#123; <span class="comment">//组件上会接收到新的props或者state渲染之前，调用该方法。但是不可以在该方法中更新state和props</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"componentWillUpdate"</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentDidUpdate(prevProps, prevState) &#123; <span class="comment">//和初始化时期的componentDidMount类似，在render之后，真实DOM生成之后调用该函数。</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"componentWillUpdate"</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentWillUnmount() &#123;  <span class="comment">//组件DOM中移除的时候调用。在这里进行一些相关的销毁操作，比如定时器，监听等等。</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"componentWillUnmount"</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> Sample;</div></pre></td></tr></table></figure>
+<h2 id="颜色"><a href="#颜色" class="headerlink" title="颜色"></a>颜色</h2><p>支持的颜色代码格式：</p>
+<ul>
+<li>‘#f0f’ (#rgb)</li>
+<li>‘#f0fc’ (#rgba)</li>
+<li>‘#ff00ff’ (#rrggbb)</li>
+<li>‘#ff00ff00’ (#rrggbbaa)</li>
+<li>‘rgb(255, 255, 255)’</li>
+<li>‘rgba(255, 255, 255, 1.0)’</li>
+<li>‘hsl(360, 100%, 100%)’</li>
+<li>‘hsla(360, 100%, 100%, 1.0)’</li>
+<li>‘transparent’</li>
+<li>‘red’</li>
+<li>0xff00ff00 (0xrrggbbaa)</li>
+</ul>
+<h2 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h2><h3 id="静态图片资源"><a href="#静态图片资源" class="headerlink" title="静态图片资源"></a>静态图片资源</h3><p>React Native提供了一个统一的方式来管理iOS和Android应用中的图片。<br>你可以使用@2x，@3x这样的文件名后缀，来为不同的屏幕精度提供图片。比如下面这样的代码结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── root.js</div><div class="line">└── img</div><div class="line">    ├── check@2x.png</div><div class="line">    └── check@3x.png</div></pre></td></tr></table></figure>
+<p>并且root.js里有这样的代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Image source=&#123;<span class="built_in">require</span>(<span class="string">'./img/check.png'</span>)&#125; /&gt;</div></pre></td></tr></table></figure></p>
+<p>如果你有check@2x.ios.png和check@2x.android.png，Packager会打包所有的图片根据平台而选择不同的文件，并且依据屏幕精度提供对应的资源。</p>
+<font color="FA7F7F">注意：如果你添加图片的时候packager正在运行，可能需要重启packager以便能正确引入新添加的图片。<br>注意：为了使新的图片资源机制正常工作，require中的图片名字必须是一个静态字符串。</font>  
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 正确</span></div><div class="line">&lt;Image source=&#123;<span class="built_in">require</span>(<span class="string">'./my-icon.png'</span>)&#125; /&gt;</div><div class="line"><span class="comment">// 错误</span></div><div class="line"><span class="keyword">var</span> icon = <span class="keyword">this</span>.props.active ? <span class="string">'my-icon-active'</span> : <span class="string">'my-icon-inactive'</span>;</div><div class="line">&lt;Image source=&#123;require('./' + icon + '.png')&#125; /&gt;</div><div class="line">// 正确</div><div class="line">var icon = this.props.active ? require('./my-icon-active.png') : require('./my-icon-inactive.png');</div><div class="line">&lt;Image source=&#123;icon&#125; /&gt;</div></pre></td></tr></table></figure>
+<h3 id="使用混合App的图片资源"><a href="#使用混合App的图片资源" class="headerlink" title="使用混合App的图片资源"></a>使用混合App的图片资源</h3><p>如果你在编写一个混合App（一部分UI使用React Native，而另一部分使用平台原生代码），也可以使用已经打包到App中的图片资源（通过Xcode的asset类目或者Android的drawable文件夹打包）：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Image source=&#123;&#123;<span class="attr">uri</span>: <span class="string">'app_icon'</span>&#125;&#125; style=&#123;&#123;<span class="attr">width</span>: <span class="number">40</span>, <span class="attr">height</span>: <span class="number">40</span>&#125;&#125; /&gt;</div></pre></td></tr></table></figure></p>
+<font color="FA7F7F">注意：这一做法并没有任何安全检查。你需要自己确保图片在应用中确实存在，而且还需要指定尺寸。</font>
+
+<h3 id="网络图片"><a href="#网络图片" class="headerlink" title="网络图片"></a>网络图片</h3><p>很多要在App中显示的图片<font color="FA7F7F">并不能在编译的时候获得，又或者有时候需要动态载入来减少打包后的二进制文件的大小。这些时候，与静态资源不同的是，你需要手动指定图片的尺寸。</font><br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 正确</span></div><div class="line">&lt;Image source=&#123;&#123;<span class="attr">uri</span>: <span class="string">'https://facebook.github.io/react/img/logo_og.png'</span>&#125;&#125;</div><div class="line">       style=&#123;&#123;<span class="attr">width</span>: <span class="number">400</span>, <span class="attr">height</span>: <span class="number">400</span>&#125;&#125; /&gt;</div><div class="line"><span class="comment">// 错误</span></div><div class="line">&lt;Image source=&#123;&#123;<span class="attr">uri</span>: <span class="string">'https://facebook.github.io/react/img/logo_og.png'</span>&#125;&#125; /&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="本地文件系统中的图片"><a href="#本地文件系统中的图片" class="headerlink" title="本地文件系统中的图片"></a>本地文件系统中的图片</h3><p>CameraRoll模块提供了访问本地相册的功能。</p>
+<blockquote>
+<p>static saveImageWithTag(tag) </p>
+</blockquote>
+<p>保存一个图片到相册。</p>
+<p>@param {string} tag<br>在安卓上，本参数是一个本地URI，例如”file:///sdcard/img.png”.<br>在iOS设备上可能是以下之一：</p>
+<ul>
+<li>本地URI</li>
+<li>资源库的标签</li>
+<li>非以上两种类型，表示图片数据将会存储在内存中（并且在本进程持续的时候一直会占用内存）。</li>
+</ul>
+<p>返回一个Promise，操作成功时返回新的URI。</p>
+<blockquote>
+<p>static getPhotos(params: object) </p>
+</blockquote>
+<p>返回一个带有图片标识符对象的Promise。返回的对象的结构参见getPhotosReturnChecker:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> getPhotosReturnChecker = createStrictShapeTypeChecker(&#123;</div><div class="line">  <span class="attr">edges</span>: ReactPropTypes.arrayOf(createStrictShapeTypeChecker(&#123;</div><div class="line">    <span class="attr">node</span>: createStrictShapeTypeChecker(&#123;</div><div class="line">      <span class="attr">type</span>: ReactPropTypes.string.isRequired,</div><div class="line">      <span class="attr">group_name</span>: ReactPropTypes.string.isRequired,</div><div class="line">      <span class="attr">image</span>: createStrictShapeTypeChecker(&#123;</div><div class="line">        <span class="attr">uri</span>: ReactPropTypes.string.isRequired,</div><div class="line">        <span class="attr">height</span>: ReactPropTypes.number.isRequired,</div><div class="line">        <span class="attr">width</span>: ReactPropTypes.number.isRequired,</div><div class="line">        <span class="attr">isStored</span>: ReactPropTypes.bool,</div><div class="line">      &#125;).isRequired,</div><div class="line">      <span class="attr">timestamp</span>: ReactPropTypes.number.isRequired,</div><div class="line">      <span class="attr">location</span>: createStrictShapeTypeChecker(&#123;</div><div class="line">        <span class="attr">latitude</span>: ReactPropTypes.number,</div><div class="line">        <span class="attr">longitude</span>: ReactPropTypes.number,</div><div class="line">        <span class="attr">altitude</span>: ReactPropTypes.number,</div><div class="line">        <span class="attr">heading</span>: ReactPropTypes.number,</div><div class="line">        <span class="attr">speed</span>: ReactPropTypes.number,</div><div class="line">      &#125;),</div><div class="line">    &#125;).isRequired,</div><div class="line">  &#125;)).isRequired,</div><div class="line">  <span class="attr">page_info</span>: createStrictShapeTypeChecker(&#123;</div><div class="line">    <span class="attr">has_next_page</span>: ReactPropTypes.bool.isRequired,</div><div class="line">    <span class="attr">start_cursor</span>: ReactPropTypes.string,</div><div class="line">    <span class="attr">end_cursor</span>: ReactPropTypes.string,</div><div class="line">  &#125;).isRequired,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>@param {object} 要求的参数结构参见getPhotosParamChecker：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> getPhotosParamChecker = createStrictShapeTypeChecker(&#123;</div><div class="line">  <span class="attr">first</span>: ReactPropTypes.number.isRequired,</div><div class="line">  <span class="attr">after</span>: ReactPropTypes.string,</div><div class="line">  <span class="attr">groupTypes</span>: ReactPropTypes.oneOf(GROUP_TYPES_OPTIONS),</div><div class="line">  <span class="attr">groupName</span>: ReactPropTypes.string,</div><div class="line">  <span class="attr">assetType</span>: ReactPropTypes.oneOf(ASSET_TYPE_OPTIONS),</div><div class="line">  <span class="comment">//例如：image/jpeg</span></div><div class="line">  mimeTypes: ReactPropTypes.arrayOf(ReactPropTypes.string),</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>返回一个Promise，操作成功时返回符合getPhotosReturnChecker结构的对象。</p>
+<h4 id="最合适的相册图片"><a href="#最合适的相册图片" class="headerlink" title="最合适的相册图片"></a>最合适的相册图片</h4><p>iOS会为同一张图片在相册中保存多个不同尺寸的副本。为了性能考虑，从这些副本中挑出最合适的尺寸显得尤为重要。对于一处200x200大小的缩略图，显然不应该选择最高质量的3264x2448大小的图片。如果恰好有匹配的尺寸，那么React Native会自动为你选好。如果没有，则会选择最接近的尺寸进行缩放，但也至少缩放到比所需尺寸大出50%，以使图片看起来仍然足够清晰。这一切过程都是自动完成的，所以你不用操心自己去完成这些繁琐且易错的代码。</p>
+<h3 id="为什么不在所有情况下都自动指定尺寸"><a href="#为什么不在所有情况下都自动指定尺寸" class="headerlink" title="为什么不在所有情况下都自动指定尺寸"></a>为什么不在所有情况下都自动指定尺寸</h3><p>在浏览器中，如果你不给图片指定尺寸，那么浏览器会首先渲染一个0x0大小的元素占位，然后下载图片，在下载完成后再基于正确的尺寸来渲染图片。这样做的最大问题是UI会在图片加载的过程中上下跳动，使得用户体验非常糟糕。<br>在React Native中有意避免了这一行为。如此一来就需要做更多工作来提前知晓远程图片的尺寸（或宽高比），但我们相信这样可以带来更好的用户体验。然而，从已经打包好的应用资源文件中读取图片（使用require(‘image!x’)语法）则无需指定尺寸，因为它们的尺寸在加载时就可以立刻知道。<br>这样一个引用require(‘image!logo’)的实际输出结果可能是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;__packager_asset&quot;:true,&quot;isStatic&quot;:true,&quot;path&quot;:&quot;/Users/react/HelloWorld/iOS/Images.xcassets/react.imageset/logo.png&quot;,&quot;uri&quot;:&quot;logo&quot;,&quot;width&quot;:591,&quot;height&quot;:573&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="资源属性是一个对象（object）"><a href="#资源属性是一个对象（object）" class="headerlink" title="资源属性是一个对象（object）"></a>资源属性是一个对象（object）</h3><p>在React Native中，把src属性改为了source属性，而且并不接受字符串，正确的值是一个带有uri属性的对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Image source=&#123;&#123;uri: &apos;something.jpg&apos;&#125;&#125; /&gt;</div></pre></td></tr></table></figure></p>
+<p>这样可以使我们在对象中添加一些元数据(metadata)。假设你在使用require(‘./my-icon.png’)，那么就会在其中添加真实文件路径以及尺寸等信息。对于开发者来说，则可以在其中标注一些有用的属性，例如图片的尺寸，这样可以使图片自己去计算将要显示的尺寸（而不必在样式中写死）。你可以在这一数据结构中自由发挥，存储你可能需要的任何图片相关的信息。</p>
+<h3 id="通过嵌套来实现背景图片"><a href="#通过嵌套来实现背景图片" class="headerlink" title="通过嵌套来实现背景图片"></a>通过嵌套来实现背景图片</h3><p>开发者们常面对的一种需求就是类似web中的背景图（background-image）。要实现这一用例，只需简单地创建一个<image>组件，然后把需要背景图的子组件嵌入其中即可。</image></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> (</div><div class="line">  <span class="xml"><span class="tag">&lt;<span class="name">Image</span> <span class="attr">source</span>=<span class="string">&#123;...&#125;</span>&gt;</span></span></div><div class="line">    <span class="tag">&lt;<span class="name">Text</span>&gt;</span>Inside<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">Image</span>&gt;</span></div><div class="line">);</div></pre></td></tr></table></figure>
+<h2 id="触摸事件"><a href="#触摸事件" class="headerlink" title="触摸事件"></a>触摸事件</h2><p>React Native提供了可以处理常见触摸手势（例如点击或滑动）的组件， 以及可用于识别更复杂的手势的完整的手势响应系统。</p>
+<h3 id="可点击的组件"><a href="#可点击的组件" class="headerlink" title="可点击的组件"></a>可点击的组件</h3><p>在需要捕捉用户点击操作时，可以使用”Touchable”开头的一系列组件。这些组件通过onPress属性接受一个点击事件的处理函数。当一个点击操作开始并且终止于本组件时（即在本组件上按下手指并且抬起手指时也没有移开到组件外），此函数会被调用。<br>可点击的组件需要给用户提供视觉反馈，例如是哪个组件正在响应用户的操作，以及当用户抬起手指后会发生什么。用户也应该可以通过把手指移到一边来取消点击操作。<br>具体使用哪种组件，取决于你希望给用户什么样的视觉反馈：</p>
+<ul>
+<li>一般来说，你可以使用TouchableHighlight来制作按钮或者链接。注意此组件的背景会在用户手指按下时变暗。  </li>
+<li>在Android上还可以使用TouchableNativeFeedback，它会在用户手指按下时形成类似墨水涟漪的视觉效果。  </li>
+<li>TouchableOpacity会在用户手指按下时降低按钮的透明度，而不会改变背景的颜色。   </li>
+<li>如果你想在处理点击事件的同时不显示任何视觉反馈，则需要使用TouchableWithoutFeedback。</li>
+</ul>
+<h3 id="长按"><a href="#长按" class="headerlink" title="长按"></a>长按</h3><p>某些场景中你可能需要检测用户是否进行了长按操作。可以在上面列出的任意组件中使用onLongPress属性来实现。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123;</div><div class="line">  View,</div><div class="line">  Image,</div><div class="line">  Text,</div><div class="line">  TouchableOpacity,</div><div class="line">  StyleSheet</div><div class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Advance</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  _click() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"Click!"</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  _longClick() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"Long Click!"</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">TouchableOpacity</span> <span class="attr">onPress</span>=<span class="string">&#123;this._click&#125;</span> <span class="attr">onLongPress</span>=<span class="string">&#123;this._longClick&#125;</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">Image</span> <span class="attr">source</span>=<span class="string">&#123;&#123;</span> <span class="attr">uri:</span> '<span class="attr">https:</span>//<span class="attr">facebook.github.io</span>/<span class="attr">react</span>/<span class="attr">img</span>/<span class="attr">logo_og.png</span>' &#125;&#125;</span></div><div class="line">            <span class="attr">style</span>=<span class="string">&#123;[styles.image,</span> &#123; <span class="attr">width:</span> <span class="attr">200</span>, <span class="attr">height:</span> <span class="attr">200</span> &#125;]&#125; &gt;</div><div class="line">            <span class="tag">&lt;<span class="name">Text</span> <span class="attr">style</span>=<span class="string">&#123;styles.text&#125;</span>&gt;</span>背景图片<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">          <span class="tag">&lt;/<span class="name">Image</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">TouchableOpacity</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> styles = StyleSheet.create(&#123;</div><div class="line">  <span class="attr">image</span>: &#123;</div><div class="line">    <span class="attr">flex</span>: <span class="number">1</span>,</div><div class="line">    <span class="attr">justifyContent</span>: <span class="string">'center'</span>,</div><div class="line">    <span class="attr">alignItems</span>: <span class="string">'center'</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">text</span>: &#123;</div><div class="line">    <span class="attr">fontSize</span>: <span class="number">40</span>,</div><div class="line">    <span class="attr">textAlign</span>: <span class="string">'center'</span>,</div><div class="line">    <span class="attr">color</span>: <span class="string">'#F67FF8'</span>,</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> Advance;</div></pre></td></tr></table></figure>
+<h3 id="在列表中上下滑动和在视图上左右滑动"><a href="#在列表中上下滑动和在视图上左右滑动" class="headerlink" title="在列表中上下滑动和在视图上左右滑动"></a>在列表中上下滑动和在视图上左右滑动</h3><p>可滚动的列表是移动应用中一个常见的模式。用户会在列表中或快或慢的各种滑动。ScrollView组件可以满足这一需求。<br>ScrollView可以在垂直或水平方向滚动，还可以配置pagingEnabled属性来让用户整屏整屏的滑动。此外，水平方向的滑动还可以使用Android上的ViewPagerAndroid 组件。<br>ListView则是一种特殊的ScrollView，用于显示比较长的垂直列表。它还可以显示分区块的头部和尾部，类似iOS上的UITableView控件。</p>
+<h4 id="双指缩放"><a href="#双指缩放" class="headerlink" title="双指缩放"></a>双指缩放</h4><p>如果在ScrollView中只放置一个组件，则可以用来实现缩放操作。设置maximumZoomScale和minimumZoomScale属性即可以使用户能够缩放其中的内容</p>
+<h2 id="处理其他的手势"><a href="#处理其他的手势" class="headerlink" title="处理其他的手势"></a>处理其他的手势</h2><h3 id="手势响应系统"><a href="#手势响应系统" class="headerlink" title="手势响应系统"></a>手势响应系统</h3><p>移动设备上的手势识别要比在web上复杂得多。用户的一次触摸操作的真实意图是什么，App要经过好几个阶段才能判断。比如App需要判断用户的触摸到底是在滚动页面，还是滑动一个widget，或者只是一个单纯的点击。甚至随着持续时间的不同，这些操作还会转化。此外，还有多点同时触控的情况。</p>
+<p>触摸响应系统可以使组件在不关心父组件或子组件的前提下自行处理触摸交互。</p>
+<h4 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h4><p>用户之所以会觉得web app和原生app在体验上有巨大的差异，触摸响应是一大关键因素。用户的每一个操作都应该具有下列属性：</p>
+<ul>
+<li>反馈/高亮 —— 让用户看到他们到底按到了什么东西，以及松开手后会发生什么。</li>
+<li>取消功能 —— 当用户正在触摸操作时，应该是可以通过把手指移开来终止操作。  </li>
+</ul>
+<p>这些特性使得用户在使用App时体验更好，因为它们可以让用户大胆试用，而不必担心点错了什么。</p>
+<h4 id="TouchableHighlight与Touchable系列组件"><a href="#TouchableHighlight与Touchable系列组件" class="headerlink" title="TouchableHighlight与Touchable系列组件"></a>TouchableHighlight与Touchable系列组件</h4><p>响应系统用起来可能比较复杂。所以官方提供了一个抽象的Touchable实现，用来做“可触控”的组件。这一实现利用了响应系统，使得我们可以简单地以声明的方式来配置触控处理。如果要做一个按钮或者网页链接，那么使用TouchableHighlight就可以。</p>
+<h4 id="响应者的生命周期"><a href="#响应者的生命周期" class="headerlink" title="响应者的生命周期"></a>响应者的生命周期</h4><p>一个View只要实现了正确的协商方法，就可以成为触摸事件的响应者。我们通过两个方法去“询问”一个View是否愿意成为响应者：</p>
+<ul>
+<li>View.props.onStartShouldSetResponder: (evt) =&gt; true, - 在用户开始触摸的时候（手指刚刚接触屏幕的瞬间），是否愿意成为响应者？</li>
+<li>View.props.onMoveShouldSetResponder: (evt) =&gt; true, - 如果View不是响应者，那么在每一个触摸点开始移动（没有停下也没有离开屏幕）时再询问一次：是否愿意响应触摸交互呢？  </li>
+</ul>
+<p>如果View返回true，并开始尝试成为响应者，那么会触发下列事件之一:</p>
+<ul>
+<li>View.props.onResponderGrant: (evt) =&gt; {} - View现在要开始响应触摸事件了。这也是需要做高亮的时候，使用户知道他到底点到了哪里。</li>
+<li>View.props.onResponderReject: (evt) =&gt; {} - 响应者现在“另有其人”而且暂时不会“放权”，请另作安排。</li>
+</ul>
+<p>如果View已经开始响应触摸事件了，那么下列这些处理函数会被一一调用：</p>
+<ul>
+<li>View.props.onResponderMove: (evt) =&gt; {} - 用户正在屏幕上移动手指时（没有停下也没有离开屏幕）。</li>
+<li>View.props.onResponderRelease: (evt) =&gt; {} - 触摸操作结束时触发，比如”touchUp”（手指抬起离开屏幕）。</li>
+<li>View.props.onResponderTerminationRequest: (evt) =&gt; true - 有其他组件请求接替响应者，当前的View是否“放权”？返回true的话则释放响应者权力。</li>
+<li>View.props.onResponderTerminate: (evt) =&gt; {} - 响应者权力已经交出。这可能是由于其他View通过onResponderTerminationRequest请求的，也可能是由操作系统强制夺权（比如iOS上的控制中心或是通知中心）。</li>
+</ul>
+<p>evt是一个合成事件，它包含以下结构：  </p>
+<ul>
+<li>nativeEvent<ul>
+<li>changedTouches - 在上一次事件之后，所有发生变化的触摸事件的数组集合（即上一次事件后，所有移动过的触摸点）</li>
+<li>identifier - 触摸点的ID</li>
+<li>locationX - 触摸点相对于父元素的横坐标</li>
+<li>locationY - 触摸点相对于父元素的纵坐标</li>
+<li>pageX - 触摸点相对于根元素的横坐标</li>
+<li>pageY - 触摸点相对于根元素的纵坐标</li>
+<li>target - 触摸点所在的元素ID</li>
+<li>timestamp - 触摸事件的时间戳，可用于移动速度的计算</li>
+<li>touches - 当前屏幕上的所有触摸点的集合</li>
+</ul>
+</li>
+</ul>
+<h4 id="捕获ShouldSet事件处理"><a href="#捕获ShouldSet事件处理" class="headerlink" title="捕获ShouldSet事件处理"></a>捕获ShouldSet事件处理</h4><p>onStartShouldSetResponder与onMoveShouldSetResponder是以冒泡的形式调用的，即嵌套最深的节点最先调用。这意味着当多个View同时在*ShouldSetResponder中返回true时，最底层的View将优先“夺权”。在多数情况下这并没有什么问题，因为这样可以确保所有控件和按钮是可用的。</p>
+<p>但是有些时候，某个父View会希望能先成为响应者。我们可以利用“捕获期”来解决这一需求。响应系统在从最底层的组件开始冒泡之前，会首先执行一个“捕获期”，在此期间会触发on*ShouldSetResponderCapture系列事件。因此，如果某个父View想要在触摸操作开始时阻止子组件成为响应者，那就应该处理onStartShouldSetResponderCapture事件并返回true值。</p>
+<blockquote>
+<p>View.props.onStartShouldSetResponderCapture: (evt) =&gt; true,<br>View.props.onMoveShouldSetResponderCapture: (evt) =&gt; true,</p>
+</blockquote>
+<h3 id="PanResponder"><a href="#PanResponder" class="headerlink" title="PanResponder"></a>PanResponder</h3><p>PanResponder类可以将多点触摸操作协调成一个手势。它使得一个单点触摸可以接受更多的触摸操作，也可以用于识别简单的多点触摸手势。</p>
+<p>它提供了一个对触摸响应系统响应器的可预测的包装。对于每一个处理函数，它在原生事件之外提供了一个新的gestureState对象。</p>
+<blockquote>
+<p>onPanResponderMove: (event, gestureState) =&gt; {}</p>
+</blockquote>
+<p>原生事件是指由以下字段组成的合成触摸事件：</p>
+<ul>
+<li>nativeEvent<ul>
+<li>changedTouches - 在上一次事件之后，所有发生变化的触摸事件的数组集合（即上一次事件后，所有移动过的触摸点）</li>
+<li>identifier - 触摸点的ID</li>
+<li>locationX - 触摸点相对于父元素的横坐标</li>
+<li>locationY - 触摸点相对于父元素的纵坐标</li>
+<li>pageX - 触摸点相对于根元素的横坐标</li>
+<li>pageY - 触摸点相对于根元素的纵坐标</li>
+<li>target - 触摸点所在的元素ID</li>
+<li>timestamp - 触摸事件的时间戳，可用于移动速度的计算</li>
+<li>touches - 当前屏幕上的所有触摸点的集合</li>
+</ul>
+</li>
+</ul>
+<p>一个gestureState对象有如下的字段：</p>
+<ul>
+<li>stateID - 触摸状态的ID。在屏幕上有至少一个触摸点的情况下，这个ID会一直有效。</li>
+<li>moveX - 最近一次移动时的屏幕横坐标</li>
+<li>moveY - 最近一次移动时的屏幕纵坐标</li>
+<li>x0 - 当响应器产生时的屏幕坐标</li>
+<li>y0 - 当响应器产生时的屏幕坐标</li>
+<li>dx - 从触摸操作开始时的累计横向路程</li>
+<li>dy - 从触摸操作开始时的累计纵向路程</li>
+<li>vx - 当前的横向移动速度</li>
+<li>vy - 当前的纵向移动速度</li>
+<li>numberActiveTouches - 当前在屏幕上的有效触摸点的数量</li>
+</ul>
+<p>基本用法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">componentWillMount: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>._panResponder = PanResponder.create(&#123;</div><div class="line">        <span class="comment">// 要求成为响应者：</span></div><div class="line">        onStartShouldSetPanResponder: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line">        <span class="attr">onStartShouldSetPanResponderCapture</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line">        <span class="attr">onMoveShouldSetPanResponder</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line">        <span class="attr">onMoveShouldSetPanResponderCapture</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line"></div><div class="line">        <span class="attr">onPanResponderGrant</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> &#123;</div><div class="line">        <span class="comment">// 开始手势操作。给用户一些视觉反馈，让他们知道发生了什么事情！</span></div><div class="line">        <span class="comment">// gestureState.&#123;x,y&#125;0 现在会被设置为0</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">onPanResponderMove</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> &#123;</div><div class="line">        <span class="comment">// 最近一次的移动距离为gestureState.move&#123;X,Y&#125;</span></div><div class="line">        <span class="comment">// 从成为响应者开始时的累计手势移动距离为gestureState.d&#123;x,y&#125;</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">onPanResponderTerminationRequest</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> <span class="literal">true</span>,</div><div class="line">        <span class="attr">onPanResponderRelease</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> &#123;</div><div class="line">        <span class="comment">// 用户放开了所有的触摸点，且此时视图已经成为了响应者。</span></div><div class="line">        <span class="comment">// 一般来说这意味着一个手势操作已经成功完成。</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">onPanResponderTerminate</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> &#123;</div><div class="line">        <span class="comment">// 另一个组件已经成为了新的响应者，所以当前手势将被取消。</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">onShouldBlockNativeResponder</span>: <span class="function">(<span class="params">evt, gestureState</span>) =&gt;</span> &#123;</div><div class="line">        <span class="comment">// 返回一个布尔值，决定当前组件是否应该阻止原生组件成为JS响应者</span></div><div class="line">        <span class="comment">// 默认返回true。目前暂时只支持android。</span></div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125;,</div><div class="line">    &#125;);</div><div class="line">&#125;,</div><div class="line"></div><div class="line"><span class="attr">render</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">        <span class="xml"><span class="tag">&lt;<span class="name">View</span> &#123;<span class="attr">...this._panResponder.panHandlers</span>&#125; /&gt;</span></span></div><div class="line">    );</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><blockquote>
+<p>static create(config: object) </p>
+</blockquote>
+<p>@param {object} 配置所有响应器回调的加强版本，不仅仅包括原本的ResponderSyntheticEvent，还包括PanResponder手势状态的回调。你只要简单的把onResponder回调中的Responder替换为PanResponder。举例来说，这个config对象可能看起来像这样：</p>
+<ul>
+<li>onMoveShouldSetPanResponder: (e, gestureState) =&gt; {…}</li>
+<li>onMoveShouldSetPanResponderCapture: (e, gestureState) =&gt; {…}</li>
+<li>onStartShouldSetPanResponder: (e, gestureState) =&gt; {…}</li>
+<li>onStartShouldSetPanResponderCapture: (e, gestureState) =&gt; {…}</li>
+<li>onPanResponderReject: (e, gestureState) =&gt; {…}</li>
+<li>onPanResponderGrant: (e, gestureState) =&gt; {…}</li>
+<li>onPanResponderStart: (e, gestureState) =&gt; {…}</li>
+<li>onPanResponderEnd: (e, gestureState) =&gt; {…}</li>
+<li>onPanResponderRelease: (e, gestureState) =&gt; {…}</li>
+<li>onPanResponderMove: (e, gestureState) =&gt; {…}</li>
+<li>onPanResponderTerminate: (e, gestureState) =&gt; {…}</li>
+<li>onPanResponderTerminationRequest: (e, gestureState) =&gt; {…}</li>
+<li>onShouldBlockNativeResponder: (e, gestureState) =&gt; {…}</li>
+</ul>
+<p>通常来说，对那些有对应捕获事件的事件来说，我们在捕获阶段更新gestureState一次，然后在冒泡阶段直接使用即可。</p>
+<p>注意onStartShould 回调。他们只会在此节点冒泡/捕获的开始/结束事件中提供已经更新过的gestureState。一旦这个节点成为了事件的响应者，则所有的开始/结束事件都会被手势正确处理，并且gestureState也会被正确更新。(numberActiveTouches)有可能没有包含所有的触摸点，除非你就是触摸事件的响应者。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/" data-id="cizp6sun9003hpsu0f1x23tvr" class="article-share-link" data-share="baidu" data-title="React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/06/ReactNative/React Native学习笔记--进阶（二）--动画/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          React Native 学习笔记--进阶（二）--动画
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/01/ReactNative/React Native学习笔记--基础知识/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">React Native 学习笔记--基础知识</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/" data-title="React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件" data-url="http://cokernut.top/2016/12/03/ReactNative/React Native学习笔记--进阶（一）--嵌入到Android原生应用中、组件的生命周期、颜色、图片、触摸事件/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识/">Django学习笔记--基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native 打包APK/">React Native 打包APK</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/ReactNative/React Native使用Android原生UI控件/">React Native使用Android原生UI控件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/Android/Android编码规范/">Android编码规范</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 14px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/React-Native/" style="font-size: 18px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

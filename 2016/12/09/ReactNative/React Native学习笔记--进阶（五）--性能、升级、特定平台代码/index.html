@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="React Native 进阶（五）–性能、升级版本、特定平台代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码">
+<meta property="og:url" content="http://cokernut.top/2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="React Native 进阶（五）–性能、升级版本、特定平台代码">
+<meta property="og:updated_time" content="2016-12-08T09:45:04.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码">
+<meta name="twitter:description" content="React Native 进阶（五）–性能、升级版本、特定平台代码">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/" class="article-date">
+  <time datetime="2016-12-08T16:00:00.000Z" itemprop="datePublished">2016-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React-Native/">React Native</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>React Native 进阶（五）–性能、升级版本、特定平台代码<br><a id="more"></a></p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>使用React Native替代基于WebView的框架来开发App的一个强有力的理由，就是为了使App可以达到每秒60帧（足够流畅），并且能有类似原生App的外观和手感。但是，还是有一些地方有所欠缺，以及在某些场合React Native还不能够替你决定如何进行优化，因此人工的干预依然是必要的。 </p>
+<h3 id="关于“帧”你所需要知道的"><a href="#关于“帧”你所需要知道的" class="headerlink" title="关于“帧”你所需要知道的"></a>关于“帧”你所需要知道的</h3><p>视频中逼真的动态效果其实是一种幻觉，这种幻觉是由一组静态的图片以一个稳定的速度快速变化所产生的。我们把这组图片中的每一张图片叫做一帧，而每秒钟显示的帧数直接的影响了视频（或者说用户界面）的流畅度和真实感。iOS设备提供了每秒60的帧率，这就留给了开发者和UI系统大约16.67ms来完成生成一张静态图片（帧）所需要的所有工作。如果在这分派的16.67ms之内没有能够完成这些工作，就会引发‘丢帧’的后果，使界面表现的不够流畅。</p>
+<p>调出你应用的开发菜单，打开Show FPS Monitor. 你会注意到有两个不同的帧率（JS和UI）：</p>
+<h4 id="JavaScript-帧率"><a href="#JavaScript-帧率" class="headerlink" title="JavaScript 帧率"></a>JavaScript 帧率</h4><p>对大多数React Native应用来说，业务逻辑是运行在JavaScript线程上的。这是React应用所在的线程，也是发生API调用，以及处理触摸事件等操作的线程。更新数据到原生支持的视图是批量进行的，并且在事件循环每进行一次的时候被发送到原生端，这一步通常会在一帧时间结束之前处理完（一切顺利的话）。如果JavaScript线程有一帧没有及时响应，就被认为发生了一次丢帧。 例如：你在一个复杂应用的根组件上调用了this.setState，从而导致一次开销很大的子组件树的重绘，可想而知，这可能会花费200ms也就是整整12帧的丢失。此时，任何由JavaScript控制的动画都会卡住。只要卡顿超过100ms，用户就会明显的感觉到。</p>
+<p>这种情况经常发生在Navigator的切换过程中：当你push一个新的路由时，JavaScript需要绘制新场景所需的所有组件，以发送正确的命令给原生端去创建视图。由于切换是由JavaScript线程所控制，因此经常会占用若干帧的时间，引起一些卡顿。有的时候，组件会在componentDidMount函数中做一些额外的事情，这甚至可能会导致页面切换过程中多达一秒的卡顿。</p>
+<p>另一个例子是触摸事件的响应：如果你正在JavaScript线程处理一个跨越多个帧的工作，你可能会注意到TouchableOpacity的响应被延迟了。这是因为JavaScript线程太忙了，不能够处理主线程发送过来的原始触摸事件。结果TouchableOpacity就不能及时响应这些事件并命令主线程的页面去调整透明度了。</p>
+<h4 id="主线程-也即UI线程-帧率"><a href="#主线程-也即UI线程-帧率" class="headerlink" title="主线程 (也即UI线程) 帧率"></a>主线程 (也即UI线程) 帧率</h4><p>很多人会注意到，NavigatorIOS的性能要比Navigator好的多。原因就是它的切换动画是完全在主线程上执行的，因此不会被JavaScript线程上的掉帧所影响。</p>
+<p>同样，当JavaScript线程卡住的时候，你仍然可以欢快的上下滚动ScrollView，因为ScrollView运行在主线程之上（尽管滚动事件会被分发到JS线程，但是接收这些事件对于滚动这个动作来说并不必要）。</p>
+<h3 id="性能问题的常见原因"><a href="#性能问题的常见原因" class="headerlink" title="性能问题的常见原因"></a>性能问题的常见原因</h3><h4 id="console-log语句"><a href="#console-log语句" class="headerlink" title="console.log语句"></a>console.log语句</h4><p>在运行打好了离线包的应用时，控制台打印语句可能会极大地拖累JavaScript线程。注意有些第三方调试库也可能包含控制台打印语句，比如redux-logger，所以在发布应用前请务必仔细检查，确保全部移除。</p>
+<blockquote>
+<p>有个babel插件可以帮你移除所有的console.*调用。首先需要使用npm install babel-plugin-transform-remove-console –save来安装，然后在项目根目录下编辑（或者是新建）一个名为·.babelrc`的文件，在其中加入：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"env"</span>: &#123;</div><div class="line">    <span class="attr">"production"</span>: &#123;</div><div class="line">      <span class="attr">"plugins"</span>: [<span class="string">"transform-remove-console"</span>]</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这样在打包发布时，所有的控制台语句就会被自动移除，而在调试时它们仍然会被正常调用。</p>
+<h4 id="开发模式-dev-true"><a href="#开发模式-dev-true" class="headerlink" title="开发模式 (dev=true)"></a>开发模式 (dev=true)</h4><p>JavaScript线程的性能在开发模式下是很糟糕的。这是不可避免的，因为有许多工作需要在运行的时候去做，譬如使你获得良好的警告和错误信息，又比如验证属性类型（propTypes）以及产生各种其他的警告。</p>
+<h4 id="缓慢的导航器-Navigator-切换"><a href="#缓慢的导航器-Navigator-切换" class="headerlink" title="缓慢的导航器(Navigator)切换"></a>缓慢的导航器(Navigator)切换</h4><p>Navigator的动画是由JavaScript线程所控制的。想象一下“从右边推入”这个场景的切换：每一帧中，新的场景从右向左移动，从屏幕右边缘开始，最终移动到x轴偏移为0的屏幕位置。切换过程中的每一帧，JavaScript线程都需要发送一个新的x轴偏移量给主线程。如果JavaScript线程卡住了，它就无法处理这项事情，因而这一帧就无法更新，动画就被卡住了。</p>
+<p>长远的解决方法，其中一部分是要允许基于JavaScript的动画从主线程分离。同样是上面的例子，我们可以在切换动画开始的时候计算出一个列表，其中包含所有的新的场景需要的x轴偏移量，然后一次发送到主线程以某种优化的方式执行。由于JavaScript线程已经从更新x轴偏移量给主线程这个职责中解脱了出来，因此JavaScript线程中的掉帧就不是什么大问题了 —— 用户将基本上不会意识到这个问题，因为用户的注意力会被流畅的切换动作所吸引。</p>
+<p>不幸的是，这个方案还没有被实现。所以当前的解决方案是，在动画的进行过程中，利用InteractionManager来选择性的渲染新场景所需的最小限度的内容。</p>
+<p>InteractionManager.runAfterInteractions的参数中包含一个回调，这个回调会在navigator切换动画结束的时候被触发（每个来自于Animated接口的动画都会通知InteractionManager）。</p>
+<p>你的场景组件看上去应该是这样的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExpensiveScene</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props, context) &#123;</div><div class="line">    <span class="keyword">super</span>(props, context);</div><div class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">renderPlaceholderOnly</span>: <span class="literal">true</span>&#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentDidMount() &#123;</div><div class="line">    InteractionManager.runAfterInteractions(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="keyword">this</span>.setState(&#123;<span class="attr">renderPlaceholderOnly</span>: <span class="literal">false</span>&#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.state.renderPlaceholderOnly) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>._renderPlaceholderView();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">Text</span>&gt;</span>Your full view goes here<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  _renderPlaceholderView() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">Text</span>&gt;</span>Loading...<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>你不必被限制在仅仅是做一些loading指示的渲染，你也可以绘制部分的页面内容 —— 例如：当你加载Facebook应用的时候，你会看见一个灰色方形的消息流的占位符，是将来用来显示文字的地方。如果你正在场景中绘制地图，那么最好在场景切换完成之前，显示一个灰色的占位页面或者是一个转动的动画，因为切换过程的确会导致主线程的掉帧。</p>
+<h4 id="ListView初始化渲染太慢以及列表过长时滚动性能太差"><a href="#ListView初始化渲染太慢以及列表过长时滚动性能太差" class="headerlink" title="ListView初始化渲染太慢以及列表过长时滚动性能太差"></a>ListView初始化渲染太慢以及列表过长时滚动性能太差</h4><p>这是一个频繁出现的问题。因为iOS配备了UITableView，通过重用底层的UIViews实现了非常高性能的体验。用React Native实现相同效果的工作仍正在进行中，但是在此之前，我们有一些可用的方法来稍加改进性能以满足我们的需求。</p>
+<h5 id="initialListSize"><a href="#initialListSize" class="headerlink" title="initialListSize"></a>initialListSize</h5><p>这个属性定义了在首次渲染中绘制的行数。如果我们关注于快速的显示出页面，可以设置initialListSize为1，然后我们会发现其他行在接下来的帧中被快速绘制到屏幕上。而每帧所显示的行数由pageSize所决定。</p>
+<h5 id="pageSize"><a href="#pageSize" class="headerlink" title="pageSize"></a>pageSize</h5><p>在初始渲染也就是initialListSize被使用之后，ListView将利用pageSize来决定每一帧所渲染的行数。默认值为1 —— 但是如果你的页面很小，而且渲染的开销不大的话，你会希望这个值更大一些。稍加调整，你会发现它所起到的作用。</p>
+<h5 id="scrollRenderAheadDistance"><a href="#scrollRenderAheadDistance" class="headerlink" title="scrollRenderAheadDistance"></a>scrollRenderAheadDistance</h5><p>“在将要进入屏幕某些区域中先渲染行，距离按像素计算”</p>
+<p>如果我们有一个2000个元素的列表，并且立刻全部渲染出来的话，无论是内存还是计算资源都会显得很匮乏。还很可能导致非常可怕的阻塞。因此scrollRenderAheadDistance允许我们来指定一个超过视野范围之外所需要渲染的行数。</p>
+<h5 id="removeClippedSubviews"><a href="#removeClippedSubviews" class="headerlink" title="removeClippedSubviews"></a>removeClippedSubviews</h5><p>“当这一选项设置为true的时候，超出屏幕的子视图（同时overflow值为hidden）会从它们原生的父视图中移除。这个属性可以在列表很长的时候提高滚动的性能。默认为true。（0.14版本前默认为false）”</p>
+<p>这是一个应用在长列表上极其重要的优化。Android上，overflow值总是hidden的，所以你不必担心没有设置它。而在iOS上，你需要确保在行容器上设置了overflow: hidden。</p>
+<h4 id="我的组件渲染太慢，我不需要立即显示全部"><a href="#我的组件渲染太慢，我不需要立即显示全部" class="headerlink" title="我的组件渲染太慢，我不需要立即显示全部"></a>我的组件渲染太慢，我不需要立即显示全部</h4><p>这在初次浏览ListView时很常见，适当的使用它是获得稳定性能的关键。就像之前所提到的，它可以提供一些手段在不同帧中来分开渲染页面，稍加改进就可以满足你的需求。此外要记住的是，ListView也可以横向滚动。</p>
+<h4 id="在重绘一个几乎没有什么变化的页面时，JS帧率严重降低"><a href="#在重绘一个几乎没有什么变化的页面时，JS帧率严重降低" class="headerlink" title="在重绘一个几乎没有什么变化的页面时，JS帧率严重降低"></a>在重绘一个几乎没有什么变化的页面时，JS帧率严重降低</h4><p>如果你正在使用一个ListView，你必须提供一个rowHasChanged函数，它通过快速的算出某一行是否需要重绘，来减少很多不必要的工作。如果你使用了不可变的数据结构，这项工作就只需检查其引用是否相等。</p>
+<p>同样的，你可以实现shouldComponentUpdate函数来指明在什么样的确切条件下，你希望这个组件得到重绘。如果你编写的是纯粹的组件（返回值完全由props和state所决定），你可以利用PureRenderMixin来为你做这个工作。再强调一次，不可变的数据结构在提速方面非常有用 —— 当你不得不对一个长列表对象做一个深度的比较，它会使重绘你的整个组件更加快速，而且代码量更少。</p>
+<h4 id="由于在JavaScript线程中同时做很多事情，导致JS线程掉帧"><a href="#由于在JavaScript线程中同时做很多事情，导致JS线程掉帧" class="headerlink" title="由于在JavaScript线程中同时做很多事情，导致JS线程掉帧"></a>由于在JavaScript线程中同时做很多事情，导致JS线程掉帧</h4><p>“导航切换极慢”是该问题的常见表现。在其他情形下，这种问题也可能会出现。使用InteractionManager是一个好的方法，但是如果在动画中，为了用户体验的开销而延迟其他工作并不太能接受，那么你可以考虑一下使用LayoutAnimation。</p>
+<p>Animated的接口一般会在JavaScript线程中计算出所需要的每一个关键帧，而LayoutAnimation则利用了Core Animation，使动画不会被JS线程和主线程的掉帧所影响。<br>注意：LayoutAnimation只工作在“一次性”的动画上（”静态”动画） – 如果动画可能会被中途取消，你还是需要使用Animated。</p>
+<h4 id="在屏幕上移动视图（滚动，切换，旋转）时，UI线程掉帧"><a href="#在屏幕上移动视图（滚动，切换，旋转）时，UI线程掉帧" class="headerlink" title="在屏幕上移动视图（滚动，切换，旋转）时，UI线程掉帧"></a>在屏幕上移动视图（滚动，切换，旋转）时，UI线程掉帧</h4><p>当具有透明背景的文本位于一张图片上时，或者在每帧重绘视图时需要用到透明合成的任何其他情况下，这种现象尤为明显。设置shouldRasterizeIOS或者renderToHardwareTextureAndroid属性可以显著改善这一现象。 注意不要过度使用该特性，否则你的内存使用量将会飞涨。在使用时，要评估你的性能和内存使用情况。如果你没有需要移动这个视图的需求，请关闭这一属性。</p>
+<h4 id="使用动画改变图片的尺寸时，UI线程掉帧"><a href="#使用动画改变图片的尺寸时，UI线程掉帧" class="headerlink" title="使用动画改变图片的尺寸时，UI线程掉帧"></a>使用动画改变图片的尺寸时，UI线程掉帧</h4><p>在iOS上，每次调整Image组件的宽度或者高度，都需要重新裁剪和缩放原始图片。这个操作开销会非常大，尤其是大的图片。比起直接修改尺寸，更好的方案是使用transform: [{scale}]的样式属性来改变尺寸。比如当你点击一个图片，要将它放大到全屏的时候，就可以使用这个属性。</p>
+<h4 id="Touchable系列组件不能很好的响应"><a href="#Touchable系列组件不能很好的响应" class="headerlink" title="Touchable系列组件不能很好的响应"></a>Touchable系列组件不能很好的响应</h4><p>有些时候，如果我们有一项操作与点击事件所带来的透明度改变或者高亮效果发生在同一帧中，那么有可能在onPress函数结束之前我们都看不到这些效果。比如在onPress执行了一个setState的操作，这个操作需要大量计算工作并且导致了掉帧。对此的一个解决方案是将onPress处理函数中的操作封装到requestAnimationFrame中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">handleOnPress() &#123;</div><div class="line">  <span class="comment">// 谨记在使用requestAnimationFrame、setTimeout以及setInterval时</span></div><div class="line">  <span class="comment">// 要使用TimerMixin（其作用是在组件unmount时，清除所有定时器）</span></div><div class="line">  <span class="keyword">this</span>.requestAnimationFrame(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">this</span>.doExpensiveAction();</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>你可以利用内置的分析器来同时获取JavaScript线程和主线程中代码执行情况的详细信息。</p>
+<h2 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h2><p>时刻将React Native更新到最新的版本，可以获得更多API、视图、开发者工具以及其他一些好东西（官方开发任务繁重，人手紧缺，几乎不会对旧版本提供维护支持，所以即便更新可能带来一些兼容上的变更，但建议开发者还是尽一切可能第一时间更新）。由于一个完整的React Native项目是由Android项目、iOS项目和JavaScript项目组成的，且都打包在一个npm包中，所以升级可能会有一些麻烦。以下是目前所需的升级步骤：</p>
+<h3 id="更新react-native的node依赖包"><a href="#更新react-native的node依赖包" class="headerlink" title="更新react-native的node依赖包"></a>更新react-native的node依赖包</h3><p>打开项目目录下的package.json文件，然后在dependencies模块下找到react-native，将当前版本号改到最新（或指定）版本号，如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"reactnativedemo"</span>,</div><div class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</div><div class="line">  <span class="attr">"description"</span>: <span class="string">""</span>,</div><div class="line">  <span class="attr">"main"</span>: <span class="string">"index.android.js"</span>,</div><div class="line">  <span class="attr">"scripts"</span>: &#123;</div><div class="line">      <span class="attr">"start"</span>: <span class="string">"node node_modules/react-native/local-cli/cli.js start"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"author"</span>: <span class="string">""</span>,</div><div class="line">  <span class="attr">"license"</span>: <span class="string">"ISC"</span>,</div><div class="line">  <span class="attr">"dependencies"</span>: &#123;</div><div class="line">      <span class="attr">"react"</span>: <span class="string">"^15.4.1"</span>,</div><div class="line">      <span class="attr">"react-native"</span>: <span class="string">"^0.38.0"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>react-native的npm包的最新版本可以去这里查看，或使用npm info react-native命令查看。</p>
+<p>项目的根目录执行：</p>
+<blockquote>
+<p>npm install</p>
+</blockquote>
+<p>安装最新的React Native版本,成功后可能会出现如下类似警告：</p>
+<blockquote>
+<p>npm WARN react-native@0.38.0 requires a peer of react@15.4.1 but none was installed.</p>
+</blockquote>
+<p>根据警告执行：</p>
+<blockquote>
+<p>npm install –save react@15.4.1</p>
+</blockquote>
+<p>更新最新的React且项目下package.json 的 dependencies下的react版本会被修改为 15.4.1</p>
+<h3 id="升级项目模板文件"><a href="#升级项目模板文件" class="headerlink" title="升级项目模板文件"></a>升级项目模板文件</h3><p>新版本的npm包通常还会包含一些动态生成的文件，这些文件是在运行react-native init创建新项目时生成的，比如iOS和Android的项目文件。为了使老项目的项目文件也能得到更新（不重新init），你需要在命令行中运行：</p>
+<blockquote>
+<p>react-native upgrade</p>
+</blockquote>
+<p>这一命令会检查最新的项目模板，然后进行如下操作：</p>
+<ul>
+<li>如果是新添加的文件，则直接创建。</li>
+<li>如果文件和当前版本的文件相同，则跳过。</li>
+<li>如果文件和当前版本的文件不同，则会提示你一些选项：查看两者的不同，选择保留你的版本或是用新的模板覆盖。你可以按下h键来查看所有可以使用的命令。</li>
+</ul>
+<p>注意：如果你有修改原生代码，那么在使用upgrade升级前，先备份，再覆盖。覆盖完成后，使用比对工具找出差异，将你之前修改的代码逐步搬运到新文件中。</p>
+<h3 id="手动升级"><a href="#手动升级" class="headerlink" title="手动升级"></a>手动升级</h3><p>有时候React Native的项目结构改动较大，此时还需要手动做一些修改，例如从0.13到0.14版本，或是0.28到0.29版本。所以在升级时请先阅读一下<a href="https://github.com/facebook/react-native/releases" target="_blank" rel="external">更新日志</a>，以确定是否需要做一些额外的手动修改。</p>
+<h3 id="查看版本是否升级成功"><a href="#查看版本是否升级成功" class="headerlink" title="查看版本是否升级成功"></a>查看版本是否升级成功</h3><p>执行：</p>
+<blockquote>
+<p>react-native -v</p>
+</blockquote>
+<p>通过如上命令来看最新的版本，检测是否升级成功！</p>
+<h2 id="特定平台代码"><a href="#特定平台代码" class="headerlink" title="特定平台代码"></a>特定平台代码</h2><p>在制作跨平台的App时，多半会碰到针对不同平台编写不同代码的需求。最直接的方案就是把组件放置到不同的文件夹下：</p>
+<blockquote>
+<p>/common/components/<br>/android/components/<br>/ios/components/</p>
+</blockquote>
+<p>另一个选择是根据平台不同在组件的文件命名上加以区分，如下：</p>
+<blockquote>
+<p>BigButtonIOS.js<br>BigButtonAndroid.js</p>
+</blockquote>
+<p>但除此以外React Native还提供了另外两种简单区分平台的方案：</p>
+<h3 id="特定平台扩展名"><a href="#特定平台扩展名" class="headerlink" title="特定平台扩展名"></a>特定平台扩展名</h3><p>React Native会检测某个文件是否具有.ios.或是.android.的扩展名，然后根据当前运行的平台加载正确对应的文件。</p>
+<p>假设你的项目中有如下两个文件：</p>
+<blockquote>
+<p>BigButton.ios.js<br>BigButton.android.js</p>
+</blockquote>
+<p>这样命名组件后你就可以在其他组件中直接引用，而无需关心当前运行的平台是哪个。</p>
+<blockquote>
+<p>import BigButton from ‘./components/BigButton’;</p>
+</blockquote>
+<p>React Native会根据运行平台的不同引入正确对应的组件。</p>
+<h3 id="平台模块"><a href="#平台模块" class="headerlink" title="平台模块"></a>平台模块</h3><p>React Native提供了一个检测当前运行平台的模块。如果组件只有一小部分代码需要依据平台定制，那么这个模块就可以派上用场。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; Platform, StyleSheet &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> styles = StyleSheet.create(&#123;</div><div class="line">  <span class="attr">height</span>: (Platform.OS === <span class="string">'ios'</span>) ? <span class="number">200</span> : <span class="number">100</span>,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>Platform.OS在iOS上会返回ios，而在Android设备或模拟器上则会返回android。</p>
+<p>还有个实用的方法是Platform.select()，它可以以Platform.OS为key，从传入的对象中返回对应平台的值，见下面的示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; Platform, StyleSheet &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> styles = StyleSheet.create(&#123;</div><div class="line">  <span class="attr">container</span>: &#123;</div><div class="line">    <span class="attr">flex</span>: <span class="number">1</span>,</div><div class="line">    ...Platform.select(&#123;</div><div class="line">      <span class="attr">ios</span>: &#123;</div><div class="line">        <span class="attr">backgroundColor</span>: <span class="string">'red'</span>,</div><div class="line">      &#125;,</div><div class="line">      <span class="attr">android</span>: &#123;</div><div class="line">        <span class="attr">backgroundColor</span>: <span class="string">'blue'</span>,</div><div class="line">      &#125;,</div><div class="line">    &#125;),</div><div class="line">  &#125;,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>上面的代码会根据平台的不同返回不同的container样式——iOS上背景色为红色，而android为蓝色。</p>
+<p>这一方法可以接受任何合法类型的参数，因此你也可以直接用它针对不同平台返回不同的组件，像下面这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Component = Platform.select(&#123;</div><div class="line">  <span class="attr">ios</span>: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">require</span>(<span class="string">'ComponentIOS'</span>),</div><div class="line">  <span class="attr">android</span>: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">require</span>(<span class="string">'ComponentAndroid'</span>),</div><div class="line">&#125;)();</div><div class="line"><span class="xml"><span class="tag">&lt;<span class="name">Component</span> /&gt;</span>;</span></div></pre></td></tr></table></figure>
+<h4 id="检测Android版本"><a href="#检测Android版本" class="headerlink" title="检测Android版本"></a>检测Android版本</h4><p>在Android上，平台模块还可以用来检测当前所运行的Android平台的版本：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; Platform &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">if</span>(Platform.Version === <span class="number">21</span>)&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Running on Lollipop!'</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/" data-id="cizp6sunj003wpsu09rofjtsa" class="article-share-link" data-share="baidu" data-title="React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/11/ReactNative/React Native使用Android原生模块/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          React Native使用Android原生模块
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">React Native 学习笔记--进阶（四）--导航器</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/" data-title="React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码" data-url="http://cokernut.top/2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识/">Django学习笔记--基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native 打包APK/">React Native 打包APK</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/ReactNative/React Native使用Android原生UI控件/">React Native使用Android原生UI控件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/Android/Android编码规范/">Android编码规范</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 14px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/React-Native/" style="font-size: 18px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

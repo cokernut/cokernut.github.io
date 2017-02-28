@@ -1,0 +1,487 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用Hexo+GitHub Pages搭建静态博客 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用Hexo+GitHub Pages搭建静态博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Hexo+GitHub Pages搭建静态博客">
+<meta property="og:url" content="http://cokernut.top/2016/11/29/Note/使用Hexo+GitHub Pages搭建静态博客/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="使用Hexo+GitHub Pages搭建静态博客">
+<meta property="og:updated_time" content="2017-02-28T07:00:54.511Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Hexo+GitHub Pages搭建静态博客">
+<meta name="twitter:description" content="使用Hexo+GitHub Pages搭建静态博客">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-Note/使用Hexo+GitHub Pages搭建静态博客" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/29/Note/使用Hexo+GitHub Pages搭建静态博客/" class="article-date">
+  <time datetime="2016-11-28T16:00:00.000Z" itemprop="datePublished">2016-11-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/GitHub/">GitHub</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用Hexo+GitHub Pages搭建静态博客
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用Hexo+GitHub Pages搭建静态博客<br><a id="more"></a></p>
+<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p>一个基于Node.js的快速，简单和强大的博客框架。</p>
+<h2 id="GitHub-Pages"><a href="#GitHub-Pages" class="headerlink" title="GitHub Pages"></a>GitHub Pages</h2><p>GitHub Pages可以被认为是用户编写的、托管在github上的静态网页。</p>
+<h2 id="建立GitHub-Pages项目"><a href="#建立GitHub-Pages项目" class="headerlink" title="建立GitHub Pages项目"></a>建立GitHub Pages项目</h2><p>在GitHub上建立一个名称为：username.github.io的项目，username一定要填写自己的GitHub的名称，之后可以把生成的静态网页提交到这个项目上，<br>然后可以通过 <a href="https://username.github.io" target="_blank" rel="external">https://username.github.io</a> 这个地址访问到我们生成的静态网页。</p>
+<h2 id="Hexo安装"><a href="#Hexo安装" class="headerlink" title="Hexo安装"></a>Hexo安装</h2><ul>
+<li>Hexo是基于Node.js的，所以首先要安装<a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js</a></li>
+<li><p>使用命令安装hexo:  </p>
+<blockquote>
+<p>npm install hexo-cli -g  </p>
+</blockquote>
+<p>注意：使用-g表示全局安装，没有加-g表示本地安装（当前目录安装）。</p>
+</li>
+</ul>
+<p>查看版本：</p>
+<blockquote>
+<p>hexo version  或者 hexo v  </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">hexo: 3.2.2</div><div class="line">hexo-cli: 1.0.2</div><div class="line">os: Windows_NT 10.0.14393 win32 x64</div><div class="line">http_parser: 2.7.0</div><div class="line">node: 6.9.1</div><div class="line">v8: 5.1.281.84</div><div class="line">uv: 1.9.1</div><div class="line">zlib: 1.2.8</div><div class="line">ares: 1.10.1-DEV</div><div class="line">icu: 57.1</div><div class="line">modules: 48</div><div class="line">openssl: 1.0.2j</div></pre></td></tr></table></figure>
+<p>查看帮助：</p>
+<blockquote>
+<p>hexo help  或者 hexo h  </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">Usage: hexo &lt;command&gt;</div><div class="line"></div><div class="line">Commands:</div><div class="line">  clean     Removed generated files and cache. #删除生成的文件和缓存。</div><div class="line">  config    Get or set configurations.</div><div class="line">  deploy    Deploy your website. #部署网站，就是提交到项目中</div><div class="line">  generate  Generate static files. #生成静态文件</div><div class="line">  help      Get help on a command.   #查看帮助信息</div><div class="line">  init      Create a new Hexo folder. #创建一个hexo项目，不指定文件夹名，则在当前目录创建，否则在后面指定的文件夹创建</div><div class="line">  list      List the information of the site</div><div class="line">  migrate   Migrate your site from other system to Hexo.</div><div class="line">  new       Create a new post. #新建文件，可以指定模板，否则使用默认模板</div><div class="line">  publish   Moves a draft post from _drafts to _posts folder.</div><div class="line">  render    Render files with renderer plugins.</div><div class="line">  server    Start the server. #开启服务器</div><div class="line">  version   Display version information. #查看版本信息</div><div class="line"></div><div class="line">Global Options:</div><div class="line">  --config  Specify config file instead of using _config.yml #指定配置文件，代替默认的_config.yml</div><div class="line">  --cwd     Specify the CWD #自定义当前工作目录</div><div class="line">  --debug   Display all verbose messages in the terminal #调试模式，输出所有日志信息</div><div class="line">  --draft   Display draft posts #草稿模式</div><div class="line">  --safe    Disable all plugins and scripts #安全模式，禁用所有的插件和脚本</div><div class="line">  --silent  Hide output on console #无日志输出模式</div></pre></td></tr></table></figure>
+<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><blockquote>
+<p>hexo init [项目文件夹]  </p>
+</blockquote>
+<p>注意：项目文件夹是可选的，不指定文件夹名，则在当前目录创建项目，否则在后面指定的文件夹创建项目  </p>
+<p>新建项目之后切换到项目的根目录使用：</p>
+<blockquote>
+<p>npm install </p>
+</blockquote>
+<p>这条命令来为项目安装依赖包，具体安装内容可以在package.json文件里找到。  </p>
+<h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt; scaffolds ：模板文件夹，新建文章时，Hexo 会根据 scaffold 来建立文件。Hexo 有三种默认布局： post 、 page 和 draft ，它们分别对应不同的路径。新建文件的默认布局是 post ，可以在配置文件中更改布局。用 draft 布局生成的文件会被保存到 source/_drafts 文件夹。</div><div class="line">&gt; source ：资源文件夹是存放用户资源的地方。</div><div class="line">&gt; &gt; source/_post ：文件箱。（低版本的hexo还会存在一个 _draft ，这是草稿箱）除 _posts 文件夹之外，开头命名为 _ (下划线)的文件/ 文件夹和隐藏的文件将会被忽略。Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去</div><div class="line">&gt; themes ：主题 文件夹。Hexo 会根据主题来生成静态页面。</div><div class="line">&gt; &gt; themes/landscape ：默认的皮肤文件夹</div><div class="line">&gt; &gt; &gt; themes/landscape/_config.yml :当前主题配置文件</div><div class="line">&gt; _config.yml ：全局的配置文件，每次更改要重启服务。</div></pre></td></tr></table></figure>
+<p>之后使用：  </p>
+<blockquote>
+<p>hexo server 或者 hexo s  </p>
+</blockquote>
+<p>来开启本地服务器进行预览。<br>我们可以过浏览器打开地址， <a href="http://localhost:4000/" target="_blank" rel="external">http://localhost:4000/</a> 或者 <a href="http://0.0.0.0:4000" target="_blank" rel="external">http://0.0.0.0:4000</a> 来预览我们的项目。</p>
+<h2 id="Hexo配置"><a href="#Hexo配置" class="headerlink" title="Hexo配置"></a>Hexo配置</h2><blockquote>
+<p>_config.yml  </p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line"># Hexo Configuration</div><div class="line">## Docs: https://hexo.io/docs/configuration.html</div><div class="line">## Source: https://github.com/hexojs/hexo/</div><div class="line"></div><div class="line"># Site 站点配置</div><div class="line">title: Cokernut #网站标题</div><div class="line">subtitle: #网站副标题</div><div class="line">description: #网站描述</div><div class="line">author: Cokernut #作者</div><div class="line">language: zh-CN #网站使用的语言</div><div class="line">timezone: Asia/Shanghai #网站时区</div><div class="line"></div><div class="line"># URL 配置</div><div class="line">## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'</div><div class="line">url: http://cokernut.top #网址，搜索时会在搜索引擎中显示</div><div class="line">root: / #网站根目录</div><div class="line">permalink: :year/:month/:day/:title/ #永久链接格式</div><div class="line">permalink_defaults: #永久链接中各部分的默认值</div><div class="line"></div><div class="line"># Directory 目录配置</div><div class="line">source_dir: source #资源文件夹，这个文件夹用来存放内容</div><div class="line">public_dir: public #公共文件夹，这个文件夹用于存放生成的站点文件</div><div class="line">tag_dir: tags #标签文件夹</div><div class="line">archive_dir: archives #归档文件夹</div><div class="line">category_dir: categories #分类文件夹</div><div class="line">code_dir: downloads/code #Include code 文件夹</div><div class="line">i18n_dir: :lang #国际化文件夹</div><div class="line">skip_render: #跳过指定文件的渲染，您可使用 glob 来配置路径</div><div class="line"></div><div class="line"># Writing 写作配置</div><div class="line">new_post_name: :title.md # 新文章的文件名称</div><div class="line">default_layout: post #默认布局</div><div class="line">titlecase: false #把标题变成titlecase</div><div class="line">external_link: true #在新标签页打开外部链接</div><div class="line">filename_case: 0 #把文件名称转换为 (1) 小写或 (2) 大写</div><div class="line">render_drafts: false #显示草稿</div><div class="line">post_asset_folder: false #是否启动资源文件夹</div><div class="line">relative_link: false #把链接改为与根目录的相对位址</div><div class="line">future: true</div><div class="line">highlight: #代码块的设置</div><div class="line">  enable: true</div><div class="line">  line_number: true</div><div class="line">  auto_detect: false</div><div class="line">  tab_replace:</div><div class="line"></div><div class="line"># Category &amp; Tag 分类 &amp; 标签</div><div class="line">default_category: uncategorized #默认分类</div><div class="line">category_map: #分类别名</div><div class="line">tag_map: #标签别名</div><div class="line"></div><div class="line"># Date / Time format 日期/时间</div><div class="line">## Hexo uses Moment.js to parse and display date</div><div class="line">## You can customize the date format as defined in</div><div class="line">## http://momentjs.com/docs/#/displaying/format/</div><div class="line">date_format: YYYY-MM-DD</div><div class="line">time_format: HH:mm:ss</div><div class="line"></div><div class="line"># Pagination 分页</div><div class="line">## Set per_page to 0 to disable pagination</div><div class="line">per_page: 10</div><div class="line">pagination_dir: page</div><div class="line"></div><div class="line"># Extensions 扩展</div><div class="line">## Plugins: https://hexo.io/plugins/ #插件</div><div class="line">## Themes: https://hexo.io/themes/ #主题</div><div class="line">theme: landscape-plus #当前主题名称</div><div class="line"></div><div class="line"># Deployment #部署</div><div class="line">## Docs: https://hexo.io/docs/deployment.html</div><div class="line">deploy: #github配置</div><div class="line">  type: git</div><div class="line">  repo: https://github.com/cokernut/cokernut.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
+<p>主题相关配置可以在主题下面的_config.yml里进行配置，不同的主题有些配置不同。</p>
+<h2 id="新建文件"><a href="#新建文件" class="headerlink" title="新建文件"></a>新建文件</h2><blockquote>
+<p>hexo new [模板] &lt;标题&gt; 或者 hexo n [模板] &lt;标题&gt;   </p>
+</blockquote>
+<p>注意：其中[模板]是可选参数，默认值为 post，如果没有设置[模板]的话，默认使用 _config.yml<br>中的 default_layout 参数代替。如果标题包含空格的话，需用引号括起来。  </p>
+<p>Hexo提供的模板在 scaffolds 目录下，也可以在此目录下自建模板文件或者修改模板文件。新建的文件会在<br>source/_post 目录下。</p>
+<p>发表的文章会全部显示，如果文章很长，就只要显示文章的摘要就行了。写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title:</div><div class="line">date:</div><div class="line">tag： # tags 和 categories 有多个，则用数组形式。[Java, Android]</div><div class="line">categories：</div><div class="line">...</div><div class="line">---</div><div class="line"></div><div class="line">摘要</div><div class="line"></div><div class="line">&lt;!--more--&gt;</div><div class="line"></div><div class="line">全文</div></pre></td></tr></table></figure></p>
+<p>这时主页就能够看到只显示标题和摘要了，同时会有Read More的链接按钮，<br>这个链接按钮的文字可以更改，在主题的配置文件(themes/主题文件夹/_config.yml)中，<br>找到 Content:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># Content</div><div class="line">excerpt_link: Read More #可以更改成想要显示的文字</div><div class="line">fancybox: true</div></pre></td></tr></table></figure></p>
+<h2 id="页面的生成"><a href="#页面的生成" class="headerlink" title="页面的生成"></a>页面的生成</h2><p>在项目部署之前要通过命令把所有的文章都做静态化处理，生成对应的html, javascript, css，<br>使得所有的文章都是由静态文件组成的。</p>
+<blockquote>
+<p>hexo generate 或者 hexo g  </p>
+</blockquote>
+<p>运行这个命令之后在本地目录下，会生成一个public的目录，里面包括了所有静态化的文件。 </p>
+<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><p>生成静态文件之后，如果要发布到github，还需要配置 deploy 指令。<br>在全局的配置文件(_config.yml)中找到 deploy ：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Deployment #部署</div><div class="line">## Docs: https://hexo.io/docs/deployment.html</div><div class="line">deploy: #github配置</div><div class="line">  type: git #类型GitHub的类型属于git</div><div class="line">  repo: https://github.com/cokernut/cokernut.github.io.git #GitHub Pages的git地址</div><div class="line">  branch: master #提交到的分支</div></pre></td></tr></table></figure></p>
+<p>之后安装hexo-deployer-git插件：</p>
+<blockquote>
+<p>npm install hexo-deployer-git -s  或<br>npm install hexo-deployer-git –save</p>
+</blockquote>
+<p>然后使用命令：</p>
+<blockquote>
+<p>hexo deploy 或者 hexo d</p>
+</blockquote>
+<p>配置Deployment:首先，你需要为自己配置身份信息，打开命令行，然后输入：</p>
+<blockquote>
+<p>git config –global user.name “yourname”<br>git config –global user.email “youremail”</p>
+</blockquote>
+<p>把项目部署到GitHub Pages上，提交的文件是在username.github.io项目上。<br>之后你可以访问<a href="http://username.github.io" target="_blank" rel="external">http://username.github.io</a> 查看效果。</p>
+<h2 id="绑定自己的域名（可选）"><a href="#绑定自己的域名（可选）" class="headerlink" title="绑定自己的域名（可选）"></a>绑定自己的域名（可选）</h2><ol>
+<li>购买一个自己的域名</li>
+<li>在username.github.io项目的根目录建立一个CNAME文件，在文件中填写上自己购买的域名，比如：username.net，不需要添加http或者是www等前缀。</li>
+<li>使用ping命令得到username.github.io的IP地址并记录。</li>
+<li>在域名的DNS配置上添加记录，两种方式选一种：  </li>
+</ol>
+<p>添加A记录：  </p>
+<table>
+<thead>
+<tr>
+<th>记录类型</th>
+<th>主机记录</th>
+<th>记录值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>@</td>
+<td>IP地址</td>
+</tr>
+<tr>
+<td>A</td>
+<td>www</td>
+<td>IP地址</td>
+</tr>
+</tbody>
+</table>
+<p>或者添加CNAME记录：  </p>
+<table>
+<thead>
+<tr>
+<th>记录类型</th>
+<th>主机记录</th>
+<th>记录值  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CNAME</td>
+<td>@</td>
+<td>username.github.io  </td>
+</tr>
+<tr>
+<td>CNAME</td>
+<td>www</td>
+<td>username.github.io  </td>
+</tr>
+</tbody>
+</table>
+<p>两种记录类型相同主机记录只能添加一种不然会提示冲突，并且不能添加。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/11/29/Note/使用Hexo+GitHub Pages搭建静态博客/" data-id="cizp6suky000bpsu0vwcnbaox" class="article-share-link" data-share="baidu" data-title="使用Hexo+GitHub Pages搭建静态博客">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/11/29/Note/使用Hexo+GitHub Pages搭建静态博客/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GitHub/">GitHub</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/01/ReactNative/React Native学习笔记--基础知识/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          React Native 学习笔记--基础知识
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/25/ReactNative/React Native嵌入Android原生项目中/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">React Native嵌入Android原生项目中</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/11/29/Note/使用Hexo+GitHub Pages搭建静态博客/" data-title="使用Hexo+GitHub Pages搭建静态博客" data-url="http://cokernut.top/2016/11/29/Note/使用Hexo+GitHub Pages搭建静态博客/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识/">Django学习笔记--基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native 打包APK/">React Native 打包APK</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/ReactNative/React Native使用Android原生UI控件/">React Native使用Android原生UI控件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/Android/Android编码规范/">Android编码规范</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 14px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/React-Native/" style="font-size: 18px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,499 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>React Native 学习笔记--进阶（四）--导航器 | Cokernut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="React Native 进阶（四）–导航器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native 学习笔记--进阶（四）--导航器">
+<meta property="og:url" content="http://cokernut.top/2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/index.html">
+<meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="React Native 进阶（四）–导航器">
+<meta property="og:updated_time" content="2016-12-08T08:42:15.010Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React Native 学习笔记--进阶（四）--导航器">
+<meta name="twitter:description" content="React Native 进阶（四）–导航器">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cokernut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/">主页</a>
+          </font>
+        
+          <font size="5">
+            <a class="main-nav-link" href="/archives">目录</a>
+          </font>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <!--取消搜索框<a id="nav-search-btn" class="nav-icon" title="Search"></a>-->
+      </nav>
+      <!--取消搜索框
+      <div id="search-form-wrap">
+        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="cokernut.top">
+        </form>
+      </div>
+      -->
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-ReactNative/React Native学习笔记--进阶（四）--导航器" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/" class="article-date">
+  <time datetime="2016-12-07T16:00:00.000Z" itemprop="datePublished">2016-12-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React-Native/">React Native</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React Native 学习笔记--进阶（四）--导航器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>React Native 进阶（四）–导航器<br><a id="more"></a></p>
+<h2 id="导航器对比"><a href="#导航器对比" class="headerlink" title="导航器对比"></a>导航器对比</h2><p>如果你刚开始接触，那么直接选择Navigator就好。如果你只针对iOS平台开发，并且想和系统原生外观一致，那么可以选择NavigatorIOS。如果你想更好地管理导航栈，那么应该尝试一下NavigationExperimental。</p>
+<h3 id="Navigator"><a href="#Navigator" class="headerlink" title="Navigator"></a>Navigator</h3><p>Navigator使用纯JavaScript实现了一个导航栈，因此可以跨平台工作，同时也便于定制。</p>
+<p>Navigator可以在renderScene方法中根据当前路由渲染不同的组件。默认情况下新的场景会从屏幕右侧滑进来，但你也可以通过configureScene方法来管理这一行为。你还可以通过navigationBar属性来配置一个跨场景的导航栏。但我们不推荐使用跨场景的navigationBar，它的代码逻辑维护起来很困难！建议自己在场景中用View实现自定义的导航栏。</p>
+<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><p>如果你得到了一个navigator对象的引用，则可以调用许多方法来进行导航：</p>
+<ul>
+<li>getCurrentRoutes() - 获取当前栈里的路由，也就是push进来，没有pop掉的那些。</li>
+<li>jumpBack() - 跳回之前的路由，当然前提是保留现在的，还可以再跳回来，会给你保留原样。</li>
+<li>jumpForward() - 上一个方法不是调到之前的路由了么，用这个跳回来就好了。</li>
+<li>jumpTo(route) - 跳转到已有的场景并且不卸载。</li>
+<li>push(route) - 跳转到新的场景，并且将场景入栈，你可以稍后跳转过去</li>
+<li>pop() - 跳转回去并且卸载掉当前场景</li>
+<li>replace(route) - 用一个新的路由替换掉当前场景</li>
+<li>replaceAtIndex(route, index) - 替换掉指定序列的路由场景</li>
+<li>replacePrevious(route) - 替换掉之前的场景</li>
+<li>resetTo(route) - 跳转到新的场景，并且重置整个路由栈</li>
+<li>immediatelyResetRouteStack(routeStack) - 用新的路由数组来重置路由栈</li>
+<li>popToRoute(route) - pop到路由指定的场景，在整个路由栈中，处于指定场景之后的场景将会被卸载。</li>
+<li>popToTop() - pop到栈中的第一个场景，卸载掉所有的其他场景。</li>
+</ul>
+<p>这些都是navigator可以用的public method,就是跳转用的，里面有些带参数的XXX(route)，这个route参数是什么呢，这个route就是:<br>renderScene={(route, navigator) =&gt;<br>这里的route，最基本的route就是:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> route = &#123;</div><div class="line">  <span class="attr">component</span>: SampleComponent</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><blockquote>
+<p>configureScene function </p>
+</blockquote>
+<p>可选的函数，用来配置场景动画和手势。会带有两个参数调用，一个是当前的路由，一个是当前的路由栈。然后它应当返回一个场景配置对象</p>
+<blockquote>
+<p>(route, routeStack) =&gt; Navigator.SceneConfigs.FloatFromRight </p>
+</blockquote>
+<ul>
+<li>Navigator.SceneConfigs.PushFromRight (默认)</li>
+<li>Navigator.SceneConfigs.FloatFromRight</li>
+<li>Navigator.SceneConfigs.FloatFromLeft</li>
+<li>Navigator.SceneConfigs.FloatFromBottom</li>
+<li>Navigator.SceneConfigs.FloatFromBottomAndroid</li>
+<li>Navigator.SceneConfigs.FadeAndroid</li>
+<li>Navigator.SceneConfigs.HorizontalSwipeJump</li>
+<li>Navigator.SceneConfigs.HorizontalSwipeJumpFromRight</li>
+<li>Navigator.SceneConfigs.VerticalUpSwipeJump</li>
+<li>Navigator.SceneConfigs.VerticalDownSwipeJump</li>
+</ul>
+<blockquote>
+<p>initialRoute object </p>
+</blockquote>
+<p>定义启动时加载的路由。路由是导航栏用来识别渲染场景的一个对象。initialRoute必须是initialRouteStack中的一个路由。initialRoute默认为initialRouteStack中最后一项。</p>
+<blockquote>
+<p>initialRouteStack [object] </p>
+</blockquote>
+<p>提供一个路由集合用来初始化。如果没有设置初始路由的话则必须设置该属性。如果没有提供该属性，它将被默认设置成一个只含有initialRoute的数组。</p>
+<blockquote>
+<p>navigationBar node </p>
+</blockquote>
+<p>可选参数，提供一个在场景切换的时候保持的导航栏。</p>
+<blockquote>
+<p>navigator object </p>
+</blockquote>
+<p>可选参数，提供从父导航器获得的导航器对象。</p>
+<blockquote>
+<p>onDidFocus function </p>
+</blockquote>
+<p>每当导航切换完成或初始化之后，调用此回调，参数为新场景的路由。</p>
+<blockquote>
+<p>onWillFocus function </p>
+</blockquote>
+<p>会在导航切换之前调用，参数为目标路由。</p>
+<blockquote>
+<p>renderScene function </p>
+</blockquote>
+<p>必要参数。用来渲染指定路由的场景。调用的参数是路由和导航器。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(route, navigator) =&gt;<span class="xml"><span class="tag">&lt;<span class="name">MySceneComponent</span> <span class="attr">title</span>=<span class="string">&#123;route.title&#125;</span> <span class="attr">navigator</span>=<span class="string">&#123;navigator&#125;</span> /&gt;</span></span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>sceneStyle View#style </p>
+</blockquote>
+<p>将会应用在每个场景的容器上的样式。</p>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><blockquote>
+<p>Navigator.js</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123;</div><div class="line">  View,</div><div class="line">  Navigator</div><div class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"><span class="keyword">import</span> FirstPageComponent <span class="keyword">from</span> <span class="string">'./FirstPageComponent'</span>;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Sample</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">let</span> defaultName = <span class="string">'FirstPageComponent'</span>;</div><div class="line">    <span class="keyword">let</span> defaultComponent = FirstPageComponent;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;Navigator</div><div class="line">        initialRoute=&#123;&#123; name: defaultName, component: defaultComponent &#125;&#125;</div><div class="line">        configureScene=&#123;(route) =&gt; &#123; // 跳转动画</div><div class="line">          return Navigator.SceneConfigs.VerticalDownSwipeJump;</div><div class="line">        &#125;&#125;</div><div class="line">        renderScene=&#123;(route, navigator) =&gt; &#123;</div><div class="line">          let Component = route.component;</div><div class="line">          // 这里有个 &#123; ...route.params &#125;，这个语法是把 routes.params 里的每个key 作为props的一个属性</div><div class="line">          return &lt;Component &#123;...route.params&#125; navigator=&#123;navigator&#125; /&gt;</div><div class="line">        &#125;&#125; </div><div class="line">      /&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">第10行: 一个初始首页的component名字，比如我写了一个component叫HomeComponent，</div><div class="line">        那么这个name就是这个组件的名字[HomeComponent]了。  </div><div class="line">第11行: 这个组件的Class，用来一会儿实例化成 &lt;Component /&gt;标签</div><div class="line">第14行: initialRoute=&#123;&#123; name: defaultName, component: defaultComponent &#125;&#125; 这个指定了默认的页面，</div><div class="line">        也就是启动app之后会看到界面的第一屏。 需要填写两个参数: name 跟 component。（注意这里填什么参数（参数名）纯粹是自定义的，</div><div class="line">        因为这个参数也是你自己发自己收，自己在renderScene方法中处理。这个示例用了两个参数，但其实真正使用的参数只有component）  </div><div class="line">第15，16，17行: configureScene=&#123;() =&gt; &#123;return Navigator.SceneConfigs.VerticalDownSwipeJump;&#125;&#125; 这个是页面之间跳转时候的动画，</div><div class="line">        具体有哪些动画可以看node_modules/react-native/Libraries/CustomComponents/Navigator/NavigatorSceneConfigs.js下的源代码。</div><div class="line">最后的几行: renderScene=&#123;(route, navigator) =&gt; &#123;let Component = route.component;return &lt;Component &#123;...route.params&#125; navigator=&#123;navigator&#125; /&gt;&#125;&#125;，</div><div class="line">        这里是每个人最疑惑的，我们先看到回调里的两个参数:route, navigator。通过打印我们发现route里其实就是我们传递的name,component这两个货，</div><div class="line">        navigator是一个Navigator的对象，为什么呢，因为它有push pop jump...等方法，这是我们等下用来跳转页面用的那个navigator对象。</div><div class="line">        return &lt;Component &#123;...route.params&#125; navigator=&#123;navigator&#125; /&gt;  </div><div class="line">        这里有一个判断，也就是如果传递进来的component存在，那我们就是返回一个这个component，结合前面 initialRoute 的参数，我们就知道，</div><div class="line">        这是一个会被render出来给用户看到的component，然后navigator作为props传递给了这个component。</div></pre></td></tr></table></figure>
+<p>所以下一步，在这个FirstPageComponent里面，我们可以直接拿到这个 props.navigator:</p>
+<blockquote>
+<p>FirstPageComponent.js</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123;</div><div class="line">  View,</div><div class="line">  Navigator,</div><div class="line">  TouchableOpacity,</div><div class="line">  Text</div><div class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">import</span> SecondPageComponent <span class="keyword">from</span> <span class="string">'./SecondPageComponent'</span>;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">FirstPageComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;</div><div class="line">      <span class="attr">id</span>: <span class="number">2</span>,</div><div class="line">      <span class="attr">user</span>: <span class="literal">null</span>,</div><div class="line">    &#125;;</div><div class="line">  &#125;</div><div class="line">  _pressButton() &#123;</div><div class="line">    <span class="keyword">let</span> _this = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">const</span> &#123; navigator &#125; = <span class="keyword">this</span>.props;</div><div class="line">    <span class="comment">//为什么这里可以取得 props.navigator?请注意Navigator.js中:</span></div><div class="line">    <span class="comment">//&lt;Component &#123;...route.params&#125; navigator=&#123;navigator&#125; /&gt;</span></div><div class="line">    <span class="comment">//这里传递了navigator作为props</span></div><div class="line">    <span class="keyword">if</span> (navigator) &#123;</div><div class="line">      <span class="comment">// 入栈~ 把SecondPageComponent页面push进栈，接着跳转到SecondPageComponent</span></div><div class="line">      navigator.push(&#123;</div><div class="line">        <span class="attr">name</span>: <span class="string">'SecondPageComponent'</span>,</div><div class="line">        <span class="attr">component</span>: SecondPageComponent,</div><div class="line">        <span class="comment">//这个 params 其实来自于Navigator 里的一个方法的参数</span></div><div class="line">        params: &#123;  <span class="comment">//routes.params</span></div><div class="line">          id: <span class="keyword">this</span>.state.id,</div><div class="line">          <span class="comment">//从SecondPageComponent获取user</span></div><div class="line">          getUser: <span class="function"><span class="keyword">function</span> (<span class="params">user</span>) </span>&#123;</div><div class="line">            _this.setState(&#123;</div><div class="line">              <span class="attr">user</span>: user</div><div class="line">            &#125;)</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.state.user) &#123;</div><div class="line">      <span class="keyword">return</span> (</div><div class="line">        <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">          <span class="tag">&lt;<span class="name">Text</span>&gt;</span>用户信息: &#123;JSON.stringify(this.state.user)&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">      );</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">return</span> (</div><div class="line">        <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">          <span class="tag">&lt;<span class="name">TouchableOpacity</span> <span class="attr">onPress</span>=<span class="string">&#123;this._pressButton.bind(this)&#125;</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">Text</span>&gt;</span>查询ID为&#123;this.state.id&#125;的用户信息<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">          <span class="tag">&lt;/<span class="name">TouchableOpacity</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">      );</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个里面创建了一个可以点击的区域，点击可以跳到SecondPageComponent这个页面，实现页面的跳转。<br>现在来创建SecondPageComponent，并且让它可以再跳回FirstPageComponent:</p>
+<blockquote>
+<p>SecondPageComponent.js</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123;</div><div class="line">  View,</div><div class="line">  Navigator,</div><div class="line">  Text,</div><div class="line">  TouchableOpacity</div><div class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">import</span> FirstPageComponent <span class="keyword">from</span> <span class="string">'./FirstPageComponent'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> USER_MODELS = &#123;</div><div class="line">  <span class="number">1</span>: &#123; <span class="attr">name</span>: <span class="string">'小李'</span>, <span class="attr">age</span>: <span class="number">18</span> &#125;,</div><div class="line">  <span class="number">2</span>: &#123; <span class="attr">name</span>: <span class="string">'小明'</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">SecondPageComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;</div><div class="line">      <span class="attr">id</span>: <span class="literal">null</span></div><div class="line">    &#125;;</div><div class="line">  &#125;</div><div class="line">  componentDidMount() &#123;</div><div class="line">    <span class="comment">//这里获取从FirstPageComponent传递过来的参数: id</span></div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">      <span class="attr">id</span>: <span class="keyword">this</span>.props.id</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">  _pressButton() &#123;</div><div class="line">    <span class="keyword">const</span> &#123; navigator &#125; = <span class="keyword">this</span>.props;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.props.getUser) &#123;</div><div class="line">      <span class="keyword">let</span> user = USER_MODELS[<span class="keyword">this</span>.props.id];</div><div class="line">      <span class="keyword">this</span>.props.getUser(user);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//出栈~ 把当前的页面pop掉，这里就返回到了上一个页面:FirstPageComponent了</span></div><div class="line">    <span class="keyword">if</span> (navigator) &#123;</div><div class="line">      navigator.pop();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">Text</span>&gt;</span>获得的参数(id): id=&#123;this.state.id&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">TouchableOpacity</span> <span class="attr">onPress</span>=<span class="string">&#123;this._pressButton.bind(this)&#125;</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">Text</span>&gt;</span>点我跳回去<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">TouchableOpacity</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="传递参数和获取参数"><a href="#传递参数和获取参数" class="headerlink" title="传递参数和获取参数"></a>传递参数和获取参数</h4><h5 id="传递参数到新页面"><a href="#传递参数到新页面" class="headerlink" title="传递参数到新页面"></a>传递参数到新页面</h5><p>传递参数到新页面，可以通过push。比如在一个 press的事件里:</p>
+<blockquote>
+<p>FirstPageComponent.js</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">constructor(props) &#123;</div><div class="line">  <span class="keyword">super</span>(props);</div><div class="line">  <span class="keyword">this</span>.state = &#123;</div><div class="line">    <span class="attr">id</span>: <span class="number">2</span></div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line">_pressButton() &#123;</div><div class="line">  ...</div><div class="line">    navigator.push(&#123;</div><div class="line">      <span class="attr">name</span>: <span class="string">'SecondPageComponent'</span>,</div><div class="line">      <span class="attr">component</span>: SecondPageComponent,</div><div class="line">      <span class="comment">//这个 params 其实来自于Navigator 里的一个方法的参数</span></div><div class="line">      params: &#123;</div><div class="line">        <span class="attr">id</span>: <span class="keyword">this</span>.state.id</div><div class="line">      &#125;</div><div class="line">    &#125;)</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>params的来历:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Navigator.js</span></div><div class="line">...</div><div class="line">&lt;Navigator</div><div class="line">  initialRoute=&#123;&#123; <span class="attr">name</span>: defaultName, <span class="attr">component</span>: defaultComponent &#125;&#125;</div><div class="line">  configureScene=&#123;() =&gt; &#123;</div><div class="line">    <span class="keyword">return</span> Navigator.SceneConfigs.VerticalDownSwipeJump;</div><div class="line">  &#125;&#125;</div><div class="line">  renderScene=&#123;(route, navigator) =&gt; &#123;</div><div class="line">    <span class="keyword">let</span> Component = route.component;</div><div class="line">    <span class="keyword">if</span>(route.component) &#123;</div><div class="line">        <span class="comment">//这里有个 &#123; ...route.params &#125;</span></div><div class="line">        <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">Component</span> &#123;<span class="attr">...route.params</span>&#125; <span class="attr">navigator</span>=<span class="string">&#123;navigator&#125;</span> /&gt;</span></span></div><div class="line">    &#125;</div><div class="line">  &#125;&#125; </div><div class="line">/&gt;</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>{ …route.params }语法是把 routes.params 里的每个key 作为props的一个属性:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//FirstPageComponent.js</span></div><div class="line">...</div><div class="line">navigator.push(&#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'SecondPageComponent'</span>,</div><div class="line">    <span class="attr">component</span>: SecondPageComponent,</div><div class="line">    <span class="attr">params</span>: &#123;  <span class="comment">//routes.params</span></div><div class="line">        id: <span class="keyword">this</span>.state.id</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>这里的 params.id 就变成了 <component id="{routes.params.id}" navigator="{navigator}"> 里的id属性(props)传递给了下一个页面。</component></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//SecondPageComponent.js</span></div><div class="line">...</div><div class="line">componentDidMount() &#123;</div><div class="line">  <span class="comment">//这里获取从FirstPageComponent传递过来的参数: id</span></div><div class="line">  <span class="keyword">this</span>.setState(&#123;</div><div class="line">    <span class="attr">id</span>: <span class="keyword">this</span>.props.id</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line">...</div><div class="line">render() &#123;</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">      <span class="tag">&lt;<span class="name">Text</span>&gt;</span>获得的参数: id=&#123; this.state.id &#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">TouchableOpacity</span> <span class="attr">onPress</span>=<span class="string">&#123;this._pressButton.bind(this)&#125;</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">Text</span>&gt;</span>点我跳回去<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">TouchableOpacity</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="返回参数到之前页面"><a href="#返回参数到之前页面" class="headerlink" title="返回参数到之前页面"></a>返回参数到之前页面</h5><p>返回的时候，也需要传递参数回上一个页面。但是navigator.pop()并没有提供参数，因为pop()只是从 [路由1,路由2，路由3。。。]里把最后一个路由踢出去的操作，并不支持传递参数给倒数第二个路由，这里要用到一个概念，把上一个页面的实例或者回调方法，作为参数传递到当前页面来，在当前页面操作上一个页面的state:</p>
+<p>比如FirstPageComponent传递id到SecondPageComponent，然后SecondPageComponent返回user信息给FirstPageComponent：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//FirstPageComponent.js</span></div><div class="line">...</div><div class="line">constructor(props) &#123;</div><div class="line">  <span class="keyword">super</span>(props);</div><div class="line">  <span class="keyword">this</span>.state = &#123;</div><div class="line">    <span class="attr">id</span>: <span class="number">2</span>,</div><div class="line">    <span class="attr">user</span>: <span class="literal">null</span>,</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">...</div><div class="line">_pressButton() &#123;</div><div class="line">    <span class="keyword">let</span> _this = <span class="keyword">this</span>;</div><div class="line">    ...</div><div class="line">      params: &#123;  <span class="comment">//routes.params</span></div><div class="line">        id: <span class="keyword">this</span>.state.id,</div><div class="line">        <span class="comment">//从SecondPageComponent获取user</span></div><div class="line">        getUser: <span class="function"><span class="keyword">function</span> (<span class="params">user</span>) </span>&#123;</div><div class="line">          _this.setState(&#123;</div><div class="line">            <span class="attr">user</span>: user</div><div class="line">          &#125;)</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">...</div><div class="line">render() &#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.state.user) &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">Text</span>&gt;</span>用户信息: &#123;JSON.stringify(this.state.user)&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    );</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">View</span>&gt;</span></span></div><div class="line">        <span class="tag">&lt;<span class="name">TouchableOpacity</span> <span class="attr">onPress</span>=<span class="string">&#123;this._pressButton.bind(this)&#125;</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">Text</span>&gt;</span>查询ID为&#123;this.state.id&#125;的用户信息<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">TouchableOpacity</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//SecondPageComponent.js</span></div><div class="line">...</div><div class="line">const USER_MODELS = &#123;</div><div class="line">  <span class="number">1</span>: &#123; <span class="attr">name</span>: <span class="string">'小李'</span>, <span class="attr">age</span>: <span class="number">18</span> &#125;,</div><div class="line">  <span class="number">2</span>: &#123; <span class="attr">name</span>: <span class="string">'小明'</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">SecondPageComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;</div><div class="line">      <span class="attr">id</span>: <span class="literal">null</span></div><div class="line">    &#125;;</div><div class="line">  &#125;</div><div class="line">  componentDidMount() &#123;</div><div class="line">    <span class="comment">//这里获取从FirstPageComponent传递过来的参数: id</span></div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">      <span class="attr">id</span>: <span class="keyword">this</span>.props.id</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">  _pressButton() &#123;</div><div class="line">    <span class="keyword">const</span> &#123; navigator &#125; = <span class="keyword">this</span>.props;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.props.getUser) &#123;</div><div class="line">      <span class="keyword">let</span> user = USER_MODELS[<span class="keyword">this</span>.props.id];</div><div class="line">      <span class="keyword">this</span>.props.getUser(user);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//出栈~ 把当前的页面pop掉，这里就返回到了上一个页面:FirstPageComponent了</span></div><div class="line">    <span class="keyword">if</span> (navigator) &#123;</div><div class="line">      navigator.pop();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">...</div></pre></td></tr></table></figure>
+<h2 id="NavigatorIOS"><a href="#NavigatorIOS" class="headerlink" title="NavigatorIOS"></a>NavigatorIOS</h2><p>如果你只针对iOS平台开发，那么可以考虑使用NavigatorIOS。它是基于 UINavigationController封装的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;NavigatorIOS</div><div class="line">  initialRoute=&#123;&#123;</div><div class="line">    <span class="attr">component</span>: MyScene,</div><div class="line">    <span class="attr">title</span>: <span class="string">'My Initial Scene'</span>,</div><div class="line">    <span class="attr">passProps</span>: &#123; <span class="attr">myProp</span>: <span class="string">'foo'</span> &#125;,</div><div class="line">  &#125;&#125;</div><div class="line">/&gt;</div></pre></td></tr></table></figure>
+<p>用法类似Navigator，NavigatorIOS也使用路由对象来描述场景，但有一些重要区别。其中要渲染的组件在路由对象的component字段中指定，要给目标组件传递的参数则写在passProps中。被渲染的component都会自动接受到一个名为navigator的属性，你可以直接调用此对象(this.props.navigator)的push和pop方法。<br>由于NavigatorIOS使用的是原生的UIKit导航，所以它会自动渲染一个带有返回按钮和标题的导航栏。</p>
+<blockquote>
+<p>你还可以看看<a href="https://github.com/wix/react-native-navigation" target="_blank" rel="external">react-native-navigation</a>，这是一个第三方的组件，旨在于提供原生的跨平台的导航组件。</p>
+</blockquote>
+<h2 id="NavigationExperimental"><a href="#NavigationExperimental" class="headerlink" title="NavigationExperimental"></a>NavigationExperimental</h2><p>Navigator和NavigatorIOS都是有状态的组件。如果你在app中多处使用这些组件，那么维护工作就会变得非常麻烦。NavigationExperimental以不同的方式实现了导航，它可以使用任何视图来作为导航视图，同时还用到了规约函数（reducer）自顶向下地管理状态。正如名字中的Experimental(实验)所示，这一组件的整体实现具有一定的实验性，但仍然建议你尝试一下用它去更好地管理应用的导航。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;NavigationCardStack</div><div class="line">  onNavigateBack=&#123;onPopRouteFunc&#125;</div><div class="line">  navigationState=&#123;myNavigationState&#125;</div><div class="line">  renderScene=&#123;renderSceneFun&#125;</div><div class="line">/&gt;</div></pre></td></tr></table></figure>
+<p>引入NavigationExperimental的步骤和React Native中的其他组件一样。在引入此组件之后，还可以进一步解构其中一些有用的子组件，比如这里我们会从中解构NavigationCardStack和 NavigationStateUtils这两个子组件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123; NavigationExperimental &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> &#123;</div><div class="line">  <span class="attr">CardStack</span>: NavigationCardStack,</div><div class="line">  <span class="attr">StateUtils</span>: NavigationStateUtils,</div><div class="line">&#125; = NavigationExperimental;</div></pre></td></tr></table></figure>
+<p>NavigationExperimental的实现机制与Navigator和NavigatorIOS有所不同，用它来构建导航栈还需要一些额外的步骤。</p>
+<h3 id="第一步：定义初始状态和根容器"><a href="#第一步：定义初始状态和根容器" class="headerlink" title="第一步：定义初始状态和根容器"></a>第一步：定义初始状态和根容器</h3><p>首先创建一个新组件，我们会把它作为根容器，并在这里定义初始状态。导航栈会定义在navigationState字段中，其中也包含了初始的路由定义：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> &#123; NavigationExperimental &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> &#123;</div><div class="line">  <span class="attr">CardStack</span>: NavigationCardStack,</div><div class="line">  <span class="attr">StateUtils</span>: NavigationStateUtils,</div><div class="line">&#125; = NavigationExperimental;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sample</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props, context) &#123;</div><div class="line">    <span class="keyword">super</span>(props, context);</div><div class="line">    <span class="keyword">this</span>.state = &#123;</div><div class="line">      <span class="comment">// 定义初始的导航状态</span></div><div class="line">      navigationState: &#123;</div><div class="line">        <span class="attr">index</span>: <span class="number">0</span>, <span class="comment">// 现在是第一页（索引从0开始）</span></div><div class="line">        routes: [&#123;<span class="attr">key</span>: <span class="string">'最初的场景'</span>&#125;], <span class="comment">// 初始仅设定一个路由</span></div><div class="line">      &#125;,</div><div class="line">    &#125;;</div><div class="line">    <span class="comment">// 稍后再补充此函数的实现细节</span></div><div class="line">    <span class="keyword">this</span>._onNavigationChange = <span class="keyword">this</span>._onNavigationChange.bind(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line">  _onNavigationChange(type) &#123;</div><div class="line">    <span class="comment">// 稍后再补充此函数的实现细节</span></div><div class="line">  &#125;</div><div class="line">  _exit() &#123;</div><div class="line">    <span class="comment">//exit()实现</span></div><div class="line">  &#125;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">Text</span>&gt;</span>这是一段占位的文字。稍后会在这里渲染导航。<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在我们定义了一个有状态的组件，暂时是无用的。我们的初始状态包含了一个路由对象，以及当前页面的索引值。但是这看起来跟Navigator的初始路由定义好像没什么区别！回忆一下navigator对象提供了push和pop操作，看起来也非常直观。但是前面我们说过了，现在我们会在根容器上使用规约函数来管理状态，下面继续。</p>
+<h3 id="第二步：规约导航状态"><a href="#第二步：规约导航状态" class="headerlink" title="第二步：规约导航状态"></a>第二步：规约导航状态</h3><p>NavigationExperimental内置了一些有用的规约函数（reducer），都放在NavigationStateUtils中。我们现在要用的两个就是push和pop了。它们接受一个navigationState对象参数，然后返回新的navigationState对象。</p>
+<p>据此我们可以这样来编写_onNavigationChange函数，在其中判断”push”和”pop”的行为，并分别规约对应的状态。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">_onNavigationChange(type) &#123;</div><div class="line">  <span class="comment">// 从state中解构出navigationState</span></div><div class="line">  <span class="keyword">let</span> &#123;navigationState&#125; = <span class="keyword">this</span>.state;</div><div class="line">  <span class="keyword">switch</span> (type) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="string">'push'</span>:</div><div class="line">      <span class="comment">// push一个新路由，在这里就是一个带有key属性的对象。</span></div><div class="line">      <span class="comment">// key必须要确保唯一性</span></div><div class="line">      <span class="keyword">const</span> route = &#123;<span class="attr">key</span>: <span class="string">'Route-'</span> + <span class="built_in">Date</span>.now()&#125;;</div><div class="line">      <span class="comment">// 调用NavigationStateUtils提供的push规约函数</span></div><div class="line">      navigationState = NavigationStateUtils.push(navigationState, route);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    <span class="keyword">case</span> <span class="string">'pop'</span>:</div><div class="line">      <span class="comment">// 使用pop函数来弹出当前路由</span></div><div class="line">      navigationState = NavigationStateUtils.pop(navigationState);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 如果没有实际变化，则NavigationStateUtils会返回同样的`navigationState`</span></div><div class="line">  <span class="comment">// 我们只会更新确实发生变化的状态</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.state.navigationState !== navigationState) &#123;</div><div class="line">    <span class="comment">// 请记住更新状态必须通过setState()方法！</span></div><div class="line">    <span class="keyword">this</span>.setState(&#123;navigationState&#125;);</div><div class="line">    <span class="comment">// 简单讲解一下上面那一句ES6语法</span></div><div class="line">    <span class="comment">// 如果key和value的字面一样，那么可以简写成一个，等同于下面的写法：</span></div><div class="line">    <span class="comment">// this.setState(&#123;navigationState: navigationState&#125;);</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到这里，我们已经触碰到了NavigationExperimental的精髓所在。这里我们只处理了两种行为，实际开发中行为可能更复杂，比如可能会考虑后退（back）行为，又或者是tab间的切换过渡行为等等。</p>
+<p>我们现在还没写初始场景和实际的导航器，不过别急，我们一步一步来。</p>
+<h3 id="第三步：定义场景"><a href="#第三步：定义场景" class="headerlink" title="第三步：定义场景"></a>第三步：定义场景</h3><p>为方便起见我们先定义一个Row（行）组件。其中显示了一些文字，并带有点击事件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TappableRow</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">TouchableHighlight</span></span></span></div><div class="line">        <span class="attr">style</span>=<span class="string">&#123;styles.row&#125;</span></div><div class="line">        <span class="attr">underlayColor</span>=<span class="string">"#D0D0D0"</span></div><div class="line">        <span class="attr">onPress</span>=<span class="string">&#123;this.props.onPress&#125;</span>&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">Text</span> <span class="attr">style</span>=<span class="string">&#123;styles.buttonText&#125;</span>&gt;</span></div><div class="line">          &#123;this.props.text&#125;</div><div class="line">        <span class="tag">&lt;/<span class="name">Text</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">TouchableHighlight</span>&gt;</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在来定义实际的场景。其中用到了一个ScrollView来显示一个垂直列表，第一行显示当前路由对象的key字段值，后两行用来点击后调用导航器的push和pop方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyVeryComplexScene</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;ScrollView style=&#123;styles.scrollView&#125;&gt;</div><div class="line">        &lt;Text style=&#123;styles.row&#125;&gt;</div><div class="line">          路由: &#123;this.props.route.key&#125;</div><div class="line">        &lt;/Text&gt;</div><div class="line">        &lt;TappableRow</div><div class="line">          text="加载下一个场景"</div><div class="line">          onPress=&#123;this.props.onPushRoute&#125;/&gt;</div><div class="line">        &lt;TappableRow</div><div class="line">          text="返回上一个场景"</div><div class="line">          onPress=&#123;this.props.onPopRoute&#125;/&gt;</div><div class="line">      &lt;/ScrollView&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="第四步：创建导航栈"><a href="#第四步：创建导航栈" class="headerlink" title="第四步：创建导航栈"></a>第四步：创建导航栈</h3><p>我们之前已经定义了状态和管理状态的规约函数，现在可以创建导航器组件了。在写导航器的同时，我们可以使用当前路由的属性来配置场景并渲染它了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyVerySampleNavigator</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="comment">// 在这里绑定一些导航用的方法</span></div><div class="line">  <span class="keyword">constructor</span>(props, context) &#123;</div><div class="line">    <span class="keyword">super</span>(props, context);</div><div class="line">    <span class="keyword">this</span>._onPushRoute = <span class="keyword">this</span>.props.onNavigationChange.bind(<span class="literal">null</span>, <span class="string">'push'</span>);</div><div class="line">    <span class="keyword">this</span>._onPopRoute = <span class="keyword">this</span>.props.onNavigationChange.bind(<span class="literal">null</span>, <span class="string">'pop'</span>);</div><div class="line">    <span class="keyword">this</span>._renderScene = <span class="keyword">this</span>._renderScene.bind(<span class="keyword">this</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 现在我们终于可以使用“NavigationCardStack”来渲染场景。</span></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;NavigationCardStack</div><div class="line">        onNavigateBack=&#123;this._onPopRoute&#125;</div><div class="line">        navigationState=&#123;this.props.navigationState&#125;</div><div class="line">        renderScene=&#123;this._renderScene&#125;</div><div class="line">        style=&#123;styles.navigator&#125;</div><div class="line">      /&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">  // 根据路由来渲染场景</div><div class="line">  // `sceneProps`的具体结构定义在`NavigationTypeDefinition`的`NavigationSceneRendererProps`中</div><div class="line">  // 这里你可以根据路由的不同来返回不同的场景组件，我们这里为了简要说明，始终只返回这一个场景组件</div><div class="line">  _renderScene(sceneProps) &#123;</div><div class="line">    return (</div><div class="line">      &lt;MyVeryComplexScene</div><div class="line">        route=&#123;sceneProps.scene.route&#125;</div><div class="line">        onPushRoute=&#123;this._onPushRoute&#125;</div><div class="line">        onPopRoute=&#123;this._onPopRoute&#125;</div><div class="line">        onExit=&#123;this.props.onExit&#125;</div><div class="line">      /&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后把我们新做的导航器放到根容器中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sample</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="comment">// 这里省略了constructor和其他的方法</span></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">MyVerySampleNavigator</span></span></span></div><div class="line">        <span class="attr">navigationState</span>=<span class="string">&#123;this.state.navigationState&#125;</span></div><div class="line">        <span class="attr">onNavigationChange</span>=<span class="string">&#123;this._onNavigationChange&#125;</span></div><div class="line">        <span class="attr">onExit</span>=<span class="string">&#123;this._exit&#125;</span></div><div class="line">      /&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>别忘了引入组件和样式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123; NavigationExperimental, PixelRatio, ScrollView, StyleSheet, Text, TouchableHighlight &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> styles = StyleSheet.create(&#123;</div><div class="line">  <span class="attr">navigator</span>: &#123;</div><div class="line">    <span class="attr">flex</span>: <span class="number">1</span>,</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">scrollView</span>: &#123;</div><div class="line">    <span class="attr">marginTop</span>: <span class="number">64</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">row</span>: &#123;</div><div class="line">    <span class="attr">padding</span>: <span class="number">15</span>,</div><div class="line">    <span class="attr">backgroundColor</span>: <span class="string">'white'</span>,</div><div class="line">    <span class="attr">borderBottomWidth</span>: <span class="number">1</span> / PixelRatio.get(),</div><div class="line">    <span class="attr">borderBottomColor</span>: <span class="string">'#CDCDCD'</span>,</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">rowText</span>: &#123;</div><div class="line">    <span class="attr">fontSize</span>: <span class="number">17</span>,</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">buttonText</span>: &#123;</div><div class="line">    <span class="attr">fontSize</span>: <span class="number">17</span>,</div><div class="line">    <span class="attr">fontWeight</span>: <span class="string">'500'</span>,</div><div class="line">  &#125;,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/" data-id="cizp6sunk003zpsu0umwywn58" class="article-share-link" data-share="baidu" data-title="React Native 学习笔记--进阶（四）--导航器">分享到</a>
+      
+
+      
+        <a href="http://cokernut.top/2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Native/">React Native</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/09/ReactNative/React Native学习笔记--进阶（五）--性能、升级、特定平台代码/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          React Native 学习笔记--进阶（五）--性能、升级版本、特定平台代码
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/07/ReactNative/React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">React Native学习笔记--进阶（三）--定时器、直接操作（setNativeProps）、调试</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/" data-title="React Native 学习笔记--进阶（四）--导航器" data-url="http://cokernut.top/2016/12/08/ReactNative/React Native学习笔记--进阶（四）--导航器/"></div>
+  </section>
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Git/">Git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GitHub/">GitHub</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MarkDown/">MarkDown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React-Native/">React Native</a><span class="category-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情链接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="https://github.com/cokernut/" target="_blank">GitHub</a>
+          </li>
+        
+          <li>
+            <a href="http://blog.csdn.net/u011965040/" target="_blank">CSDN</a>
+          </li>
+        
+          <li>
+            <a href="https://github.com/cokernut/Documents/" target="_blank">Documents</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AccessibilityService/">AccessibilityService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES6/">ES6</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/">GitHub</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a><span class="tag-list-count">26</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MarkDown/">MarkDown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Native/">React Native</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Recyclerview/">Recyclerview</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebView/">WebView</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/01/10/Python/Django学习笔记--基础知识/">Django学习笔记--基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native Headless JS（后台任务）/">React Native Headless JS（后台任务）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/15/ReactNative/React Native 打包APK/">React Native 打包APK</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/ReactNative/React Native使用Android原生UI控件/">React Native使用Android原生UI控件</a>
+          </li>
+        
+          <li>
+            <a href="/2016/12/14/Android/Android编码规范/">Android编码规范</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AccessibilityService/" style="font-size: 10px;">AccessibilityService</a> <a href="/tags/Android/" style="font-size: 16px;">Android</a> <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/ES6/" style="font-size: 20px;">ES6</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GitHub/" style="font-size: 14px;">GitHub</a> <a href="/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/tags/MarkDown/" style="font-size: 10px;">MarkDown</a> <a href="/tags/Python/" style="font-size: 12px;">Python</a> <a href="/tags/React-Native/" style="font-size: 18px;">React Native</a> <a href="/tags/Recyclerview/" style="font-size: 10px;">Recyclerview</a> <a href="/tags/WebView/" style="font-size: 10px;">WebView</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">2016年 12月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">2016年 11月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">2016年 10月</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  <!--不蒜子网页计数器-->
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <font size="2">
+      &copy; 2017 Cokernut&nbsp;&nbsp;|&nbsp;&nbsp;
+      <span id="busuanzi_container_site_pv">您是本站的第 <font color="#00A2E8"><span id="busuanzi_value_site_pv"></span></font> 位访客。</span>
+      </font>
+      <br>
+      <a href="/sitemap.xml">Sitemap</a>&nbsp; &nbsp; | &nbsp; &nbsp; 
+			<a href="/atom.xml">RSS</a>&nbsp; &nbsp; | &nbsp; &nbsp;
+			<a href="Mailto:cokernut@foxmail.com" target="_blank">联系博主</a>&nbsp; &nbsp;
+      <br>
+      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">目录</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+<!-- 多说公共js代码 start -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"cokernut"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+     || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+  </script>
+<!-- 多说公共js代码 end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>
+  function SetShareData(cmd, config) {
+    if (shareDataTitle && shareDataUrl) {
+      config.bdText = shareDataTitle;
+      config.bdUrl = shareDataUrl;
+    }
+    return config;
+  }
+  window._bd_share_config={
+    "common":{onBeforeClick: SetShareData},
+    "share":{"bdCustomStyle":"/css/bdshare.css"}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true
+                    
+}
+  
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                  
+}
+    
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i=0; i < all.length; i += 1) {
+                            all[i].SourceElement().parentNode.className += ' has-jax';
+                                    
+            }
+                
+        });
+</script>
+
+<script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.5.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
