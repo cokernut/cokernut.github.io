@@ -4,14 +4,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: Recyclerview | Cokernut</title>
+  <title>Java知识点 | Cokernut</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Cokernut">
-<meta property="og:url" content="http://cokernut.top/tags/Recyclerview/index.html">
+  <meta name="description" content="Java知识点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java知识点">
+<meta property="og:url" content="http://cokernut.top/2016/04/16/Note/Java知识点/index.html">
 <meta property="og:site_name" content="Cokernut">
+<meta property="og:description" content="Java知识点">
+<meta property="og:updated_time" content="2017-04-27T15:23:04.907Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cokernut">
+<meta name="twitter:title" content="Java知识点">
+<meta name="twitter:description" content="Java知识点">
   
   
     <link rel="icon" href="/favicon.png">
@@ -65,39 +69,67 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/10/25/Android/RecyclerView基本用法/" class="archive-article-date">
-  <time datetime="2016-10-24T16:00:00.000Z" itemprop="datePublished">10-25</time>
+      <section id="main"><article id="post-Note/Java知识点" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/16/Note/Java知识点/" class="article-date">
+  <time datetime="2016-04-15T16:00:00.000Z" itemprop="datePublished">2016-04-16</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Git/">Git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/25/Android/RecyclerView基本用法/">RecyclerView的介绍与基本用法</a>
+    <h1 class="article-title" itemprop="name">
+      Java知识点
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Java知识点<br><a id="more"></a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 执行顺序构造块&gt;静态块&gt;main函数</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> B b1 = <span class="keyword">new</span> B();</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> B b2 = <span class="keyword">new</span> B();</div><div class="line">    &#123;</div><div class="line">        System.out.print(<span class="string">"构造块"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">static</span> &#123;</div><div class="line">        System.out.print(<span class="string">"静态块"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        B b = <span class="keyword">new</span> B();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//输出结果：构造块构造块静态块构造块</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://cokernut.top/2016/04/16/Note/Java知识点/" data-id="cj28tnzjf00466kw4qrr4utgs" class="article-share-link" data-share="baidu" data-title="Java知识点">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GitHub/">GitHub</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/09/Note/使用Pelican+GitHub Pages搭建静态博客/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          使用Pelican+GitHub Pages搭建静态博客
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 </section>
       
